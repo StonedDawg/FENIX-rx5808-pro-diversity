@@ -34,7 +34,7 @@ SOFTWARE.
 
 // This should be incremented after every EEPROM change.
 // Version Number format v00.01
-#define VERSION_NUMBER 0003
+#define VERSION_NUMBER 0000
 
 // === Receiver Modules =========================================================
 

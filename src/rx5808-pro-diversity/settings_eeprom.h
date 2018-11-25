@@ -116,8 +116,8 @@ PROGMEM const struct {
     uint8_t spectatorFWHM = 20;
     uint8_t rssiSeekTreshold = 50;
     uint16_t rssiMinTuneTime = 30;
-    uint8_t rssiHysteresis = 2;
-    uint16_t rssiHysteresisPeriod = 5;
+    uint8_t rssiHysteresis = 0;
+    uint16_t rssiHysteresisPeriod = 0;
 
     #ifndef EEPROM_AT24C02
         unsigned char customLogo[128*64/8] = {0};
