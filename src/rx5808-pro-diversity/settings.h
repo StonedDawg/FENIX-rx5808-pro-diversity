@@ -33,8 +33,8 @@ SOFTWARE.
 //
 // =============================================================================
 
-//#define FENIX_QUADVERSITY
-#define REALACC_RX5808_PRO_PLUS_OSD
+#define FENIX_QUADVERSITY
+//#define REALACC_RX5808_PRO_PLUS_OSD
 
 // === EEPROM ==================================================================
 //
@@ -42,10 +42,10 @@ SOFTWARE.
 //
 // =============================================================================
 
-#define EEPROM_AT24C02 // WORKING
+//#define EEPROM_AT24C02 // WORKING
 //#define EEPROM_AT24C16 // WORKING
 //#define EEPROM_AT24C32 // NOT TESTED
-//#define EEPROM_AT24C64 // WORKING
+#define EEPROM_AT24C64 // WORKING
 
 // === Display Module ==========================================================
 //
@@ -91,15 +91,18 @@ SOFTWARE.
 
 #ifdef FENIX_QUADVERSITY
 
-    #define PIN_BUTTON_UP_PRESSED PA12 // 33
-    #define PIN_BUTTON_MODE_PRESSED PA15 // 38
-    #define PIN_BUTTON_DOWN_PRESSED PA8 // 29
-    #define PIN_BUTTON_RIGHT_PRESSED PA11 // 32
-    #define PIN_BUTTON_LEFT_PRESSED PB15 // 28
+//    #define PIN_BUTTON_UP_PRESSED PA12 // 33
+//    #define PIN_BUTTON_MODE_PRESSED PA15 // 38
+//    #define PIN_BUTTON_DOWN_PRESSED PA8 // 29
+//    #define PIN_BUTTON_RIGHT_PRESSED PA11 // 32
+//    #define PIN_BUTTON_LEFT_PRESSED PB15 // 28
+
+    #define PIN_TOUCHPAD_DATA_READY PA12 // 33
+   
     
-    #define PIN_BUTTON_FATSHARK_EB0 PB3 // 39
-    #define PIN_BUTTON_FATSHARK_EB1 PB4  // 40
-    #define PIN_BUTTON_FATSHARK_EB2 PB5  // 41
+//    #define PIN_BUTTON_FATSHARK_EB0 PB3 // 39
+//    #define PIN_BUTTON_FATSHARK_EB1 PB4  // 40
+//    #define PIN_BUTTON_FATSHARK_EB2 PB5  // 41
     
     #define PIN_LED PB8 // 45
     #define PIN_BUZZER PB9 // 46 // Must be an active buzzer, not passive.

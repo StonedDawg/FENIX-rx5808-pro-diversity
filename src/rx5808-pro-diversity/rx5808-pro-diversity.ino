@@ -86,6 +86,8 @@ void setup()
 }
 
 void setupPins() {
+
+    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
   
   #ifdef FENIX_QUADVERSITY
     pinMode(PIN_OSDCONTROL, OUTPUT);

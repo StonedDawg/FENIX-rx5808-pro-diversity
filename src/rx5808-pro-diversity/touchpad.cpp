@@ -31,9 +31,10 @@ namespace TouchPad {
           
             Pinnacle_getRelative(&touchData);
 
-            touchData.cursorX -= touchData.xDelta; // Reversed for testing
-//            touchData.cursorX += touchData.xDelta;
-            touchData.cursorY -= touchData.yDelta;
+//            touchData.cursorX -= touchData.xDelta; // Reversed for testing
+            touchData.cursorX += touchData.xDelta;
+//            touchData.cursorY -= touchData.yDelta;
+            touchData.cursorY += touchData.yDelta;
             
             // SC_448x216
             if (touchData.cursorX < 1) {
@@ -165,10 +166,12 @@ namespace TouchPad {
 
     bool isDataAvailable() {
       
-      byte data[1] = { 0 };
-      RAP_ReadBytes(0x02, data, 1);
-    
-      return data[0] & 0b00000100;
+//      byte data[1] = { 0 };
+//      RAP_ReadBytes(0x02, data, 1);
+//    
+//      return data[0] & 0b00000100;
+
+      return digitalRead(PIN_TOUCHPAD_DATA_READY);
       
     } 
     
