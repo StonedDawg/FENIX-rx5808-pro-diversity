@@ -45,9 +45,18 @@
 #include "temperature.h"
 #include "touchpad.h"
 
+#ifdef SPEED_TEST
+    uint16_t n = 0;
+    uint16_t previousTime = millis();
+#endif
+  
 void setup()
 {
   
+  #ifdef SPEED_TEST
+      Serial.begin(9600);
+  #endif
+
   EepromSettings.load();
 
   setupPins();
@@ -170,4 +179,15 @@ void loop() {
     }
   
     TouchPad::clearTouchData(); 
+      
+    #ifdef SPEED_TEST
+        n++;
+        if ( millis() > previousTime + 1000 ) {
+            Serial.print(n);
+            Serial.println(" Hz");
+            previousTime = millis();
+            n = 0;
+        }
+    #endif
+  
 }

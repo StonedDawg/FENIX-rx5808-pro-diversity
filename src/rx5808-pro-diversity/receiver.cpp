@@ -97,7 +97,7 @@ namespace Receiver {
 
     uint16_t updateRssi() {
 
-        uint8_t RSSI_READS = 15;  
+        uint8_t RSSI_READS = 3; //15;  
         
         rssiARaw = 0;
         for (uint8_t i = 0; i < RSSI_READS; i++) {                       
