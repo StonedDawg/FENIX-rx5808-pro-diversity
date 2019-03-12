@@ -249,4 +249,6 @@ SOFTWARE.
 
 #define SPEED_TEST
 
+//#define TOUCHPAD_TESTING
+
 #endif // file_defined

@@ -30,11 +30,14 @@ namespace TouchPad {
         if(isDataAvailable()) {
           
             Pinnacle_getRelative(&touchData);
-
-//            touchData.cursorX -= touchData.xDelta; // Reversed for testing
-            touchData.cursorX += touchData.xDelta;
-//            touchData.cursorY -= touchData.yDelta;
-            touchData.cursorY += touchData.yDelta;
+    
+            #ifdef TOUCHPAD_TESTING
+                touchData.cursorX += touchData.xDelta;
+                touchData.cursorY -= touchData.yDelta;  
+            #else
+                touchData.cursorX -= touchData.xDelta;
+                touchData.cursorY += touchData.yDelta;
+            #endif
             
             // SC_448x216
             if (touchData.cursorX < 1) {
