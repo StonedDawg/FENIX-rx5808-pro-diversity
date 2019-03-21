@@ -61,16 +61,16 @@ void HomeStateHandler::onUpdateDraw() {
 
 
     #ifdef FENIX_QUADVERSITY
-        // Voltage
-        Ui::setCursor( 280, 4);
-    //    Ui::display.print(PSTR2("7"));   
-        Ui::display.print(Voltage::voltage);        
-        Ui::display.print(PSTR2("."));        
-    //    Ui::display.print(PSTR2("6"));
-        Ui::display.print(Voltage::voltageDec);
-        Ui::display.print(PSTR2("V"));
-        
-        Ui::display.print(PSTR2(" / ")); 
+//        // Voltage
+//        Ui::setCursor( 280, 4);
+//    //    Ui::display.print(PSTR2("7"));   
+//        Ui::display.print(Voltage::voltage);        
+//        Ui::display.print(PSTR2("."));        
+//    //    Ui::display.print(PSTR2("6"));
+//        Ui::display.print(Voltage::voltageDec);
+//        Ui::display.print(PSTR2("V"));
+//        
+//        Ui::display.print(PSTR2(" / ")); 
     #endif
 
     #ifdef REALACC_RX5808_PRO_PLUS_OSD
@@ -78,10 +78,13 @@ void HomeStateHandler::onUpdateDraw() {
     #endif
 
     // Temperature
-    Ui::display.printFloat(Temperature::temperature, 0);
-    Ui::display.print(PSTR2("C")); 
-    
-    Ui::display.print(PSTR2(" / ")); 
+//    Ui::display.printFloat(Temperature::temperature, 0);
+//    Ui::display.print(PSTR2("C")); 
+//    
+//    Ui::display.print(PSTR2(" / ")); 
+
+    Ui::setCursor( 322, 4);             // Temp filler spaces because vbat and temp commented out
+    Ui::display.print(PSTR2("      ")); // Temp filler spaces because vbat and temp commented out
 
     // On Time
     uint8_t hours = millis() / 1000 / 60 / 60;
@@ -359,4 +362,3 @@ void HomeStateHandler::bandScanUpdate() {
     Receiver::setChannel(Channels::getOrderedIndex(orderedChanelIndex));
     
 }
-

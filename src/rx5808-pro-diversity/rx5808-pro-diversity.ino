@@ -153,7 +153,7 @@ void loop() {
     Receiver::update();
     
     #ifdef FENIX_QUADVERSITY  
-        Voltage::update();
+//        Voltage::update();
     #endif
   
     if (Ui::UiRefreshTimer.hasTicked()) {
