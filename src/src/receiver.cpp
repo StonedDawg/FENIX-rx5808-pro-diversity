@@ -146,7 +146,7 @@ namespace Receiver {
 //            rssiDRaw /= RSSI_READS;
 //        }
 
-        if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
+        //if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
           
             rssiA = constrain(
                 map(
@@ -196,7 +196,7 @@ namespace Receiver {
 //                1000
 //            );
           
-        }
+        //}
 
         if (rssiLogTimer.hasTicked()) {
             for (uint8_t i = 0; i < RECEIVER_LAST_DATA_SIZE - 1; i++) {

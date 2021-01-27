@@ -103,11 +103,11 @@ void setup()
     #endif
 
     EEPROM.begin(2048);
-    SPI.begin();
+    //SPI.begin();
     
     EepromSettings.setup();
     setupPins();
-    StateMachine::setup();
+    //StateMachine::setup();
     //Ui::setup(); 
     //TouchPad::setup(); 
 
@@ -115,14 +115,14 @@ void setup()
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
     Receiver::setup(); 
-
+    /**
     if (!EepromSettings.isCalibrated) {
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
         //Ui::tvOn();
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
     }
-
+    */
 
     if (EepromSettings.otaUpdateRequested)
     {
