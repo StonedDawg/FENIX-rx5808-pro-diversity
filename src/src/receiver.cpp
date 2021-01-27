@@ -309,7 +309,7 @@ namespace Receiver {
         if (ReceiverId::B == activeReceiver) {
         antennaBOnTime += (millis() / 1000) - previousSwitchTime;
         }
-        /**
+        
         if (EepromSettings.quadversity) {
             if (ReceiverId::C == activeReceiver) {
                 antennaCOnTime += (millis() / 1000) - previousSwitchTime;
@@ -318,7 +318,7 @@ namespace Receiver {
                 antennaDOnTime += (millis() / 1000) - previousSwitchTime;
             }
         }
-        */  
+        
         previousSwitchTime = millis() / 1000;
     }
 
