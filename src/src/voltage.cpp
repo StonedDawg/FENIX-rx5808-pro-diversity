@@ -4,8 +4,9 @@
 #include "settings_eeprom.h"
 #include "settings.h"
 #include "timer.h"
-#include "ui.h"
-
+#ifdef ENABLE_UI
+    #include "ui.h"
+#endif
 namespace Voltage
 {
 

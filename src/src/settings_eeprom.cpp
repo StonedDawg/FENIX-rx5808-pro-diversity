@@ -4,7 +4,9 @@
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "timer.h"
+#ifdef ENABLE_UI
 #include "ui.h"
+#endif
 
 static Timer saveTimer = Timer(EEPROM_SAVE_TIME);
 static bool isDirty = false;
@@ -14,7 +16,7 @@ struct EepromSettings EepromSettings;
 void EepromSettings::setup() {
     this->load();
 }
-
+#ifdef ENABLE_UI
 void EepromSettings::update() {
     if (isDirty && saveTimer.hasTicked() && !Ui::isTvOn) {
         isDirty = false;
@@ -22,7 +24,15 @@ void EepromSettings::update() {
         this->save();
     }
 }
-
+#else
+void EepromSettings::update() {
+    if (isDirty && saveTimer.hasTicked()) {
+        isDirty = false;
+        saveTimer.reset();
+        this->save();
+    }
+}
+#endif
 void EepromSettings::load() {
     EEPROM.get(0, *this);
     

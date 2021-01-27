@@ -7,8 +7,10 @@
     #include "receiver_spi.h"
 #endif
 #include "channels.h"
-#include "state.h"
-#include "ui.h"
+#ifdef ENABLE_UI
+    #include "state.h"
+    #include "ui.h"
+#endif
 
 #include "timer.h"
 
@@ -73,7 +75,7 @@ namespace Receiver {
         hasRssiUpdated = false;      
     }
     #endif
-    
+
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.diversityMode) {
