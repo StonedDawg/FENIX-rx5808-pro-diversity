@@ -1,14 +1,12 @@
 #include <Arduino.h>
-/**
-#include "settings.h"
 
-#include "receiver_spi.h"
-#include "channels.h"
-#include "state.h"
-#include "ui.h"
-*/
+//#include "settings.h"
 #include "settings_eeprom.h"
 #include "receiver.h"
+//#include "receiver_spi.h"
+//#include "channels.h"
+//#include "state.h"
+//#include "ui.h"
 
 #include "timer.h"
 
@@ -148,7 +146,7 @@ namespace Receiver {
 //            rssiDRaw /= RSSI_READS;
 //        }
 
-        //if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
+        if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
           
             rssiA = constrain(
                 map(
@@ -198,7 +196,7 @@ namespace Receiver {
 //                1000
 //            );
           
-        //}
+        }
 
         if (rssiLogTimer.hasTicked()) {
             for (uint8_t i = 0; i < RECEIVER_LAST_DATA_SIZE - 1; i++) {
@@ -309,7 +307,6 @@ namespace Receiver {
         if (ReceiverId::B == activeReceiver) {
         antennaBOnTime += (millis() / 1000) - previousSwitchTime;
         }
-        
         if (EepromSettings.quadversity) {
             if (ReceiverId::C == activeReceiver) {
                 antennaCOnTime += (millis() / 1000) - previousSwitchTime;
@@ -317,17 +314,14 @@ namespace Receiver {
             if (ReceiverId::D == activeReceiver) {
                 antennaDOnTime += (millis() / 1000) - previousSwitchTime;
             }
-        }
-        
+        }  
         previousSwitchTime = millis() / 1000;
     }
 
     void setup() {
-        /**
         #ifdef DISABLE_AUDIO
             ReceiverSpi::setPowerDownRegister(0b00010000110111110011);
         #endif
-        */
         setChannel(EepromSettings.startChannel);
         setActiveReceiver(ReceiverId::A);
         diversityHysteresisTimer = Timer(EepromSettings.rssiHysteresisPeriod);    
