@@ -40,10 +40,14 @@
 #include "receiver.h"
 #include "receiver_spi.h"
 #include "state.h"
-#include "ui.h"
+//#ifdef ENABLE_UI
+    #include "ui.h"
+//#endif
 #include "voltage.h"
 #include "temperature.h"
-#include "touchpad.h"
+//#ifdef ENABLE_TOUCHPAD 
+        #include "touchpad.h"
+//#endif
 #include "receiver_spi.h"
 #include <esp_now.h>
 #include <WiFi.h>
@@ -64,6 +68,34 @@ uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 
                               
 bool updatingOTA = false;
 uint32_t previousLEDTime = 0;
+void setupPins() {
+
+    // Rx and Tx set as input so that they are high impedance when conencted to goggles.
+    pinMode(1, INPUT);
+    pinMode(3, INPUT);
+    
+    pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
+    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
+    
+    pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
+    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
+    
+    pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
+    digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
+
+    pinMode(PIN_RX_SWITCH, OUTPUT);
+    digitalWrite(PIN_RX_SWITCH, LOW);
+
+    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
+
+    pinMode(PIN_RSSI_A, INPUT);
+    pinMode(PIN_RSSI_B, INPUT);
+//    pinMode(PIN_RSSI_C, INPUT);
+//    pinMode(PIN_RSSI_D, INPUT);
+
+    analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
+
+}
 
 void setup()
 {
@@ -78,9 +110,12 @@ void setup()
     EepromSettings.setup();
     setupPins();
     StateMachine::setup();
-    Ui::setup(); 
-    TouchPad::setup(); 
-
+    #ifdef ENABLE_UI
+        Ui::setup();
+    #endif
+    #ifdef ENABLE_TOUCHPAD 
+        TouchPad::setup(); 
+    #endif
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
@@ -88,7 +123,9 @@ void setup()
 
     if (!EepromSettings.isCalibrated) {
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
-        Ui::tvOn();
+        #ifdef ENABLE_UI
+            Ui::tvOn();
+        #endif
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
     }
@@ -128,34 +165,6 @@ void setup()
     }  
 }
 
-void setupPins() {
-
-    // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(1, INPUT);
-    pinMode(3, INPUT);
-    
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
-    
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
-    
-    pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
-    digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
-
-    pinMode(PIN_RX_SWITCH, OUTPUT);
-    digitalWrite(PIN_RX_SWITCH, LOW);
-
-    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
-
-    pinMode(PIN_RSSI_A, INPUT);
-    pinMode(PIN_RSSI_B, INPUT);
-//    pinMode(PIN_RSSI_C, INPUT);
-//    pinMode(PIN_RSSI_D, INPUT);
-
-    analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
-
-}
 
 void loop() {
 
@@ -171,8 +180,9 @@ void loop() {
     {
         Receiver::update();
     
-        TouchPad::update();
-
+        #ifdef ENABLE_TOUCHPAD 
+            TouchPad::update();
+        #endif
         if (Ui::isTvOn) {
 
         #ifdef USE_VOLTAGE_MONITORING  
@@ -186,10 +196,11 @@ void loop() {
     
             EepromSettings.update();
         }
-        
-        if (TouchPad::touchData.isActive) {
-            Ui::UiTimeOut.reset();
+        #ifdef ENABLE_TOUCHPAD && ENABLE_UI
+            if (TouchPad::touchData.isActive) {
+                Ui::UiTimeOut.reset();
         }
+        #endif
         
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
@@ -198,16 +209,17 @@ void loop() {
             Ui::tvOff();  
             EepromSettings.update();
         }
-        
+        #ifdef ENABLE_TOUCHPAD && ENABLE_UI
         if (!Ui::isTvOn &&
-            TouchPad::touchData.buttonPrimary)
-        {
+            TouchPad::touchData.buttonPrimary){
             TouchPad::touchData.buttonPrimary = false;
             Ui::tvOn();
         }
-    
-        TouchPad::clearTouchData();  
+        #endif
 
+        #ifdef ENABLE_TOUCHPAD 
+            TouchPad::clearTouchData();  
+        #endif
         #ifdef SPEED_TEST
             n++;
             uint32_t nowTime = millis();
