@@ -1,12 +1,13 @@
 #include <Arduino.h>
 /**
 #include "settings.h"
-#include "settings_eeprom.h"
+
 #include "receiver_spi.h"
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
 */
+#include "settings_eeprom.h"
 #include "receiver.h"
 
 #include "timer.h"
@@ -308,6 +309,7 @@ namespace Receiver {
         if (ReceiverId::B == activeReceiver) {
         antennaBOnTime += (millis() / 1000) - previousSwitchTime;
         }
+        /**
         if (EepromSettings.quadversity) {
             if (ReceiverId::C == activeReceiver) {
                 antennaCOnTime += (millis() / 1000) - previousSwitchTime;
@@ -315,14 +317,17 @@ namespace Receiver {
             if (ReceiverId::D == activeReceiver) {
                 antennaDOnTime += (millis() / 1000) - previousSwitchTime;
             }
-        }  
+        }
+        */  
         previousSwitchTime = millis() / 1000;
     }
 
     void setup() {
+        /**
         #ifdef DISABLE_AUDIO
             ReceiverSpi::setPowerDownRegister(0b00010000110111110011);
         #endif
+        */
         setChannel(EepromSettings.startChannel);
         setActiveReceiver(ReceiverId::A);
         diversityHysteresisTimer = Timer(EepromSettings.rssiHysteresisPeriod);    
