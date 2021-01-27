@@ -1,12 +1,13 @@
 #include <Arduino.h>
-
+/**
 #include "settings.h"
 #include "settings_eeprom.h"
-#include "receiver.h"
 #include "receiver_spi.h"
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
+*/
+#include "receiver.h"
 
 #include "timer.h"
 
@@ -52,7 +53,7 @@ namespace Receiver {
 
     void setChannel(uint8_t channel)
     {
-        ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
+        //ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
 
         rssiStableTimer.reset();
         activeChannel = channel;
@@ -62,7 +63,7 @@ namespace Receiver {
     
     void setChannelByFreq(uint16_t freq)
     {      
-        ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterBFreq(freq));
+        //ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterBFreq(freq));
 
         rssiStableTimer.reset();
 //        activeChannel = channel;
@@ -146,7 +147,7 @@ namespace Receiver {
 //            rssiDRaw /= RSSI_READS;
 //        }
 
-        if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
+        //if (StateMachine::currentState != StateMachine::State::SETTINGS_RSSI) {
           
             rssiA = constrain(
                 map(
@@ -196,7 +197,7 @@ namespace Receiver {
 //                1000
 //            );
           
-        }
+        //}
 
         if (rssiLogTimer.hasTicked()) {
             for (uint8_t i = 0; i < RECEIVER_LAST_DATA_SIZE - 1; i++) {
