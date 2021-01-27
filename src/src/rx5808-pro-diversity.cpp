@@ -65,6 +65,36 @@ uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 
 bool updatingOTA = false;
 uint32_t previousLEDTime = 0;
 
+
+void setupPins() {
+
+    // Rx and Tx set as input so that they are high impedance when conencted to goggles.
+    pinMode(1, INPUT);
+    pinMode(3, INPUT);
+    
+    pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
+    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
+    
+    pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
+    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
+    
+    pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
+    digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
+
+    pinMode(PIN_RX_SWITCH, OUTPUT);
+    digitalWrite(PIN_RX_SWITCH, LOW);
+
+    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
+
+    pinMode(PIN_RSSI_A, INPUT);
+    pinMode(PIN_RSSI_B, INPUT);
+//    pinMode(PIN_RSSI_C, INPUT);
+//    pinMode(PIN_RSSI_D, INPUT);
+
+    analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
+
+}
+
 void setup()
 {
 
@@ -128,34 +158,6 @@ void setup()
     }  
 }
 
-void setupPins() {
-
-    // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(1, INPUT);
-    pinMode(3, INPUT);
-    
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
-    
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
-    
-    pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
-    digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
-
-    pinMode(PIN_RX_SWITCH, OUTPUT);
-    digitalWrite(PIN_RX_SWITCH, LOW);
-
-    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
-
-    pinMode(PIN_RSSI_A, INPUT);
-    pinMode(PIN_RSSI_B, INPUT);
-//    pinMode(PIN_RSSI_C, INPUT);
-//    pinMode(PIN_RSSI_D, INPUT);
-
-    analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
-
-}
 
 void loop() {
 
