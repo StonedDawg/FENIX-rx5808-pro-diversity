@@ -32,9 +32,9 @@
   SOFTWARE.
 */
 
-//#include <EEPROM.h>
+#include <EEPROM.h>
 //#include "settings.h"
-//#include "settings_eeprom.h"
+#include "settings_eeprom.h"
 //#include "state_home.h"
 //#include "channels.h"
 #include "receiver.h"
@@ -101,30 +101,29 @@ void setup()
     #ifdef SPEED_TEST
         Serial.begin(115200);
     #endif
-/**
+
     EEPROM.begin(2048);
     SPI.begin();
     
     EepromSettings.setup();
-    StateMachine::setup();
-    Ui::setup(); 
-    TouchPad::setup(); 
-*/
     setupPins();
-    
+    StateMachine::setup();
+    //Ui::setup(); 
+    //TouchPad::setup(); 
+
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
     Receiver::setup(); 
-    /**
+
     if (!EepromSettings.isCalibrated) {
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
-        Ui::tvOn();
+        //Ui::tvOn();
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
     }
-    */
-   /**
+
+
     if (EepromSettings.otaUpdateRequested)
     {
         BeginWebUpdate();
@@ -132,11 +131,9 @@ void setup()
         EepromSettings.save();
         updatingOTA = true;
     } else
-    */
     /* 
         esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
     */
-   /**
     {
         WiFi.mode(WIFI_STA);
 
@@ -158,8 +155,7 @@ void setup()
                 return;
             }
         }
-    }
-    */  
+    }  
 }
 
 
@@ -176,9 +172,9 @@ void loop() {
     } else
     {
         Receiver::update();
+    
+        //TouchPad::update();
         /**
-        TouchPad::update();
-
         if (Ui::isTvOn) {
 
         #ifdef USE_VOLTAGE_MONITORING  
@@ -192,11 +188,13 @@ void loop() {
     
             EepromSettings.update();
         }
-        
+        */
+        /**
         if (TouchPad::touchData.isActive) {
             Ui::UiTimeOut.reset();
         }
-        
+        */
+       /**
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
             StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
@@ -211,8 +209,8 @@ void loop() {
             TouchPad::touchData.buttonPrimary = false;
             Ui::tvOn();
         }
-    
-        TouchPad::clearTouchData();  
+        */
+        //TouchPad::clearTouchData();  
 
         #ifdef SPEED_TEST
             n++;
@@ -224,7 +222,6 @@ void loop() {
                 n = 0;
             }
         #endif
-        */
     }
 }
 
