@@ -31,6 +31,8 @@
   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   SOFTWARE.
 */
+//#define ENABLE_UI
+//#define ENABLE_TOUCHPAD
 
 #include <EEPROM.h>
 #include "settings.h"
@@ -38,21 +40,25 @@
 #include "state_home.h"
 #include "channels.h"
 #include "receiver.h"
-#include "receiver_spi.h"
-#include "state.h"
-//#ifdef ENABLE_UI
-    #include "ui.h"
-//#endif
-#include "voltage.h"
-#include "temperature.h"
-//#ifdef ENABLE_TOUCHPAD 
-        #include "touchpad.h"
-//#endif
-#include "receiver_spi.h"
+
 #include <esp_now.h>
 #include <WiFi.h>
 #include "ExpressLRS_Protocol.h"
 #include "WebUpdater.h"
+
+#include "voltage.h"
+#include "temperature.h"
+
+#ifdef ENABLE_RX_SPI
+    #include "receiver_spi.h"
+#endif
+#include "state.h"
+#ifdef ENABLE_UI
+    #include "ui.h"
+#endif
+#ifdef ENABLE_TOUCHPAD 
+        #include "touchpad.h"
+#endif
 
 #ifdef SPEED_TEST
     uint32_t n = 0; 
@@ -105,8 +111,9 @@ void setup()
     #endif
 
     EEPROM.begin(2048);
-    SPI.begin();
-    
+    #ifdef ENABLE_RX_SPI
+        SPI.begin();
+    #endif
     EepromSettings.setup();
     setupPins();
     StateMachine::setup();
@@ -183,6 +190,7 @@ void loop() {
         #ifdef ENABLE_TOUCHPAD 
             TouchPad::update();
         #endif
+        #ifdef ENABLE_UI
         if (Ui::isTvOn) {
 
         #ifdef USE_VOLTAGE_MONITORING  
@@ -196,12 +204,14 @@ void loop() {
     
             EepromSettings.update();
         }
+        #endif
+
         #ifdef ENABLE_TOUCHPAD && ENABLE_UI
             if (TouchPad::touchData.isActive) {
                 Ui::UiTimeOut.reset();
         }
         #endif
-        
+        #ifdef ENABLE_UI
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
             StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
@@ -209,6 +219,7 @@ void loop() {
             Ui::tvOff();  
             EepromSettings.update();
         }
+        #endif
         #ifdef ENABLE_TOUCHPAD && ENABLE_UI
         if (!Ui::isTvOn &&
             TouchPad::touchData.buttonPrimary){

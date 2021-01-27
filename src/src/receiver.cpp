@@ -3,7 +3,9 @@
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "receiver.h"
-#include "receiver_spi.h"
+#ifdef ENABLE_RX_SPI
+    #include "receiver_spi.h"
+#endif
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
@@ -50,7 +52,8 @@ namespace Receiver {
 
     bool hasRssiUpdated = false;
 
-    void setChannel(uint8_t channel)
+    #ifdef ENABLE_RX_SPI
+        void setChannel(uint8_t channel)
     {
         ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
 
@@ -69,7 +72,8 @@ namespace Receiver {
 
         hasRssiUpdated = false;      
     }
-
+    #endif
+    
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.diversityMode) {
