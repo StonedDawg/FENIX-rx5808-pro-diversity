@@ -20,8 +20,13 @@
 
 #define MAX(a, b) (a > b ? a : b)
 
-#define STATE_BUFFER_SIZE MAX(sizeof(HomeStateHandler),MAX(sizeof(SettingsStateHandler),MAX(sizeof(SettingsInternalStateHandler),MAX(sizeof(SettingsRssiStateHandler)))))
-;
+#define STATE_BUFFER_SIZE \
+    MAX(sizeof(HomeStateHandler), \
+    MAX(sizeof(SettingsStateHandler), \
+    MAX(sizeof(SettingsInternalStateHandler), \
+    MAX(sizeof(SettingsRssiStateHandler), \   
+    sizeof(MenuStateHandler) \   
+    ))));
 
 namespace StateMachine {
   
