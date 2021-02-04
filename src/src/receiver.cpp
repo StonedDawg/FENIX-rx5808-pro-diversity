@@ -70,17 +70,26 @@ namespace Receiver {
         hasRssiUpdated = false;      
     }
 
+    void receiverSelect(uint8_t sel){
+        
+                digitalWrite(PIN_RX_SWITCH1, !sel);
+                
+                digitalWrite(PIN_RX_SWITCH2, sel);
+                digitalWrite(VRX_LED0,!sel);
+    }
+
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.diversityMode) {
             case Receiver::DiversityMode::ANTENNA_A:
                 receiver = ReceiverId::A;
-                digitalWrite(PIN_RX_SWITCH, LOW);
+                receiverSelect(0);
+                
                 break;
 
             case Receiver::DiversityMode::ANTENNA_B:
                 receiver = ReceiverId::B;
-                digitalWrite(PIN_RX_SWITCH, HIGH);
+                receiverSelect(1);
                 break;
 
             case Receiver::DiversityMode::ANTENNA_C:
@@ -93,10 +102,10 @@ namespace Receiver {
 
             case Receiver::DiversityMode::DIVERSITY:
                 if (receiver == ReceiverId::A) {
-                    digitalWrite(PIN_RX_SWITCH, LOW);
+                    receiverSelect(0);
                 }
                 if (receiver == ReceiverId::B){
-                    digitalWrite(PIN_RX_SWITCH, HIGH);
+                    receiverSelect(1);
                   
                 }   
                 break;

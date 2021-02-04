@@ -22,13 +22,13 @@ namespace Receiver {
         D
     };
 
-    enum class DiversityMode : uint8_t {
-        ANTENNA_A,
-        ANTENNA_B,
-        ANTENNA_C,
-        ANTENNA_D,
-        DIVERSITY,
-        QUADVERSITY
+    enum DiversityMode : uint8_t {
+        DIVERSITY = 0,
+        ANTENNA_A = 1,
+        ANTENNA_B = 2,
+        ANTENNA_C = 3,
+        ANTENNA_D = 4,
+        QUADVERSITY = 5
     };
     
     extern ReceiverId activeReceiver;

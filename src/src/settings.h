@@ -51,8 +51,13 @@ SOFTWARE.
 #define PIN_SPI_SLAVE_SELECT_RX_A       32
 #define PIN_SPI_SLAVE_SELECT_RX_B       33
 
-#define PIN_RX_SWITCH                   27
+#define PIN_RX_SWITCH1                  27
+#define PIN_RX_SWITCH2                  28
 
+#define PIN_BUTTON                      29
+#define VRX_LED0                        31
+
+#define VRX_LED1                        30
 #define PIN_RSSI_A                      36
 #define PIN_RSSI_B                      39
 //#define PIN_RSSI_C                      39 // dummy pin

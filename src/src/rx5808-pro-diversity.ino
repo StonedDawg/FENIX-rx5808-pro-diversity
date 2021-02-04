@@ -55,6 +55,34 @@
     uint32_t previousTime = millis();
 #endif
 
+#define DELAY_50_HZ (1000000 / 50)
+#define DELAY_33_HZ (1000000 / 33)
+#define DELAY_10_HZ (1000000 / 10)
+#define DELAY_5_HZ (1000000 / 5)
+
+#define BUTTON_DEBOUNCE_DELAY 300
+
+
+#define VRX_LED1_TOGGLE digitalWrite(VRX_LED1,!digitalRead(VRX_LED1))
+#define  VRX_LED1_OFF   digitalWrite(VRX_LED1,LOW);
+#define  VRX_LED1_ON    digitalWrite(VRX_LED1,HIGH);
+
+typedef struct vrxDock {
+    uint8_t mode;
+} vrxDock;
+
+typedef struct vrxDockBtn {
+    uint32_t lastDebounceTime;
+    bool lastReading;
+    bool pressed;
+    uint32_t changedTime;
+
+} vrxDockBtn;
+
+vrxDockBtn vrxBtn;
+vrxDock vrxMdl;
+
+
 /* 
     esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
     broadcastAddress is the mac of your receiving esp8266
@@ -144,8 +172,10 @@ void setupPins() {
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
     pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
     */
-    pinMode(PIN_RX_SWITCH, OUTPUT);
-    digitalWrite(PIN_RX_SWITCH, LOW);
+    pinMode(PIN_RX_SWITCH1, OUTPUT);
+    pinMode(PIN_RX_SWITCH1, OUTPUT);
+    digitalWrite(PIN_RX_SWITCH1, HIGH);
+    digitalWrite(PIN_RX_SWITCH1, LOW);
 
     
     pinMode(PIN_RSSI_A, INPUT);
@@ -164,7 +194,7 @@ void loop() {
         HandleWebUpdate();
         if (millis() > previousLEDTime+100)
         {
-            digitalWrite(PIN_RX_SWITCH, !digitalRead(PIN_RX_SWITCH));
+            //digitalWrite(PIN_RX_SWITCH1, !digitalRead(PIN_RX_SWITCH1));
             previousLEDTime = millis();
         }
     } else
@@ -265,5 +295,88 @@ void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload
         uint8_t tempBroadcastAddress[6];
         memcpy(tempBroadcastAddress, broadcastAddress + (6 * i), 6);
         esp_now_send(tempBroadcastAddress, (uint8_t *) &nowDataOutput, sizeof(nowDataOutput));
+    }
+}
+
+
+void incrementVrxMode(void){
+    if(EepromSettings.diversityMode < 2){
+        EepromSettings.diversityMode++;
+        
+    } else {
+        EepromSettings.diversityMode = 0;
+    }
+}
+
+void decrementVrxMode(void){
+    if(EepromSettings.diversityMode>0){
+        EepromSettings.diversityMode--;
+    } else {
+        EepromSettings.diversityMode = 2;
+    }
+}
+void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
+{
+     bool reading = !digitalRead(PIN_BUTTON);
+        /**
+         if(reading){
+            VRX_LED0_ON;
+        } else {
+            VRX_LED0_OFF;
+        }
+        */
+     
+       if (reading != vrxB->lastReading) {
+            vrxB->lastDebounceTime = currentTimeUs;
+        }
+
+        vrxB->lastReading = reading;
+
+        if (
+            reading != vrxB->pressed &&
+            (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
+        ) {
+            vrxB->pressed = reading;
+
+            uint32_t prevChangeTime = vrxB->changedTime;
+            vrxB->changedTime = currentTimeUs;
+
+            if (!vrxB->pressed) {
+                uint32_t duration = vrxB->changedTime - prevChangeTime;
+
+                if (duration < 1500){
+                    incrementVrxMode();
+                }
+                else if (duration < 3000){
+                    
+                    decrementVrxMode();
+                    //VRX_LED0_TOGGLE;
+                }
+            }
+        }
+        
+        if (vrxB->pressed) {
+            uint32_t duration = currentTimeUs - vrxB->changedTime;
+            
+            if (duration >= 3000){
+            VRX_LED1_ON;
+            }
+        }
+        
+            
+}
+void updateVrxLed(uint32_t currentTimeUs)
+{
+    static uint32_t vrxLedTime = 0;
+    if(EepromSettings.diversityMode == 0){
+        if((int32_t)(currentTimeUs - vrxLedTime) < 0){
+            return;
+        }
+        vrxLedTime = currentTimeUs + DELAY_5_HZ;
+        VRX_LED1_TOGGLE;
+    } else if(EepromSettings.diversityMode == 1){
+        VRX_LED1_OFF;
+    } else {
+        VRX_LED1_ON;
     }
 }
