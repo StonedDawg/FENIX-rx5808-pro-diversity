@@ -22,7 +22,7 @@ namespace Receiver {
         D
     };
 
-    enum uint8_t {
+    enum{
         DIVERSITY = 0,
         ANTENNA_A = 1,
         ANTENNA_B = 2,

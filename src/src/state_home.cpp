@@ -63,22 +63,22 @@ void HomeStateHandler::onUpdateDraw() {
     Ui::display.setTextColor(100);
     Ui::display.setCursor( 8, 0);
     Ui::display.print("Mode: ");    
-    if (EepromSettings.diversityMode == Receiver::diversityMode::ANTENNA_A) {
+    if (EepromSettings.diversityMode == ANTENNA_A) {
         Ui::display.print("Antenna A");
     }   
-    if (EepromSettings.diversityMode == Receiver::diversityMode::ANTENNA_B) {
+    if (EepromSettings.diversityMode == ANTENNA_B) {
         Ui::display.print("Antenna B");
     }   
-    if (EepromSettings.diversityMode == Receiver::diversityMode::ANTENNA_C) {
+    if (EepromSettings.diversityMode == ANTENNA_C) {
         Ui::display.print("Antenna C");
     }   
-    if (EepromSettings.diversityMode == Receiver::diversityMode::ANTENNA_D) {
+    if (EepromSettings.diversityMode == ANTENNA_D) {
         Ui::display.print("Antenna D");
     }   
-    if (EepromSettings.diversityMode == Receiver::diversityMode::DIVERSITY) {
+    if (EepromSettings.diversityMode == DIVERSITY) {
         Ui::display.print("Diversity");
     }
-    if (EepromSettings.diversityMode == Receiver::diversityMode::QUADVERSITY) {
+    if (EepromSettings.diversityMode == QUADVERSITY) {
         Ui::display.print("Quadversity");
     }
 

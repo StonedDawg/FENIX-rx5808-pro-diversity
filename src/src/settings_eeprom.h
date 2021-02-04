@@ -8,14 +8,21 @@
 #include "state.h"
 #include "receiver.h"
 
-
+enum{
+        DIVERSITY = 0,
+        ANTENNA_A = 1,
+        ANTENNA_B = 2,
+        ANTENNA_C = 3,
+        ANTENNA_D = 4,
+        QUADVERSITY = 5
+    };
 struct EepromSettings {
     uint8_t versionNumber;
     
     uint8_t isCalibrated;
     uint8_t otaUpdateRequested;
 
-    Receiver::diversityMode diversityMode;
+    uint8_t diversityMode = 0;
     
     uint8_t startChannel;
     int lastKnownMenuItem;
@@ -67,7 +74,7 @@ const struct {
     uint8_t isCalibrated = false;
     uint8_t otaUpdateRequested = false;    
 
-    uint8_t diversityMode = Receiver::diversityMode::DIVERSITY;
+    uint8_t diversityMode = 0;
 
     uint8_t startChannel = 27;
     int lastKnownMenuItem = 0;
