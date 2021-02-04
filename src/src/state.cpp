@@ -24,9 +24,9 @@
     MAX(sizeof(HomeStateHandler), \
     MAX(sizeof(SettingsStateHandler), \
     MAX(sizeof(SettingsInternalStateHandler), \
-    MAX(sizeof(SettingsRssiStateHandler), \   
-    sizeof(MenuStateHandler) \   
-    ))));
+    sizeof(SettingsRssiStateHandler) \   
+    )))
+    ;
 
 namespace StateMachine {
   
