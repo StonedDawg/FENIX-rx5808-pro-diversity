@@ -3,7 +3,7 @@
 #include "state_expresslrs.h"
 #include "ui.h"
 #include "temperature.h"
-#include "touchpad.h"
+//#include "touchpad.h"
 #include "ExpressLRS_Protocol.h"
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
@@ -23,13 +23,13 @@ void StateMachine::ExLRSStateHandler::onInitialDraw()
 
 void StateMachine::ExLRSStateHandler::onUpdateDraw()
 {
-
+/**
     if (TouchPad::touchData.buttonPrimary)
     {
         TouchPad::touchData.buttonPrimary = false;
         this->doTapAction();
     }
-
+*/
     Ui::display.setCursor(205, 0);
 
     // Temperature // Doesnt currently work within ESP32 Arduino.
@@ -78,6 +78,7 @@ void StateMachine::ExLRSStateHandler::onUpdateDraw()
     Ui::display.print("TLM:             On    Off");
 
     // Draw Mode box
+    /**
     if (
         TouchPad::touchData.cursorY > 16 && TouchPad::touchData.cursorY < 31)
     {
@@ -97,6 +98,7 @@ void StateMachine::ExLRSStateHandler::onUpdateDraw()
             Ui::display.rect(20 + 30 * 8 - 4, 16, 31, 15, 100);
         }
     }
+    
     // Draw RF Power box
     if (
         TouchPad::touchData.cursorY > 36 && TouchPad::touchData.cursorY < 51)
@@ -132,10 +134,12 @@ void StateMachine::ExLRSStateHandler::onUpdateDraw()
             Ui::display.rect(20 + 23 * 8 - 4, 56, 31, 15, 100);
         }
     }
+    */
 }
 
 void StateMachine::ExLRSStateHandler::doTapAction()
 {
+    /**
     if ( // Menu
         TouchPad::touchData.cursorX > 314 && TouchPad::touchData.cursorY < 8)
     {
@@ -232,4 +236,5 @@ void StateMachine::ExLRSStateHandler::doTapAction()
             sendToExLRS(FUNC_Ex, sizeof(payload), (uint8_t *) &payload);
         }
     }
+    */
 }

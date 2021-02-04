@@ -3,7 +3,7 @@
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "receiver.h"
-#include "receiver_spi.h"
+//#include "receiver_spi.h"
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
@@ -52,7 +52,7 @@ namespace Receiver {
 
     void setChannel(uint8_t channel)
     {
-        ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
+        ////ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
 
         rssiStableTimer.reset();
         activeChannel = channel;
@@ -62,7 +62,7 @@ namespace Receiver {
     
     void setChannelByFreq(uint16_t freq)
     {      
-        ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterBFreq(freq));
+        ////ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterBFreq(freq));
 
         rssiStableTimer.reset();
 //        activeChannel = channel;
@@ -320,7 +320,7 @@ namespace Receiver {
 
     void setup() {
         #ifdef DISABLE_AUDIO
-            ReceiverSpi::setPowerDownRegister(0b00010000110111110011);
+            //ReceiverSpi::setPowerDownRegister(0b00010000110111110011);
         #endif
         setChannel(EepromSettings.startChannel);
         setActiveReceiver(ReceiverId::A);

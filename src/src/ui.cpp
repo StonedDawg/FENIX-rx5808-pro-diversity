@@ -3,9 +3,9 @@
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "ui.h"
-#include "receiver_spi.h"
+//#include "receiver_spi.h"
 #include "receiver.h"
-#include "touchpad.h"
+//#include "touchpad.h"
 
 namespace Ui {
   
@@ -55,7 +55,7 @@ namespace Ui {
 
     void tvOn() {
 
-        ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
+        //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
         
         composite.startOutput();
         
@@ -64,7 +64,7 @@ namespace Ui {
 
     void tvOff() { 
 
-        ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
+        //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
 
         Receiver::setChannel(Receiver::activeChannel);
         
@@ -79,12 +79,14 @@ namespace Ui {
         for(int py = 0; py < Cursor::yres; py++) {
             for(int px = 0; px < Cursor::xres; px++) {
                 int pixelValue = Cursor::pixels[i++];
+                /**
                 if (pixelValue == 255) {
                     display.dot(px + TouchPad::touchData.cursorX, py + TouchPad::touchData.cursorY, 100);
                 }
                 if (pixelValue == 1) {
                     display.dot(px + TouchPad::touchData.cursorX, py + TouchPad::touchData.cursorY, 0);
                 }
+                */
             }
         }
 

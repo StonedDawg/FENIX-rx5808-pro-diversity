@@ -10,7 +10,11 @@
 
 #include "ui.h"
 
-#include "touchpad.h"
+//#include "touchpad.h"
+
+#define TAPTIMER_DELAY 10000
+int32_t tapTimer = 0;
+int32_t run_once = 0;
     
 void StateMachine::SettingsRssiStateHandler::onEnter() {
     internalState = InternalState::WAIT_FOR_LOW;
@@ -20,9 +24,20 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     onUpdateDraw();
     
-    if (TouchPad::touchData.buttonPrimary && internalState!=InternalState::SCANNING_LOW) {
-      TouchPad::touchData.buttonPrimary = false;
-      doTapAction();
+    if (tapTimer==0 && internalState==InternalState::WAIT_FOR_LOW) {
+        tapTimer = millis();
+    }else if(millis() - tapTimer > TAPTIMER_DELAY && internalState==InternalState::WAIT_FOR_LOW 
+    && run_once == 0){
+      run_once = 1;
+      doTapAction();   
+    }
+
+    if (tapTimer==0 && internalState==InternalState::DONE) {
+        tapTimer = millis();
+    }else if(millis() - tapTimer > TAPTIMER_DELAY && internalState==InternalState::DONE 
+    && run_once == 0){
+      run_once = 1;
+      doTapAction();   
     }
   
     if (!Receiver::isRssiStable() || !Receiver::hasRssiUpdated)
@@ -35,7 +50,9 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     switch (internalState) {
         case InternalState::SCANNING_LOW:
+        
             if ( Channels::getFrequency(Receiver::activeChannel) >= 5658) { // Only use min max above R1 to stay within RX5808 freq range
+                /**
                 if (Receiver::rssiARaw < EepromSettings.rssiAMin)
                     EepromSettings.rssiAMin = Receiver::rssiARaw;
     
@@ -60,6 +77,7 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
                     if (Receiver::rssiDRaw > EepromSettings.rssiDMax)
                         EepromSettings.rssiDMax = Receiver::rssiDRaw;
                 }
+                */
             }
         break;
     }
@@ -84,10 +102,13 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
             internalState = InternalState::DONE;
         }
     }
+
 }
 
 void StateMachine::SettingsRssiStateHandler::doTapAction() {
-
+        if(run_once == 1){
+            run_once = 0;
+        }
     switch (internalState) {
         case InternalState::WAIT_FOR_LOW:
             internalState = InternalState::SCANNING_LOW;
@@ -119,6 +140,7 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             EepromSettings.markDirty();
 
             StateMachine::switchState(StateMachine::State::HOME);
+            internalState = InternalState::IDLE;
             
         break;
     }

@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "state_menu.h"
 #include "ui.h"
-#include "touchpad.h"
+//#include "touchpad.h"
 #include "CompositeGraphics.h"
 #include "settings_eeprom.h"
 

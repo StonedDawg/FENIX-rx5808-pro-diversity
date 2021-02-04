@@ -38,13 +38,13 @@
 #include "state_home.h"
 #include "channels.h"
 #include "receiver.h"
-#include "receiver_spi.h"
+//#include "receiver_spi.h"
 #include "state.h"
 #include "ui.h"
 #include "voltage.h"
 #include "temperature.h"
-#include "touchpad.h"
-#include "receiver_spi.h"
+//#include "touchpad.h"
+//#include "receiver_spi.h"
 #include <esp_now.h>
 #include <WiFi.h>
 #include "ExpressLRS_Protocol.h"
@@ -73,13 +73,13 @@ void setup()
     #endif
 
     EEPROM.begin(2048);
-    SPI.begin();
+    //SPI.begin();
     
     EepromSettings.setup();
     setupPins();
     StateMachine::setup();
     Ui::setup(); 
-    TouchPad::setup(); 
+    //TouchPad::setup(); 
 
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
@@ -139,15 +139,15 @@ void setupPins() {
     
     pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
     digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
-    
+    /**
     pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
-
+    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
+    */
     pinMode(PIN_RX_SWITCH, OUTPUT);
     digitalWrite(PIN_RX_SWITCH, LOW);
 
-    pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
-
+    
     pinMode(PIN_RSSI_A, INPUT);
     pinMode(PIN_RSSI_B, INPUT);
 //    pinMode(PIN_RSSI_C, INPUT);
@@ -171,7 +171,7 @@ void loop() {
     {
         Receiver::update();
     
-        TouchPad::update();
+        //TouchPad::update();
 
         if (Ui::isTvOn) {
 
@@ -186,11 +186,11 @@ void loop() {
     
             EepromSettings.update();
         }
-        
+        /**
         if (TouchPad::touchData.isActive) {
             Ui::UiTimeOut.reset();
         }
-        
+        */
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
             StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
@@ -198,15 +198,16 @@ void loop() {
             Ui::tvOff();  
             EepromSettings.update();
         }
-        
+        /**
         if (!Ui::isTvOn &&
             TouchPad::touchData.buttonPrimary)
         {
             TouchPad::touchData.buttonPrimary = false;
             Ui::tvOn();
         }
-    
+        
         TouchPad::clearTouchData();  
+        */
 
         #ifdef SPEED_TEST
             n++;

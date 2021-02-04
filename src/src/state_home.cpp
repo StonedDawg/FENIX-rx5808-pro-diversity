@@ -6,13 +6,13 @@
 #include "state_home.h"
 
 #include "receiver.h"
-#include "receiver_spi.h"
+//#include "receiver_spi.h"
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
 #include "temperature.h"
 #include "voltage.h"
-#include "touchpad.h"
+//#include "touchpad.h"
 #include "ExpressLRS_Protocol.h"
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
@@ -42,12 +42,12 @@ void HomeStateHandler::onInitialDraw() {
 }
 
 void HomeStateHandler::onUpdateDraw() {
-
+    /**
     if (TouchPad::touchData.buttonPrimary) {
       TouchPad::touchData.buttonPrimary = false;
       this->doTapAction();
     }
-    
+    */
     if (isInBandScanRegion()) {
         bandScanUpdate();
         wasInBandScanRegion = true;
@@ -241,7 +241,7 @@ void HomeStateHandler::onUpdateDraw() {
     for (int i = 0; i < 7; i++) {
         Ui::display.line(18+CHANNELS_SIZE_DIVIDER*markerX, 214, 18+CHANNELS_SIZE_DIVIDER*markerX+(-3+i), 219, 100);
     }
-
+    /**
     if (HomeStateHandler::isInBandScanRegion() && TouchPad::touchData.cursorX > 18 && TouchPad::touchData.cursorX < (324-18)) {
         Ui::display.fillRect( TouchPad::touchData.cursorX - 33, TouchPad::touchData.cursorY - 17, 33, 17, 10);
         Ui::display.setCursor( TouchPad::touchData.cursorX - 32, TouchPad::touchData.cursorY - 16 );
@@ -259,11 +259,11 @@ void HomeStateHandler::onUpdateDraw() {
                                             )
                           );
     }
-    
+    */
 }
 
 void HomeStateHandler::doTapAction() {
-
+    /**
   if ( // Up band
       TouchPad::touchData.cursorX >= 0  && TouchPad::touchData.cursorX < 61 &&
       TouchPad::touchData.cursorY > 8 && TouchPad::touchData.cursorY < 54
@@ -333,11 +333,11 @@ void HomeStateHandler::doTapAction() {
               {
                   case Receiver::DiversityMode::ANTENNA_A:
                       EepromSettings.diversityMode = Receiver::DiversityMode::ANTENNA_B;
-//                      ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
+//                      //ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
                       break;
                   case Receiver::DiversityMode::ANTENNA_B:
                       EepromSettings.diversityMode = Receiver::DiversityMode::DIVERSITY;
-//                      ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
+//                      //ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
                       break;
                   case Receiver::DiversityMode::DIVERSITY:
                       EepromSettings.diversityMode = Receiver::DiversityMode::ANTENNA_A;
@@ -361,6 +361,7 @@ void HomeStateHandler::doTapAction() {
           EepromSettings.startChannel = displayActiveChannel;
           EepromSettings.markDirty();
         }
+    */    
 }
 
 void HomeStateHandler::setChannel(int channelIncrement) {
@@ -420,11 +421,13 @@ void HomeStateHandler::centreFrequency() {
 }
 
 bool HomeStateHandler::isInBandScanRegion() {
+    /**
     if (TouchPad::touchData.cursorY > 130 ) {
         return true;
     } else {
         return false;
     }
+    */
 }
 
 void HomeStateHandler::bandScanUpdate() {

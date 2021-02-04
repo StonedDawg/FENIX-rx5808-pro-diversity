@@ -58,8 +58,8 @@ SOFTWARE.
 //#define PIN_RSSI_C                      39 // dummy pin
 //#define PIN_RSSI_D                      39 // dummy pin
 
-#define PIN_TOUCHPAD_SLAVE_SELECT       5
-#define PIN_TOUCHPAD_DATA_READY         34
+//#define PIN_TOUCHPAD_SLAVE_SELECT       5
+//#define PIN_TOUCHPAD_DATA_READY         34
 
 #define PIN_VBAT                        35
 

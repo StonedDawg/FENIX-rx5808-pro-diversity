@@ -13,7 +13,8 @@ namespace StateMachine {
                 SCANNING_LOW,
                 WAIT_FOR_HIGH,
                 SCANNING_HIGH,
-                DONE
+                DONE,
+                IDLE
             };
 
             void doTapAction();
