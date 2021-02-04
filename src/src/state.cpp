@@ -25,8 +25,6 @@
     MAX(sizeof(SettingsStateHandler), \
     MAX(sizeof(SettingsInternalStateHandler), \
     MAX(sizeof(SettingsRssiStateHandler) \   
-    //MAX(sizeof(MenuStateHandler), \   
-        //sizeof(ExLRSStateHandler) \   
     ))))
 ;
 
