@@ -54,7 +54,9 @@ SOFTWARE.
 #define PIN_RX_SWITCH1                  27
 #define PIN_RX_SWITCH2                  28
 
-#define PIN_BUTTON                      29
+#define PIN_BUTTON0                      34
+#define PIN_BUTTON1                     35
+#define PIN_BUTTON2                     13
 
 #define VRX_LED0                        31
 #define VRX_LED1                        30

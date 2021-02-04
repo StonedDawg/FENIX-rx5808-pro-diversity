@@ -56,6 +56,7 @@
 #endif
 
 
+typedef   void (*operation)(void);
 typedef struct vrxDock {
     uint8_t mode;
 } vrxDock;
@@ -65,10 +66,14 @@ typedef struct vrxDockBtn {
     bool lastReading;
     bool pressed;
     uint32_t changedTime;
+    uint8_t pin;
+    operation action;
 
 } vrxDockBtn;
 
-vrxDockBtn vrxBtn;
+vrxDockBtn vrxBtn0;
+//vrxDockBtn vrxBtn1;
+vrxDockBtn vrxBtn2;
 vrxDock vrxMdl;
 
 
@@ -76,6 +81,9 @@ vrxDock vrxMdl;
     esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
     broadcastAddress is the mac of your receiving esp8266
 */
+
+
+
 uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 50:02:91:DA:56:CA
                               0x50, 0x02, 0x91, 0xDA, 0x37, 0x84};  // r9 tx    50:02:91:DA:37:84
                               
@@ -88,6 +96,12 @@ void setup()
     #ifdef SPEED_TEST
         Serial.begin(115200);
     #endif
+    vrxBtn0.pin=PIN_BUTTON0;
+    vrxBtn0.action=incrementVrxMode;
+    //vrxBtn1.pin=PIN_BUTTON1;
+    //vrxBtn1.action=decrementVrxMode;
+    vrxBtn2.pin=PIN_BUTTON2;
+    vrxBtn2.action=decrementVrxMode;
 
     EEPROM.begin(2048);
     //SPI.begin();
@@ -190,7 +204,9 @@ void loop() {
     {
         Receiver::update();
         updateVrxLed(millis());
-        updateVrxBtn(millis(),&vrxBtn);
+        updateVrxBtn(millis(),&vrxBtn0);
+        //updateVrxBtn(millis(),&vrxBtn1);
+        updateVrxBtn(millis(),&vrxBtn2);
     
         //TouchPad::update();
 
@@ -308,7 +324,7 @@ void decrementVrxMode(void){
 }
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
 {
-     bool reading = !digitalRead(PIN_BUTTON);
+     bool reading = !digitalRead(vrxB->pin);
         /**
          if(reading){
             VRX_LED0_ON;
