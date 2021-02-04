@@ -55,17 +55,6 @@
     uint32_t previousTime = millis();
 #endif
 
-#define DELAY_50_HZ (1000000 / 50)
-#define DELAY_33_HZ (1000000 / 33)
-#define DELAY_10_HZ (1000000 / 10)
-#define DELAY_5_HZ (1000000 / 5)
-
-#define BUTTON_DEBOUNCE_DELAY 300
-
-
-#define VRX_LED1_TOGGLE digitalWrite(VRX_LED1,!digitalRead(VRX_LED1))
-#define  VRX_LED1_OFF   digitalWrite(VRX_LED1,LOW);
-#define  VRX_LED1_ON    digitalWrite(VRX_LED1,HIGH);
 
 typedef struct vrxDock {
     uint8_t mode;
@@ -200,6 +189,8 @@ void loop() {
     } else
     {
         Receiver::update();
+        updateVrxLed(millis());
+        updateVrxBtn(millis(),&vrxBtn);
     
         //TouchPad::update();
 
@@ -373,10 +364,10 @@ void updateVrxLed(uint32_t currentTimeUs)
             return;
         }
         vrxLedTime = currentTimeUs + DELAY_5_HZ;
-        VRX_LED1_TOGGLE;
+        VRX_LED0_TOGGLE;
     } else if(EepromSettings.diversityMode == 1){
-        VRX_LED1_OFF;
+        VRX_LED0_OFF;
     } else {
-        VRX_LED1_ON;
+        VRX_LED0_ON;
     }
 }

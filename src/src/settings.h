@@ -55,9 +55,11 @@ SOFTWARE.
 #define PIN_RX_SWITCH2                  28
 
 #define PIN_BUTTON                      29
-#define VRX_LED0                        31
 
+#define VRX_LED0                        31
 #define VRX_LED1                        30
+#define VRX_LED2                        32
+
 #define PIN_RSSI_A                      36
 #define PIN_RSSI_B                      39
 //#define PIN_RSSI_C                      39 // dummy pin
@@ -106,4 +108,21 @@ SOFTWARE.
 
 //#define SPEED_TEST
 
+#define DELAY_50_HZ (1000 / 50)
+#define DELAY_33_HZ (1000 / 33)
+#define DELAY_10_HZ (1000 / 10)
+#define DELAY_5_HZ (1000 / 5)
+
+#define BUTTON_DEBOUNCE_DELAY 300
+
+
+#define VRX_LED0_TOGGLE digitalWrite(VRX_LED0,!digitalRead(VRX_LED0))
+#define  VRX_LED0_OFF   digitalWrite(VRX_LED0,LOW);
+#define  VRX_LED0_ON    digitalWrite(VRX_LED0,HIGH);
+#define VRX_LED1_TOGGLE digitalWrite(VRX_LED1,!digitalRead(VRX_LED1))
+#define  VRX_LED1_OFF   digitalWrite(VRX_LED1,LOW);
+#define  VRX_LED1_ON    digitalWrite(VRX_LED1,HIGH);
+#define VRX_LED2_TOGGLE digitalWrite(VRX_LED2,!digitalRead(VRX_LED2))
+#define  VRX_LED2_OFF   digitalWrite(VRX_LED2,LOW);
+#define  VRX_LED2_ON    digitalWrite(VRX_LED2,HIGH);
 #endif // file_defined
