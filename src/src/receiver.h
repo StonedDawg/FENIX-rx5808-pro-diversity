@@ -22,7 +22,7 @@ namespace Receiver {
         D
     };
 
-    enum DiversityMode : uint8_t {
+    enum uint8_t {
         DIVERSITY = 0,
         ANTENNA_A = 1,
         ANTENNA_B = 2,
@@ -33,7 +33,7 @@ namespace Receiver {
     
     extern ReceiverId activeReceiver;
     extern uint8_t activeChannel;
-
+    extern uint8_t diversityMode;
     extern uint16_t  rssiA;
     extern uint32_t rssiARaw;
     extern uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE];

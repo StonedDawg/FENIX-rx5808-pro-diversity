@@ -15,7 +15,7 @@ struct EepromSettings {
     uint8_t isCalibrated;
     uint8_t otaUpdateRequested;
 
-    Receiver::DiversityMode diversityMode;
+    Receiver::diversityMode diversityMode;
     
     uint8_t startChannel;
     int lastKnownMenuItem;
@@ -67,7 +67,7 @@ const struct {
     uint8_t isCalibrated = false;
     uint8_t otaUpdateRequested = false;    
 
-    Receiver::DiversityMode diversityMode = Receiver::DiversityMode::DIVERSITY;
+    uint8_t diversityMode = Receiver::diversityMode::DIVERSITY;
 
     uint8_t startChannel = 27;
     int lastKnownMenuItem = 0;

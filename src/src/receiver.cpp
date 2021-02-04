@@ -17,7 +17,7 @@ static void writeSerialData();
 namespace Receiver {
     ReceiverId activeReceiver = ReceiverId::A;
     uint8_t activeChannel = EepromSettings.startChannel;
-    
+    uint16_t diversityMode = 0;
     uint16_t  rssiA = 0;
     uint32_t rssiARaw = 0;
     uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE] = { 0 };
@@ -81,26 +81,26 @@ namespace Receiver {
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.diversityMode) {
-            case Receiver::DiversityMode::ANTENNA_A:
+            case Receiver::diversityMode::ANTENNA_A:
                 receiver = ReceiverId::A;
                 receiverSelect(0);
                 
                 break;
 
-            case Receiver::DiversityMode::ANTENNA_B:
+            case Receiver::diversityMode::ANTENNA_B:
                 receiver = ReceiverId::B;
                 receiverSelect(1);
                 break;
 
-            case Receiver::DiversityMode::ANTENNA_C:
+            case Receiver::diversityMode::ANTENNA_C:
                 receiver = ReceiverId::C;
                 break;
 
-            case Receiver::DiversityMode::ANTENNA_D:
+            case Receiver::diversityMode::ANTENNA_D:
                 receiver = ReceiverId::D;
                 break;
 
-            case Receiver::DiversityMode::DIVERSITY:
+            case Receiver::diversityMode::DIVERSITY:
                 if (receiver == ReceiverId::A) {
                     receiverSelect(0);
                 }
@@ -110,7 +110,7 @@ namespace Receiver {
                 }   
                 break;
 
-            case Receiver::DiversityMode::QUADVERSITY:
+            case Receiver::diversityMode::QUADVERSITY:
 //                digitalWrite(PIN_LED_A, receiver == ReceiverId::A);
 //                digitalWrite(PIN_LED_B, receiver == ReceiverId::B);
 //                digitalWrite(PIN_LED_C, receiver == ReceiverId::C);
