@@ -49,6 +49,7 @@
 #include <WiFi.h>
 #include "ExpressLRS_Protocol.h"
 #include "WebUpdater.h"
+#include "fsbutton.h"
 
 #ifdef SPEED_TEST
     uint32_t n = 0; 
@@ -56,26 +57,7 @@
 #endif
 
 
-typedef void (*operation)(void);
 
-/**
-typedef struct vrxDock {
-    uint8_t mode;
-} vrxDock;
-*/
-typedef struct vrxDockBtn {
-    uint32_t lastDebounceTime;
-    bool lastReading;
-    bool pressed;
-    uint32_t changedTime;
-    uint8_t pin;
-    operation action;
-
-} vrxDockBtn;
-
-vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode};
-//vrxDockBtn vrxBtn1;
-vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode};;
 //vrxDock vrxMdl;
 
 
@@ -304,72 +286,7 @@ void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload
 }
 
 
-void incrementVrxMode(void){
-    if(EepromSettings.diversityMode < 2){
-        EepromSettings.diversityMode++;
-        
-    } else {
-        EepromSettings.diversityMode = 0;
-    }
-}
 
-void decrementVrxMode(void){
-    if(EepromSettings.diversityMode>0){
-        EepromSettings.diversityMode--;
-    } else {
-        EepromSettings.diversityMode = 2;
-    }
-}
-void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
-{
-     bool reading = !digitalRead(vrxB->pin);
-        /**
-         if(reading){
-            VRX_LED0_ON;
-        } else {
-            VRX_LED0_OFF;
-        }
-        */
-     
-       if (reading != vrxB->lastReading) {
-            vrxB->lastDebounceTime = currentTimeUs;
-        }
-
-        vrxB->lastReading = reading;
-
-        if (
-            reading != vrxB->pressed &&
-            (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
-        ) {
-            vrxB->pressed = reading;
-
-            uint32_t prevChangeTime = vrxB->changedTime;
-            vrxB->changedTime = currentTimeUs;
-
-            if (!vrxB->pressed) {
-                uint32_t duration = vrxB->changedTime - prevChangeTime;
-
-                if (duration < 1500){
-                    incrementVrxMode();
-                }
-                else if (duration < 3000){
-                    
-                    decrementVrxMode();
-                    //VRX_LED0_TOGGLE;
-                }
-            }
-        }
-        
-        if (vrxB->pressed) {
-            uint32_t duration = currentTimeUs - vrxB->changedTime;
-            
-            if (duration >= 3000){
-            VRX_LED1_ON;
-            }
-        }
-        
-            
-}
 void updateVrxLed(uint32_t currentTimeUs)
 {
     static uint32_t vrxLedTime = 0;
