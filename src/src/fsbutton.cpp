@@ -18,6 +18,10 @@ void decrementVrxMode(void){
         EepromSettings.diversityMode = 2;
     }
 }
+
+void setResidedAct(vrxDockBtn* vrxB){
+    vrxB->residedAct = 1;
+}
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
 {
      bool reading = !digitalRead(vrxB->pin);
@@ -48,10 +52,12 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
                 uint32_t duration = vrxB->changedTime - prevChangeTime;
 
                 if (duration < 1500){
-                    vrxB->action1();
+                    vrxB->action0();
+                    vrxB->selfOp(vrxB);
                 }
                 else if (duration < 3000){
                     
+                    vrxB->action1();
                     //decrementVrxMode();
                     //VRX_LED0_TOGGLE;
                 }
@@ -62,6 +68,8 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
             uint32_t duration = currentTimeUs - vrxB->changedTime;
             
             if (duration >= 3000){
+                
+                    vrxB->action2();
             VRX_LED1_ON;
             }
         }

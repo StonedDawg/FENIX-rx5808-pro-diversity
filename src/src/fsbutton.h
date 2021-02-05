@@ -23,6 +23,7 @@
 
 typedef void (*operation)(void);
 
+typedef void (*selfOperation)(vrxBtn0* vrxB);
 /**
 typedef struct vrxDock {
     uint8_t mode;
@@ -34,19 +35,23 @@ typedef struct vrxDockBtn {
     bool pressed;
     uint32_t changedTime;
     uint8_t pin;
+    operation action0;
     operation action1;
     operation action2;
-    operation action3;
+    selfOperation selfOp;
+    uint8_t residedAct;
 
 } vrxDockBtn;
 
-vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode};
+vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode,NULL,NULL,NULL,0};
+
+vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,NULL,NULL,NULL,setResidedAct,0};
 //vrxDockBtn vrxBtn1;
-vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode};
+vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode,NULL,NULL,NULL,0};
 
 
 void incrementVrxMode(void);
-
+void setResidedAct(vrxDockBtn* vrxB);
 void decrementVrxMode(void);
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB);
 
