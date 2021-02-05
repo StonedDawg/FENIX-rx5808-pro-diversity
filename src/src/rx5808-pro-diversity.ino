@@ -56,7 +56,7 @@
 #endif
 
 
-typedef   void (*operation)(void);
+typedef void (*operation)(void);
 
 /**
 typedef struct vrxDock {
@@ -73,9 +73,9 @@ typedef struct vrxDockBtn {
 
 } vrxDockBtn;
 
-vrxDockBtn vrxBtn0;
+vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode};
 //vrxDockBtn vrxBtn1;
-vrxDockBtn vrxBtn2;
+vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode};;
 //vrxDock vrxMdl;
 
 
@@ -98,12 +98,8 @@ void setup()
     #ifdef SPEED_TEST
         Serial.begin(115200);
     #endif
-    vrxBtn0.pin=PIN_BUTTON0;
-    vrxBtn0.action=incrementVrxMode;
     //vrxBtn1.pin=PIN_BUTTON1;
     //vrxBtn1.action=decrementVrxMode;
-    vrxBtn2.pin=PIN_BUTTON2;
-    vrxBtn2.action=decrementVrxMode;
 
     EEPROM.begin(2048);
     //SPI.begin();

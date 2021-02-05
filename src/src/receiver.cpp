@@ -92,7 +92,7 @@ namespace Receiver {
                 receiver = ReceiverId::B;
                 receiverSelect(1);
                 break;
-
+            #ifdef QUADVERSITY
             case ANTENNA_C:
                 receiver = ReceiverId::C;
                 break;
@@ -100,8 +100,9 @@ namespace Receiver {
             case ANTENNA_D:
                 receiver = ReceiverId::D;
                 break;
+            #endif
 
-            case DIVERSITY:
+            default:
                 if (receiver == ReceiverId::A) {
                     receiverSelect(0);
                 }
@@ -110,7 +111,7 @@ namespace Receiver {
                   
                 }   
                 break;
-
+            #ifdef QUADVERSITY
             case QUADVERSITY:
 //                #ifdef DUAL_DIVERSITY
 //                    if (receiver == ReceiverId::A || receiver == ReceiverId::B) {
@@ -127,6 +128,7 @@ namespace Receiver {
 //                digitalWrite(PIN_LED_D, receiver == ReceiverId::D);
 //                #endif
                 break;
+                #endif
         }
 
         activeReceiver = receiver;
@@ -222,18 +224,22 @@ namespace Receiver {
             for (uint8_t i = 0; i < RECEIVER_LAST_DATA_SIZE - 1; i++) {
                 rssiALast[i] = rssiALast[i + 1];
                 rssiBLast[i] = rssiBLast[i + 1];                
+                #ifdef QUADVERSITY
                 if (EepromSettings.quadversity) {
                     rssiCLast[i] = rssiCLast[i + 1];
                     rssiDLast[i] = rssiDLast[i + 1];
                 }
+                #endif
             }
 
             rssiALast[RECEIVER_LAST_DATA_SIZE - 1] = rssiA;
             rssiBLast[RECEIVER_LAST_DATA_SIZE - 1] = rssiB;
+            #ifdef QUADVERSITY
             if (EepromSettings.quadversity) {
                 rssiCLast[RECEIVER_LAST_DATA_SIZE - 1] = rssiC;
                 rssiDLast[RECEIVER_LAST_DATA_SIZE - 1] = rssiD;
             }
+            #endif
 
             rssiLogTimer.reset();
         hasRssiUpdated = true;
@@ -327,6 +333,7 @@ namespace Receiver {
         if (ReceiverId::B == activeReceiver) {
         antennaBOnTime += (millis() / 1000) - previousSwitchTime;
         }
+        #ifdef QUADVERSITY
         if (EepromSettings.quadversity) {
             if (ReceiverId::C == activeReceiver) {
                 antennaCOnTime += (millis() / 1000) - previousSwitchTime;
@@ -334,7 +341,8 @@ namespace Receiver {
             if (ReceiverId::D == activeReceiver) {
                 antennaDOnTime += (millis() / 1000) - previousSwitchTime;
             }
-        }  
+        }
+        #endif  
         previousSwitchTime = millis() / 1000;
     }
 
