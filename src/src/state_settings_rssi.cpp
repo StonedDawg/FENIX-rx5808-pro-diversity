@@ -9,7 +9,7 @@
 #include "settings_eeprom.h"
 
 #include "ui.h"
-
+#include "fsbutton.h"
 //#include "touchpad.h"
 
 #define TAPTIMER_DELAY 10000

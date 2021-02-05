@@ -34,7 +34,9 @@ typedef struct vrxDockBtn {
     bool pressed;
     uint32_t changedTime;
     uint8_t pin;
-    operation action;
+    operation action1;
+    operation action2;
+    operation action3;
 
 } vrxDockBtn;
 

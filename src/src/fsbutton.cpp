@@ -48,11 +48,11 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
                 uint32_t duration = vrxB->changedTime - prevChangeTime;
 
                 if (duration < 1500){
-                    incrementVrxMode();
+                    vrxB->action1();
                 }
                 else if (duration < 3000){
                     
-                    decrementVrxMode();
+                    //decrementVrxMode();
                     //VRX_LED0_TOGGLE;
                 }
             }
