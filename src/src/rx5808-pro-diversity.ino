@@ -77,6 +77,35 @@ uint32_t previousLEDTime = 0;
 void setup()
 {
     
+vrxBtn0.residedAct = 0;
+vrxBtn0.pressed = 0;
+vrxBtn0.pin = PIN_BUTTON0;
+vrxBtn0.lastReading = 0;
+vrxBtn0.lastDebounceTime = 0;
+vrxBtn0.changedTime = 0;
+vrxBtn0.action0 = incrementVrxMode;
+vrxBtn0.action1 = noActionBtn;
+vrxBtn0.action2 = noActionBtn;
+
+vrxBtn1.residedAct = 0;
+vrxBtn1.pressed = 0;
+vrxBtn1.pin = PIN_BUTTON1;
+vrxBtn1.lastReading = 0;
+vrxBtn1.lastDebounceTime = 0;
+vrxBtn1.changedTime = 0;
+vrxBtn1.action0 = noActionBtn;
+vrxBtn1.action1 = noActionBtn;
+vrxBtn1.action2 = noActionBtn;
+
+vrxBtn2.residedAct = 0;
+vrxBtn2.pressed = 0;
+vrxBtn2.pin = PIN_BUTTON2;
+vrxBtn2.lastReading = 0;
+vrxBtn2.lastDebounceTime = 0;
+vrxBtn2.changedTime = 0;
+vrxBtn2.action0 = incrementVrxMode;
+vrxBtn2.action1 = noActionBtn;
+vrxBtn2.action2 = noActionBtn;
 
 
     #ifdef SPEED_TEST

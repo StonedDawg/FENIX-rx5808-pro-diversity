@@ -44,22 +44,17 @@ typedef struct vrxDockBtn {
 } vrxDockBtn;
 
 
-int seletOperation(vrxDockBtn *vrxB);
+//int seletOperation(vrxDockBtn *vrxB);
 void noActionBtn(void);
-int noActionBtnz(vrxDockBtn* vrxB);
+//int noActionBtnz(vrxDockBtn* vrxB);
 void incrementVrxMode(void);
 int setResidedAct(vrxDockBtn* vrxB);
 void decrementVrxMode(void);
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB);
 
 
-vrxDockBtn vrxBtn0 = {0,0,0,0,0,PIN_BUTTON0,incrementVrxMode,noActionBtn,noActionBtn};
-
-
-vrxDockBtn vrxBtn1 = {0,0,0,0,0,PIN_BUTTON0,noActionBtn,noActionBtn,noActionBtn};
-//vrxDockBtn vrxBtn1;
-
-vrxDockBtn vrxBtn2 = {0,0,0,0,0,PIN_BUTTON2,decrementVrxMode,noActionBtn,noActionBtn};
-
+vrxDockBtn vrxBtn0;
+vrxDockBtn vrxBtn1;
+vrxDockBtn vrxBtn2;
 #endif
 
