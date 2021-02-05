@@ -12,9 +12,6 @@
 #include "fsbutton.h"
 //#include "touchpad.h"
 
-#define TAPTIMER_DELAY 10000
-int32_t tapTimer = 0;
-int32_t run_once = 0;
     
 void StateMachine::SettingsRssiStateHandler::onEnter() {
     internalState = InternalState::WAIT_FOR_LOW;
@@ -24,20 +21,9 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     onUpdateDraw();
     
-    if (tapTimer==0 && internalState==InternalState::WAIT_FOR_LOW) {
-        tapTimer = millis();
-    }else if(millis() - tapTimer > TAPTIMER_DELAY && internalState==InternalState::WAIT_FOR_LOW 
-    && run_once == 0){
-      run_once = 1;
-      doTapAction();   
-    }
-
-    if (tapTimer==0 && internalState==InternalState::DONE) {
-        tapTimer = millis();
-    }else if(millis() - tapTimer > TAPTIMER_DELAY && internalState==InternalState::DONE 
-    && run_once == 0){
-      run_once = 1;
-      doTapAction();   
+    if (vrxBtn1.residedAct && internalState!=InternalState::SCANNING_LOW) {
+      vrxBtn1.residedAct = 0;
+      doTapAction();
     }
   
     if (!Receiver::isRssiStable() || !Receiver::hasRssiUpdated)
@@ -106,9 +92,7 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 }
 
 void StateMachine::SettingsRssiStateHandler::doTapAction() {
-        if(run_once == 1){
-            run_once = 0;
-        }
+        
     switch (internalState) {
         case InternalState::WAIT_FOR_LOW:
             internalState = InternalState::SCANNING_LOW;

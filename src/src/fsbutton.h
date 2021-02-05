@@ -45,7 +45,7 @@ typedef struct vrxDockBtn {
 
 vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode,NULL,NULL,NULL,0};
 
-vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,NULL,NULL,NULL,setResidedAct,0};
+vrxDockBtn vrxBtn1 = {0,0,0,0,PIN_BUTTON0,NULL,NULL,NULL,setResidedAct,0};
 //vrxDockBtn vrxBtn1;
 vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode,NULL,NULL,NULL,0};
 
