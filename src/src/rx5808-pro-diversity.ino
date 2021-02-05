@@ -57,10 +57,12 @@
 
 
 typedef   void (*operation)(void);
+
+/**
 typedef struct vrxDock {
     uint8_t mode;
 } vrxDock;
-
+*/
 typedef struct vrxDockBtn {
     uint32_t lastDebounceTime;
     bool lastReading;
@@ -74,7 +76,7 @@ typedef struct vrxDockBtn {
 vrxDockBtn vrxBtn0;
 //vrxDockBtn vrxBtn1;
 vrxDockBtn vrxBtn2;
-vrxDock vrxMdl;
+//vrxDock vrxMdl;
 
 
 /* 
@@ -165,11 +167,11 @@ void setupPins() {
     pinMode(1, INPUT);
     pinMode(3, INPUT);
     
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
+    //pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
+    //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
     
-    pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
-    digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
+    //pinMode(PIN_SPI_SLAVE_SELECT_RX_B, OUTPUT);
+    //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_B, HIGH);
     /**
     pinMode(PIN_TOUCHPAD_SLAVE_SELECT, OUTPUT);
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);

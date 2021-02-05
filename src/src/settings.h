@@ -37,30 +37,30 @@ SOFTWARE.
 // You can use any of the arduino analog pins to measure the voltage of the
 // battery. See additional configuration below.
 
-#define USE_VOLTAGE_MONITORING
+//#define USE_VOLTAGE_MONITORING
 
 // Can enable this to powerdown the audio blocks on the RX58xx if you don't
 // need it. Save a tiny bit of power, make your videos less noisy.
 
 // WARNING: Makes RSSI act a little weird.
-//#define DISABLE_AUDIO
+#define DISABLE_AUDIO
 
 // === Pins ====================================================================
 
 
-#define PIN_SPI_SLAVE_SELECT_RX_A       32
-#define PIN_SPI_SLAVE_SELECT_RX_B       33
+//#define PIN_SPI_SLAVE_SELECT_RX_A       32
+//#define PIN_SPI_SLAVE_SELECT_RX_B       33
 
 #define PIN_RX_SWITCH1                  27
 #define PIN_RX_SWITCH2                  28
 
-#define PIN_BUTTON0                      34
+#define PIN_BUTTON0                     34
 #define PIN_BUTTON1                     35
 #define PIN_BUTTON2                     13
 
-#define VRX_LED0                        31
-#define VRX_LED1                        30
-#define VRX_LED2                        32
+#define VRX_LED0                        17
+#define VRX_LED1                        16
+#define VRX_LED2                        5
 
 #define PIN_RSSI_A                      36
 #define PIN_RSSI_B                      39

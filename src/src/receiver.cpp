@@ -112,10 +112,20 @@ namespace Receiver {
                 break;
 
             case QUADVERSITY:
+//                #ifdef DUAL_DIVERSITY
+//                    if (receiver == ReceiverId::A || receiver == ReceiverId::B) {
+//                    receiverSelect(0);
+//                }
+//                if (receiver == ReceiverId::C || receiver == ReceiverId::D){
+//                    receiverSelect(1);
+//                  
+//                }
+//                #else
 //                digitalWrite(PIN_LED_A, receiver == ReceiverId::A);
 //                digitalWrite(PIN_LED_B, receiver == ReceiverId::B);
 //                digitalWrite(PIN_LED_C, receiver == ReceiverId::C);
 //                digitalWrite(PIN_LED_D, receiver == ReceiverId::D);
+//                #endif
                 break;
         }
 
