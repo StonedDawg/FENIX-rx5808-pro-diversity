@@ -2,6 +2,7 @@
 #include "settings_eeprom.h"
 
 
+
 void incrementVrxMode(void){
     if(EepromSettings.diversityMode < 2){
         EepromSettings.diversityMode++;
@@ -11,6 +12,12 @@ void incrementVrxMode(void){
     }
 }
 
+void noActionBtn(void){
+    return;
+}
+int noActionBtnz(vrxDockBtn* vrxB){
+    return 0;
+}
 void decrementVrxMode(void){
     if(EepromSettings.diversityMode>0){
         EepromSettings.diversityMode--;
@@ -19,7 +26,7 @@ void decrementVrxMode(void){
     }
 }
 
-void setResidedAct(vrxDockBtn* vrxB){
+int setResidedAct(vrxDockBtn* vrxB){
     vrxB->residedAct = 1;
 }
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
@@ -53,7 +60,7 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
 
                 if (duration < 1500){
                     vrxB->action0();
-                    vrxB->selfOp(vrxB);
+                    vrxB->residedAct = 1;
                 }
                 else if (duration < 3000){
                     

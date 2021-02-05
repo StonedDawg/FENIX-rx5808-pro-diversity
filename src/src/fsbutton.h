@@ -23,7 +23,7 @@
 
 typedef void (*operation)(void);
 
-typedef void (*selfOperation)(vrxBtn0* vrxB);
+//typedef void (*operationz)(void);
 /**
 typedef struct vrxDock {
     uint8_t mode;
@@ -35,24 +35,31 @@ typedef struct vrxDockBtn {
     bool pressed;
     uint32_t changedTime;
     uint8_t pin;
+    uint8_t residedAct;
     operation action0;
     operation action1;
     operation action2;
-    selfOperation selfOp;
-    uint8_t residedAct;
-
+//    int seletOperation(vrxDockBtn*);
+    //    operationz action3;
 } vrxDockBtn;
 
-vrxDockBtn vrxBtn0 = {0,0,0,0,PIN_BUTTON0,incrementVrxMode,NULL,NULL,NULL,0};
 
-vrxDockBtn vrxBtn1 = {0,0,0,0,PIN_BUTTON0,NULL,NULL,NULL,setResidedAct,0};
-//vrxDockBtn vrxBtn1;
-vrxDockBtn vrxBtn2 = {0,0,0,0,PIN_BUTTON2,decrementVrxMode,NULL,NULL,NULL,0};
-
-
+int seletOperation(vrxDockBtn *vrxB);
+void noActionBtn(void);
+int noActionBtnz(vrxDockBtn* vrxB);
 void incrementVrxMode(void);
-void setResidedAct(vrxDockBtn* vrxB);
+int setResidedAct(vrxDockBtn* vrxB);
 void decrementVrxMode(void);
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB);
 
+
+vrxDockBtn vrxBtn0 = {0,0,0,0,0,PIN_BUTTON0,incrementVrxMode,noActionBtn,noActionBtn};
+
+
+vrxDockBtn vrxBtn1 = {0,0,0,0,0,PIN_BUTTON0,noActionBtn,noActionBtn,noActionBtn};
+//vrxDockBtn vrxBtn1;
+
+vrxDockBtn vrxBtn2 = {0,0,0,0,0,PIN_BUTTON2,decrementVrxMode,noActionBtn,noActionBtn};
+
 #endif
+

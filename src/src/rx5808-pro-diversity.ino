@@ -76,6 +76,8 @@ uint32_t previousLEDTime = 0;
 
 void setup()
 {
+    
+
 
     #ifdef SPEED_TEST
         Serial.begin(115200);
@@ -185,7 +187,7 @@ void loop() {
         Receiver::update();
         updateVrxLed(millis());
         updateVrxBtn(millis(),&vrxBtn0);
-        //updateVrxBtn(millis(),&vrxBtn1);
+        updateVrxBtn(millis(),&vrxBtn1);
         updateVrxBtn(millis(),&vrxBtn2);
     
         //TouchPad::update();
