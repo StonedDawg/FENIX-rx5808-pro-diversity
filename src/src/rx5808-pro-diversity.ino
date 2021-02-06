@@ -74,6 +74,10 @@ uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 
 bool updatingOTA = false;
 uint32_t previousLEDTime = 0;
 
+vrxDockBtn vrxBtn0;
+vrxDockBtn vrxBtn1;
+vrxDockBtn vrxBtn2;
+
 void setup()
 {
     

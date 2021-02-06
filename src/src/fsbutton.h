@@ -53,8 +53,5 @@ void decrementVrxMode(void);
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB);
 
 
-vrxDockBtn vrxBtn0;
-vrxDockBtn vrxBtn1;
-vrxDockBtn vrxBtn2;
 #endif
 

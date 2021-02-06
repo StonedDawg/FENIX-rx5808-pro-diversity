@@ -12,7 +12,11 @@
 #include "fsbutton.h"
 //#include "touchpad.h"
 
-    
+
+extern vrxDockBtn vrxBtn0;
+extern vrxDockBtn vrxBtn1;
+extern vrxDockBtn vrxBtn2;
+
 void StateMachine::SettingsRssiStateHandler::onEnter() {
     internalState = InternalState::WAIT_FOR_LOW;
 }
