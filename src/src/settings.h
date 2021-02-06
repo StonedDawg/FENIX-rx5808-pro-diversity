@@ -51,11 +51,11 @@ SOFTWARE.
 //#define PIN_SPI_SLAVE_SELECT_RX_A       32
 //#define PIN_SPI_SLAVE_SELECT_RX_B       33
 
-#define PIN_RX_SWITCH1                  27
-#define PIN_RX_SWITCH2                  28
+#define PIN_VRX_SWITCH1                  27
+#define PIN_VRX_SWITCH2                  28
 
-#define PIN_BUTTON0                     34
-#define PIN_BUTTON1                     35
+#define PIN_BUTTON0                     3
+#define PIN_BUTTON1                     1
 #define PIN_BUTTON2                     13
 
 #define VRX_LED0                        17

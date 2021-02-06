@@ -72,9 +72,9 @@ namespace Receiver {
 
     void receiverSelect(int8_t sel){
         
-                digitalWrite(PIN_RX_SWITCH1, !sel);
+                digitalWrite(PIN_VRX_SWITCH1, !sel);
                 digitalWrite(VRX_LED1,!sel);
-                digitalWrite(PIN_RX_SWITCH2, sel);
+                digitalWrite(PIN_VRX_SWITCH2, sel);
                 digitalWrite(VRX_LED2,sel);
                 
     }

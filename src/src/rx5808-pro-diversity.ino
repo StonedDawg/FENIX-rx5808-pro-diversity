@@ -177,8 +177,9 @@ vrxBtn2.action2 = noActionBtn;
 void setupPins() {
 
     // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(1, INPUT);
-    pinMode(3, INPUT);
+    pinMode(PIN_BUTTON0, INPUT);
+    pinMode(PIN_BUTTON1, INPUT);
+    pinMode(PIN_BUTTON2, INPUT);
     
     //pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
     //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
@@ -190,10 +191,13 @@ void setupPins() {
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
     pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
     */
-    pinMode(PIN_RX_SWITCH1, OUTPUT);
-    pinMode(PIN_RX_SWITCH1, OUTPUT);
-    digitalWrite(PIN_RX_SWITCH1, HIGH);
-    digitalWrite(PIN_RX_SWITCH1, LOW);
+    pinMode(PIN_VRX_SWITCH1, OUTPUT);
+    pinMode(PIN_VRX_SWITCH1, OUTPUT);
+    pinMode(VRX_LED0, OUTPUT);
+    pinMode(VRX_LED1, OUTPUT);
+    pinMode(VRX_LED2, OUTPUT);
+    digitalWrite(PIN_VRX_SWITCH1, HIGH);
+    digitalWrite(PIN_VRX_SWITCH1, LOW);
 
     
     pinMode(PIN_RSSI_A, INPUT);
@@ -212,7 +216,7 @@ void loop() {
         HandleWebUpdate();
         if (millis() > previousLEDTime+100)
         {
-            //digitalWrite(PIN_RX_SWITCH1, !digitalRead(PIN_RX_SWITCH1));
+            //digitalWrite(PIN_VRX_SWITCH1, !digitalRead(PIN_VRX_SWITCH1));
             previousLEDTime = millis();
         }
     } else
