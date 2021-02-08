@@ -10,10 +10,13 @@
 
 #include "timer.h"
 
+#include "servoControl.h"
+
 static void updateRssiLimits();
 static void writeSerialData();
 
-
+extern dockTower tracker1;
+extern dockTower tracker2;
 namespace Receiver {
     ReceiverId activeReceiver = ReceiverId::A;
     uint8_t activeChannel = EepromSettings.startChannel;
@@ -105,10 +108,13 @@ namespace Receiver {
             default:
                 if (receiver == ReceiverId::A) {
                     receiverSelect(0);
+                    deactivateTower(&tracker1);
+                    ActivateTower(&tracker2);
                 }
                 if (receiver == ReceiverId::B){
                     receiverSelect(1);
-                  
+                    deactivateTower(&tracker2);
+                    ActivateTower(&tracker1);
                 }   
                 break;
             #ifdef QUADVERSITY
@@ -243,6 +249,7 @@ namespace Receiver {
 
             rssiLogTimer.reset();
         hasRssiUpdated = true;
+        updateDockTower();
         }
 
     }

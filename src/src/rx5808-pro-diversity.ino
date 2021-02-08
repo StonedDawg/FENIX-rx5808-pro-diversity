@@ -50,6 +50,7 @@
 #include "ExpressLRS_Protocol.h"
 #include "WebUpdater.h"
 #include "fsbutton.h"
+#include "servoControl.h"
 
 #ifdef SPEED_TEST
     uint32_t n = 0; 
@@ -77,6 +78,11 @@ uint32_t previousLEDTime = 0;
 vrxDockBtn vrxBtn0;
 vrxDockBtn vrxBtn1;
 vrxDockBtn vrxBtn2;
+
+dockTower tracker1;
+
+dockTower tracker2;
+
 
 void setup()
 {
@@ -112,6 +118,21 @@ vrxBtn2.action1 = noActionBtn;
 vrxBtn2.action2 = noActionBtn;
 
 
+tracker1.servoId = 1;
+tracker1.servoCurrentAngle = 0;
+tracker1.servoNextAngle = 0;
+tracker1.servoPreviousAngle = 0;
+tracker1.servoDirection = 0;
+tracker1.servoAvailableTravel = 0;
+tracker1.servoStatus = 0;
+
+tracker2.servoId = 2;
+tracker2.servoCurrentAngle = 0;
+tracker2.servoNextAngle = 0;
+tracker2.servoPreviousAngle = 0;
+tracker2.servoDirection = 0;
+tracker2.servoAvailableTravel = 0;
+tracker2.servoStatus = 0;
     #ifdef SPEED_TEST
         Serial.begin(115200);
     #endif
