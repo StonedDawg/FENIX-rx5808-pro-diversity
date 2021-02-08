@@ -21,5 +21,9 @@ void initDockTowerServo(void);
 void updateDockTower(void);
 void ActivateTower(dockTower *tower);
 void deactivateTower(dockTower *tower);
+void runServo(Servo *servo, uint8_t angle);
+void updateTower(dockTower *tower);
+void deactivateTower(dockTower *tower);
+void ActivateTower(dockTower *tower);
 
 #endif
