@@ -25,5 +25,6 @@ void runServo(Servo *servo, uint8_t angle);
 void updateTower(dockTower *tower);
 void deactivateTower(dockTower *tower);
 void ActivateTower(dockTower *tower);
+void invertTowerDirection(dockTower *towera, dockTower *towerb);
 
 #endif

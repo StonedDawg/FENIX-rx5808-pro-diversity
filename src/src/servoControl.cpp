@@ -58,3 +58,7 @@ void updateTower(dockTower *tower){
 void runServo(Servo *servo, uint8_t angle){
     servo->write(angle);
 }
+
+void invertTowerDirection(dockTower *towera, dockTower *towerb){
+towerb->servoDirection = !towera->servoDirection;
+}

@@ -110,11 +110,13 @@ namespace Receiver {
                     receiverSelect(0);
                     deactivateTower(&tracker1);
                     ActivateTower(&tracker2);
+                    invertTowerDirection(&tracker1,&tracker2);
                 }
                 if (receiver == ReceiverId::B){
                     receiverSelect(1);
                     deactivateTower(&tracker2);
                     ActivateTower(&tracker1);
+                    invertTowerDirection(&tracker2,&tracker1);
                 }   
                 break;
             #ifdef QUADVERSITY
