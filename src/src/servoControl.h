@@ -17,7 +17,7 @@ typedef struct servoControl
     uint8_t servoAvailableTravel;
     uint8_t servoStatus;
 }dockTower;
-
+void initDockTowerServo(void);
 void updateDockTower(void);
 void ActivateTower(dockTower *tower);
 void deactivateTower(dockTower *tower);

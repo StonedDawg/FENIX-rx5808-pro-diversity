@@ -50,6 +50,9 @@ SOFTWARE.
 
 //#define PIN_SPI_SLAVE_SELECT_RX_A       32
 //#define PIN_SPI_SLAVE_SELECT_RX_B       33
+#define SERVO1_PIN                      6
+#define SERVO2_PIN                      7
+#define PWM_PIN                         8
 
 #define PIN_VRX_SWITCH1                  27
 #define PIN_VRX_SWITCH2                  28
@@ -114,5 +117,9 @@ SOFTWARE.
 #define DELAY_33_HZ (1000 / 33)
 #define DELAY_10_HZ (1000 / 10)
 #define DELAY_5_HZ (1000 / 5)
+
+
+#define SERVO_MIN_US                    1000
+#define SERVO_MAX_US                    2000
 
 #endif // file_defined

@@ -4,10 +4,18 @@
 #define SERVO_MAX_ANGLE 360/2
 extern dockTower tracker1;
 extern dockTower tracker2;
-
+ESP32PWM pwm1;
 Servo servo1;
 Servo servo2;
-
+void initDockTowerServo(void){
+    ESP32PWM::allocateTimer(0);
+    servo1.setPeriodHertz(50);
+    servo2.setPeriodHertz(50);
+    
+	servo1.attach(SERVO1_PIN, SERVO_MIN_US, SERVO_MAX_US);
+	servo2.attach(SERVO2_PIN, SERVO_MIN_US, SERVO_MAX_US);
+	pwm1.attachPin(PWM_PIN, 10000);//10khz
+}
 void updateDockTower(void){
     updateTower(&tracker1);
     updateTower(&tracker2);
