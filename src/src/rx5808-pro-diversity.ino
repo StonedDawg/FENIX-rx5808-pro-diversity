@@ -254,16 +254,16 @@ void loop() {
             Ui::tvOff();  
             EepromSettings.update();
         }
-        /**
+        
         if (!Ui::isTvOn &&
-            TouchPad::touchData.buttonPrimary)
+            vrxBtn1.residedAct)
         {
-            TouchPad::touchData.buttonPrimary = false;
+            vrxBtn1.residedAct = 0;
             Ui::tvOn();
         }
         
-        TouchPad::clearTouchData();  
-        */
+        //TouchPad::clearTouchData();  
+        
 
         #ifdef SPEED_TEST
             n++;

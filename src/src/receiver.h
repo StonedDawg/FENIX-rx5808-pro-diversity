@@ -55,11 +55,13 @@ namespace Receiver {
     extern uint16_t antennaCOnTime;
     extern uint16_t antennaDOnTime;
 
+    extern uint8_t receiverState;
     void setChannel(uint8_t channel);
     void setChannelByFreq(uint16_t freq);
     void updateRssi();
     void setActiveReceiver(ReceiverId receiver = ReceiverId::A);
-
+    void receiverOn();
+    void receiverOff();
     void antenaOnTime();
     
     void switchDiversity();

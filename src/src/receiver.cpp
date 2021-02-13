@@ -49,7 +49,8 @@ namespace Receiver {
     static Timer rssiLogTimer = Timer(RECEIVER_LAST_DELAY);
 
     bool hasRssiUpdated = false;
-
+    
+    uint8_t receiverState;
     void setChannel(uint8_t channel)
     {
         ////ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
@@ -71,11 +72,29 @@ namespace Receiver {
     }
 
     void receiverSelect(int8_t sel){
-        
+            if(receiverState){
                 digitalWrite(PIN_VRX_SWITCH1, !sel);
                 digitalWrite(VRX_LED1,!sel);
                 digitalWrite(PIN_VRX_SWITCH2, sel);
                 digitalWrite(VRX_LED2,sel);
+            }
+                
+    }
+    void receiverOff(void){
+                receiverState = 0;
+                digitalWrite(PIN_VRX_SWITCH1, LOW);
+                digitalWrite(VRX_LED1,LOW);
+                digitalWrite(PIN_VRX_SWITCH2,LOW);
+                digitalWrite(VRX_LED2,LOW);
+                
+    }
+    void receiverOn(void){
+                receiverState = 1;
+                digitalWrite(PIN_VRX_SWITCH1, HIGH);
+                digitalWrite(VRX_LED1,HIGH);
+                digitalWrite(PIN_VRX_SWITCH2,LOW);
+                digitalWrite(VRX_LED2,LOW);
+                activeReceiver = ReceiverId::A;
                 
     }
 
