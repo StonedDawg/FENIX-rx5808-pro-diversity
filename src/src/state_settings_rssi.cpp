@@ -25,8 +25,8 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     onUpdateDraw();
     
-    if (vrxBtn2.residedAct && internalState!=InternalState::SCANNING_LOW) {
-      vrxBtn2.residedAct = 0;
+    if (vrxBtn1.residedAct && internalState!=InternalState::SCANNING_LOW) {
+      vrxBtn1.residedAct = 0;
       doTapAction();
     }
   
@@ -113,12 +113,12 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             EepromSettings.rssiDMin = UINT16_MAX;
             EepromSettings.rssiDMax = 0;
             
-            Serial.println("ok to scan");
+            ////Serial.println("ok to scan");
         break;
 
         case InternalState::DONE:
         
-            Serial.println("scan done");
+            ////Serial.println("scan done");
             EepromSettings.isCalibrated = true;
             
             EepromSettings.save();
@@ -164,12 +164,12 @@ void StateMachine::SettingsRssiStateHandler::onUpdateDraw() {
           Ui::display.setCursor( 40, 110);
           Ui::display.print("Tap to continue.");
           
-            Serial.println("wait for LOW");
+            ////Serial.println("wait for LOW");
       break;
 
       case InternalState::SCANNING_LOW:
       
-            Serial.println("scanning");
+            //Serial.println("scanning");
           Ui::display.setTextColor(100);
           Ui::display.setCursor( 40, 40);
           Ui::display.print("Scanning for lowest & highest");

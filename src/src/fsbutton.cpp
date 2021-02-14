@@ -59,9 +59,9 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
             reading != vrxB->pressed &&
             (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
         ) {
-            vrxB->pressed = reading;
             
-            Serial.println("pressed");
+            Serial.println("pressed long");
+            vrxB->pressed = reading;
             uint32_t prevChangeTime = vrxB->changedTime;
             vrxB->changedTime = currentTimeUs;
 
@@ -83,10 +83,13 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
         }
         
         if (vrxB->pressed) {
+            
+            Serial.println("pressed");
             uint32_t duration = currentTimeUs - vrxB->changedTime;
             
             if (duration >= 3000){
                 
+            Serial.println("pressed super super long");
                     vrxB->action2();
             VRX_LED1_ON;
             }
