@@ -112,36 +112,54 @@ vrxBtn2.action1 = noActionBtn;
 vrxBtn2.action2 = noActionBtn;
 
 
-    #ifdef SPEED_TEST
+    //#ifdef SPEED_TEST
         Serial.begin(115200);
-    #endif
+    //#endif
     //vrxBtn1.pin=PIN_BUTTON1;
     //vrxBtn1.action=decrementVrxMode;
-
+    Serial.println("Setting Up..");
     EEPROM.begin(2048);
+    
+    Serial.println("EEPROM begin DONE");
     //SPI.begin();
     
     EepromSettings.setup();
+    Serial.println("EEPROM set");
     setupPins();
+    
+    Serial.println("pin set");
     StateMachine::setup();
+    
+    Serial.println("Statemachine set");
     Ui::setup(); 
+    
+    Serial.println("ui set");
     //TouchPad::setup(); 
 
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
     Receiver::setup(); 
-
+    
+    Serial.println("Receiver set");
     if (!EepromSettings.isCalibrated) {
+        
+    Serial.println("not calibrated");
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
         Ui::tvOn();
+        
+    Serial.println("tv on");
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
+        
+    Serial.println("go to home");
     }
 
 
     if (EepromSettings.otaUpdateRequested)
     {
+        
+    Serial.println("ota update requested");
         BeginWebUpdate();
         EepromSettings.otaUpdateRequested = false;
         EepromSettings.save();
@@ -151,14 +169,17 @@ vrxBtn2.action2 = noActionBtn;
         esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
     */
     {
+        
+    Serial.println("no OTA req, continue..");
         WiFi.mode(WIFI_STA);
 
         if (esp_now_init() != ESP_OK) {
-            // Serial.println("Error initializing ESP-NOW");
+            Serial.println("Error initializing ESP-NOW");
             return;
         }
 
         // Adds broadcastAddress
+        Serial.println("broadcasting address");
         esp_now_peer_info_t injectorInfo;
         for (int i = 0; i < sizeof(broadcastAddress) / 6; i++)
         {
@@ -167,11 +188,13 @@ vrxBtn2.action2 = noActionBtn;
             injectorInfo.encrypt = false;
 
             if (esp_now_add_peer(&injectorInfo) != ESP_OK){
-                // Serial.println("Failed to add peer");
+                Serial.println("Failed to add peer");
                 return;
             }
         }
-    }  
+    }
+    
+    Serial.println("Done setup");  
 }
 
 void setupPins() {
@@ -223,8 +246,14 @@ void loop() {
         }
     } else
     {
+        
+        Serial.println("updating receiver");
         Receiver::update();
+        
+        Serial.println("updating led");
         updateVrxLed(millis());
+        
+        Serial.println("updatingBtn");
         updateVrxBtn(millis(),&vrxBtn0);
         updateVrxBtn(millis(),&vrxBtn1);
         updateVrxBtn(millis(),&vrxBtn2);
@@ -236,13 +265,18 @@ void loop() {
         #ifdef USE_VOLTAGE_MONITORING  
             Voltage::update();
         #endif
-        
+            Serial.println("tv is on");
             Ui::display.begin(0);
+            Serial.println("display began");
             StateMachine::update();
+            Serial.println("statemachine updated");
             Ui::update();
+            Serial.println("ui updated");
             Ui::display.end();
+            Serial.println("display ended");
     
             EepromSettings.update();
+            Serial.println("eeprom updated");
         }
         /**
         if (TouchPad::touchData.isActive) {
@@ -253,6 +287,7 @@ void loop() {
             Ui::UiTimeOut.hasTicked() &&
             StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
         {
+            Serial.println("osd timeout");
             Ui::tvOff();  
             EepromSettings.update();
         }
@@ -262,6 +297,7 @@ void loop() {
         {
             vrxBtn1.residedAct = 0;
             Ui::tvOn();
+            Serial.println("wake osd");
         }
         
         //TouchPad::clearTouchData();  

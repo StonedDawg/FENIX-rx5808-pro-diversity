@@ -4,10 +4,11 @@
 #include <ESPmDNS.h>
 #include <Update.h>
 
-#define STASSID "FENIX"
+#define STASSID "Dawgversity"
 
 const char *host = "webupdate";
 const char *ssid = STASSID;
+const char* password = "Stoned123";
 
 WebServer server(80);
 const char* serverIndex = "<form method='POST' action='/update' enctype='multipart/form-data'><input type='file' name='update'><input type='submit' value='Update'></form>";
