@@ -45,7 +45,10 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
         */
      
        if (reading != vrxB->lastReading) {
+            Serial.println(vrxB->lastDebounceTime);
+               
             vrxB->lastDebounceTime = currentTimeUs;
+            Serial.println(vrxB->lastDebounceTime);
             
             Serial.println("bounce");
         }
