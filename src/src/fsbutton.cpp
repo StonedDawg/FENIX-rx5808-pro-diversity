@@ -29,6 +29,10 @@ void decrementVrxMode(void){
 int setResidedAct(vrxDockBtn* vrxB){
     vrxB->residedAct = 1;
 }
+
+void enterOTA(void){
+    EepromSettings.otaUpdateRequested = true;
+}
 void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
 {
      bool reading = !digitalRead(vrxB->pin);
@@ -42,6 +46,8 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
      
        if (reading != vrxB->lastReading) {
             vrxB->lastDebounceTime = currentTimeUs;
+            
+            Serial.println("bounce");
         }
 
         vrxB->lastReading = reading;
@@ -51,13 +57,15 @@ void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
             (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
         ) {
             vrxB->pressed = reading;
-
+            
+            Serial.println("pressed");
             uint32_t prevChangeTime = vrxB->changedTime;
             vrxB->changedTime = currentTimeUs;
 
             if (!vrxB->pressed) {
                 uint32_t duration = vrxB->changedTime - prevChangeTime;
-
+                
+            Serial.println("released");
                 if (duration < 1500){
                     vrxB->action0();
                     vrxB->residedAct = 1;

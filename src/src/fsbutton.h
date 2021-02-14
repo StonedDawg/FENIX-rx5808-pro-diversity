@@ -45,6 +45,7 @@ typedef struct vrxDockBtn {
 
 
 //int seletOperation(vrxDockBtn *vrxB);
+void enterOTA(void);
 void noActionBtn(void);
 //int noActionBtnz(vrxDockBtn* vrxB);
 void incrementVrxMode(void);

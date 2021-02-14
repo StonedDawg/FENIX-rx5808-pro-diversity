@@ -25,8 +25,8 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     onUpdateDraw();
     
-    if (vrxBtn1.residedAct && internalState!=InternalState::SCANNING_LOW) {
-      vrxBtn1.residedAct = 0;
+    if (vrxBtn2.residedAct && internalState!=InternalState::SCANNING_LOW) {
+      vrxBtn2.residedAct = 0;
       doTapAction();
     }
   
@@ -112,9 +112,13 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             EepromSettings.rssiCMax = 0;
             EepromSettings.rssiDMin = UINT16_MAX;
             EepromSettings.rssiDMax = 0;
+            
+            Serial.println("ok to scan");
         break;
 
         case InternalState::DONE:
+        
+            Serial.println("scan done");
             EepromSettings.isCalibrated = true;
             
             EepromSettings.save();
@@ -159,9 +163,13 @@ void StateMachine::SettingsRssiStateHandler::onUpdateDraw() {
           Ui::display.print("- Remove Rx antennas.");
           Ui::display.setCursor( 40, 110);
           Ui::display.print("Tap to continue.");
+          
+            Serial.println("wait for LOW");
       break;
 
       case InternalState::SCANNING_LOW:
+      
+            Serial.println("scanning");
           Ui::display.setTextColor(100);
           Ui::display.setCursor( 40, 40);
           Ui::display.print("Scanning for lowest & highest");

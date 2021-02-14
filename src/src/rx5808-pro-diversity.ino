@@ -67,7 +67,7 @@
 */
 
 
-
+void setupPins(void);
 uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 50:02:91:DA:56:CA
                               0x50, 0x02, 0x91, 0xDA, 0x37, 0x84};  // r9 tx    50:02:91:DA:37:84
                               
@@ -87,7 +87,7 @@ vrxBtn0.pin = PIN_BUTTON0;
 vrxBtn0.lastReading = 0;
 vrxBtn0.lastDebounceTime = 0;
 vrxBtn0.changedTime = 0;
-vrxBtn0.action0 = incrementVrxMode;
+vrxBtn0.action0 = noActionBtn;
 vrxBtn0.action1 = noActionBtn;
 vrxBtn0.action2 = noActionBtn;
 
@@ -107,8 +107,9 @@ vrxBtn2.pin = PIN_BUTTON2;
 vrxBtn2.lastReading = 0;
 vrxBtn2.lastDebounceTime = 0;
 vrxBtn2.changedTime = 0;
-vrxBtn2.action0 = incrementVrxMode;
-vrxBtn2.action1 = noActionBtn;
+vrxBtn2.action0 = noActionBtn;
+vrxBtn2.action1 = enterOTA;
+//vrxBtn2.action1 = noActionBtn;
 vrxBtn2.action2 = noActionBtn;
 
 
@@ -117,23 +118,23 @@ vrxBtn2.action2 = noActionBtn;
     //#endif
     //vrxBtn1.pin=PIN_BUTTON1;
     //vrxBtn1.action=decrementVrxMode;
-    Serial.println("Setting Up..");
+    //Serial.println("Setting Up..");
     EEPROM.begin(2048);
     
-    Serial.println("EEPROM begin DONE");
+    //Serial.println("EEPROM begin DONE");
     //SPI.begin();
     
     EepromSettings.setup();
-    Serial.println("EEPROM set");
+    //Serial.println("EEPROM set");
     setupPins();
     
-    Serial.println("pin set");
+    //Serial.println("pin set");
     StateMachine::setup();
     
-    Serial.println("Statemachine set");
+    //Serial.println("Statemachine set");
     Ui::setup(); 
     
-    Serial.println("ui set");
+    //Serial.println("ui set");
     //TouchPad::setup(); 
 
     // Has to be last setup() otherwise channel may not be set.
@@ -141,25 +142,25 @@ vrxBtn2.action2 = noActionBtn;
     // delay() may be needed.
     Receiver::setup(); 
     
-    Serial.println("Receiver set");
+    //Serial.println("Receiver set");
     if (!EepromSettings.isCalibrated) {
         
-    Serial.println("not calibrated");
+    //Serial.println("not calibrated");
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
         Ui::tvOn();
         
-    Serial.println("tv on");
+    //Serial.println("tv on");
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
         
-    Serial.println("go to home");
+    //Serial.println("go to home");
     }
 
 
     if (EepromSettings.otaUpdateRequested)
     {
         
-    Serial.println("ota update requested");
+    //Serial.println("ota update requested");
         BeginWebUpdate();
         EepromSettings.otaUpdateRequested = false;
         EepromSettings.save();
@@ -170,16 +171,16 @@ vrxBtn2.action2 = noActionBtn;
     */
     {
         
-    Serial.println("no OTA req, continue..");
+    //Serial.println("no OTA req, continue..");
         WiFi.mode(WIFI_STA);
 
         if (esp_now_init() != ESP_OK) {
-            Serial.println("Error initializing ESP-NOW");
+            //Serial.println("Error initializing ESP-NOW");
             return;
         }
 
         // Adds broadcastAddress
-        Serial.println("broadcasting address");
+        //Serial.println("broadcasting address");
         esp_now_peer_info_t injectorInfo;
         for (int i = 0; i < sizeof(broadcastAddress) / 6; i++)
         {
@@ -188,13 +189,13 @@ vrxBtn2.action2 = noActionBtn;
             injectorInfo.encrypt = false;
 
             if (esp_now_add_peer(&injectorInfo) != ESP_OK){
-                Serial.println("Failed to add peer");
+                //Serial.println("Failed to add peer");
                 return;
             }
         }
     }
     
-    Serial.println("Done setup");  
+    //Serial.println("Done setup");  
 }
 
 void setupPins() {
@@ -247,13 +248,13 @@ void loop() {
     } else
     {
         
-        Serial.println("updating receiver");
+        //Serial.println("updating receiver");
         Receiver::update();
         
-        Serial.println("updating led");
+        //Serial.println("updating led");
         updateVrxLed(millis());
         
-        Serial.println("updatingBtn");
+        //Serial.println("updatingBtn");
         updateVrxBtn(millis(),&vrxBtn0);
         updateVrxBtn(millis(),&vrxBtn1);
         updateVrxBtn(millis(),&vrxBtn2);
@@ -267,16 +268,16 @@ void loop() {
         #endif
             Serial.println("tv is on");
             Ui::display.begin(0);
-            Serial.println("display began");
+            //Serial.println("display began");
             StateMachine::update();
-            Serial.println("statemachine updated");
+            //Serial.println("statemachine updated");
             Ui::update();
-            Serial.println("ui updated");
+            //Serial.println("ui updated");
             Ui::display.end();
-            Serial.println("display ended");
+            //Serial.println("display ended");
     
             EepromSettings.update();
-            Serial.println("eeprom updated");
+            //Serial.println("eeprom updated");
         }
         /**
         if (TouchPad::touchData.isActive) {
@@ -290,12 +291,14 @@ void loop() {
             Serial.println("osd timeout");
             Ui::tvOff();  
             EepromSettings.update();
+            
         }
         
         if (!Ui::isTvOn &&
-            vrxBtn1.residedAct)
+            vrxBtn2.residedAct)
         {
-            vrxBtn1.residedAct = 0;
+            
+            vrxBtn2.residedAct = 0;
             Ui::tvOn();
             Serial.println("wake osd");
         }
@@ -307,8 +310,8 @@ void loop() {
             n++;
             uint32_t nowTime = millis();
             if (nowTime > previousTime + 1000) {
-                Serial.print(n);
-                Serial.println(" Hz");
+                //Serial.print(n);
+                //Serial.println(" Hz");
                 previousTime = nowTime;
                 n = 0;
             }

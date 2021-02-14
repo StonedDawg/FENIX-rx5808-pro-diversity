@@ -428,6 +428,7 @@ bool HomeStateHandler::isInBandScanRegion() {
         return false;
     }
     */
+   return false;
 }
 
 void HomeStateHandler::bandScanUpdate() {
