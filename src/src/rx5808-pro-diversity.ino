@@ -115,7 +115,7 @@ vrxBtn2.action2 = noActionBtn;
     //#ifdef SPEED_TEST
         //Serial.begin(115200);
     //#endif
-    
+
     ////Serial.println("Setting Up..");
     EEPROM.begin(2048);
     
@@ -199,9 +199,9 @@ vrxBtn2.action2 = noActionBtn;
 void setupPins() {
 
     // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(PIN_BUTTON0, INPUT);
-    pinMode(PIN_BUTTON1, INPUT);
-    pinMode(PIN_BUTTON2, INPUT);
+    pinMode(PIN_BUTTON0, INPUT_PULLUP);
+    pinMode(PIN_BUTTON1, INPUT_PULLUP);
+    pinMode(PIN_BUTTON2, INPUT_PULLUP);
     
     //pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
     //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
@@ -214,12 +214,12 @@ void setupPins() {
     pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
     */
     pinMode(PIN_VRX_SWITCH1, OUTPUT);
-    pinMode(PIN_VRX_SWITCH1, OUTPUT);
+    pinMode(PIN_VRX_SWITCH2, OUTPUT);
     pinMode(VRX_LED0, OUTPUT);
     pinMode(VRX_LED1, OUTPUT);
     pinMode(VRX_LED2, OUTPUT);
     digitalWrite(PIN_VRX_SWITCH1, HIGH);
-    digitalWrite(PIN_VRX_SWITCH1, LOW);
+    digitalWrite(PIN_VRX_SWITCH2, LOW);
     digitalWrite(VRX_LED1, HIGH);
     digitalWrite(VRX_LED2, LOW);
 
