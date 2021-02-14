@@ -33,6 +33,7 @@
 */
 
 #include <EEPROM.h>
+#include "esp_pm.h"
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "state_home.h"
@@ -80,7 +81,10 @@ vrxDockBtn vrxBtn2;
 
 void setup()
 {
-    
+    rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
+  esp_pm_lock_handle_t powerManagementLock;
+  esp_pm_lock_create(ESP_PM_CPU_FREQ_MAX, 0, "compositeCorePerformanceLock", &powerManagementLock);
+  esp_pm_lock_acquire(powerManagementLock);  
 vrxBtn0.residedAct = 0;
 vrxBtn0.pressed = 0;
 vrxBtn0.pin = PIN_BUTTON0;
@@ -150,7 +154,7 @@ vrxBtn2.action2 = noActionBtn;
     ////Serial.println("tv on");
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
-        
+        Ui::tvOn();
     ////Serial.println("go to home");
     }
 
@@ -293,7 +297,7 @@ void loop() {
         }
         
         if (!Ui::isTvOn &&
-            vrxBtn2.residedAct)
+            (vrxBtn2.residedAct || vrxBtn0.residedAct || vrxBtn1.residedAct))
         {
             
             vrxBtn2.residedAct = 0;
