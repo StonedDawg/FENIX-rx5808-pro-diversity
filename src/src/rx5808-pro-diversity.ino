@@ -58,7 +58,7 @@
     uint32_t previousTime = millis();
 #endif
 
-
+fsBtn fatBtn;
 
 //vrxDock vrxMdl;
 
@@ -290,7 +290,7 @@ void loop() {
         */
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
-            StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
+            StateMachine::currentState == StateMachine::State::HOME ) 
         {
             //Serial.println("osd timeout");
             Ui::tvOff();  
@@ -302,7 +302,10 @@ void loop() {
             (getFSBtnFlags()))
         {
             clearFSBtnFlags();
+            //StateMachine::switchState(StateMachine::State::HOME); 
             Ui::tvOn();
+            Ui::UiTimeOut.reset();
+
             //Serial.println("wake osd");
         }
         

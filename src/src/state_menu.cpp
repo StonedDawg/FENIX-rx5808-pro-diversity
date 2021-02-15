@@ -11,6 +11,7 @@ extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
 */
+extern fsBtn fatBtn;
 Image<CompositeGraphics> iconHome(home::xres, home::yres, home::pixels);
 Image<CompositeGraphics> iconExLRS(exlrs::xres, exlrs::yres, exlrs::pixels);
 Image<CompositeGraphics> iconCalibrate(calibrate::xres, calibrate::yres, calibrate::pixels);
@@ -18,7 +19,8 @@ Image<CompositeGraphics> iconUpdate(update::xres, update::yres, update::pixels);
 Image<CompositeGraphics> iconBookmark(bookmark::xres, bookmark::yres, bookmark::pixels);
 
 void StateMachine::MenuStateHandler::onEnter() {    
-   selectedMenu=0;
+   //selectedMenu=0;
+   
 }
 
 void StateMachine::MenuStateHandler::onUpdate() {
@@ -26,13 +28,18 @@ void StateMachine::MenuStateHandler::onUpdate() {
     if (getFSBtnFlags()) {
       //clearFSBtnFlags();
       this->doTapAction();
+      
     }
 }
 
 void StateMachine::MenuStateHandler::doTapAction() {
    if(getFSBtnFlags() == 2){
       clearFSBtnFlags();
+      if(selectedMenu < 7){
       selectedMenu++;
+   } else {
+      selectedMenu = 0;
+   }
    } else if (getFSBtnFlags() == 4){
       clearFSBtnFlags();
       if (selectedMenu == 0)
@@ -42,30 +49,35 @@ void StateMachine::MenuStateHandler::doTapAction() {
       else if ( // ExpressLRS Settings
       selectedMenu == 1)
       {
+         StateMachine::switchState(StateMachine::State::HOME); 
          //StateMachine::switchState(StateMachine::State::EXPRESSLRS); 
       }
       else if ( // item 3
       selectedMenu == 2
       )
       {
+         StateMachine::switchState(StateMachine::State::HOME); 
          
       }
       else if ( // item 4
       selectedMenu == 3
       )
       {
+         StateMachine::switchState(StateMachine::State::HOME); 
          
       }
       else if ( // item 5
       selectedMenu == 4
       )
       {
+         StateMachine::switchState(StateMachine::State::HOME); 
          
       }
       else if ( // item 6
       selectedMenu == 5
       )
       {
+         StateMachine::switchState(StateMachine::State::HOME); 
          
       }
       else if ( // Calibration

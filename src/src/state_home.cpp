@@ -20,6 +20,7 @@ extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
 */
+extern fsBtn fatBtn;
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
 // For scalling graphics accross screen
@@ -35,7 +36,7 @@ using StateMachine::HomeStateHandler;
 void HomeStateHandler::onEnter() {
   
     displayActiveChannel = Receiver::activeChannel;
-
+    
 }
 
 void HomeStateHandler::onUpdate() {
@@ -51,6 +52,8 @@ void HomeStateHandler::onUpdateDraw() {
     if (getFSBtnFlags()) {
         //clearFSBtnFlags();
       this->doTapAction();
+      Ui::UiTimeOut.reset();
+      
     }
     
     if (isInBandScanRegion()) {
@@ -269,9 +272,11 @@ void HomeStateHandler::onUpdateDraw() {
 
 void HomeStateHandler::doTapAction() {
     if(getFSBtnFlags() == 4){
+        clearFSBtnFlags();
     EepromSettings.save();
     StateMachine::switchState(StateMachine::State::MENU);
     } else if(getFSBtnFlags() == 2){
+        clearFSBtnFlags();
         
         if (EepromSettings.quadversity) {
               switch ( EepromSettings.dockMode )

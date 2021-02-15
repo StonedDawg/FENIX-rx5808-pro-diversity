@@ -17,8 +17,10 @@ extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
 */
+extern fsBtn fatBtn;
 void StateMachine::SettingsRssiStateHandler::onEnter() {
     internalState = InternalState::WAIT_FOR_LOW;
+    
 }
 
 void StateMachine::SettingsRssiStateHandler::onUpdate() {
@@ -80,7 +82,7 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
     
     if(sweepWaitBtn == 0){
         Receiver::setChannel((Receiver::activeChannel + 1) % CHANNELS_SIZE);
-    sweepWaitBtn = 1;
+        sweepWaitBtn = 1;
     }
 
     if (internalState==InternalState::SCANNING_LOW || internalState==InternalState::SCANNING_HIGH) {
@@ -94,11 +96,12 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
   
     }
           
-    if (Receiver::activeChannel == 0 && sweepWaitBtn == 0) {
+    if (Receiver::activeChannel == 0) {
         currentSweep++;
 
-        if (currentSweep == RSSI_SETUP_RUN && internalState == InternalState::SCANNING_LOW) {
+        if (currentSweep >= RSSI_SETUP_RUN && internalState == InternalState::SCANNING_LOW) {
             internalState = InternalState::DONE;
+            sweepWaitBtn = 0;
         }
     }
 
@@ -110,7 +113,7 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
         case InternalState::WAIT_FOR_LOW:
             internalState = InternalState::SCANNING_LOW;
             currentSweep = 0;
-            sweepWaitBtn = 1;
+            sweepWaitBtn = 0;
             Receiver::setChannel(0);
             bestChannel = 0;
 
@@ -141,7 +144,7 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             
             EepromSettings.lastKnownMenuItem = 0;
             EepromSettings.markDirty();
-            internalState = InternalState::IDLE;
+            //internalState = InternalState::IDLE;
             StateMachine::switchState(StateMachine::State::HOME);
             
             
