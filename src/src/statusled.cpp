@@ -1,6 +1,7 @@
 #include "statusled.h"
 #include "Arduino.h"
 #include "settings_eeprom.h"
+#include "settings.h"
 
 void updateVrxLed(uint32_t currentTimeUs)
 {
