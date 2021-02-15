@@ -152,7 +152,7 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
       Ui::display.setCursor( 140, 200);
       Ui::display.print("Menu 4");
    }
-   else if ( RSSI
+   else if ( //RSSI
    selectedMenu == 4
    )
    {
