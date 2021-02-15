@@ -33,7 +33,7 @@ namespace Receiver {
     
     extern ReceiverId activeReceiver;
     extern uint8_t activeChannel;
-    extern uint8_t diversityMode;
+    extern uint8_t dockMode;
     extern uint16_t  rssiA;
     extern uint32_t rssiARaw;
     extern uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE];

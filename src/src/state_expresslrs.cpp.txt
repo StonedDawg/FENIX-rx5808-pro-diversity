@@ -4,6 +4,7 @@
 #include "ui.h"
 #include "temperature.h"
 //#include "touchpad.h"
+#include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);

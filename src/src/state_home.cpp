@@ -15,10 +15,11 @@
 //#include "touchpad.h"
 #include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
+/**
 extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
-
+*/
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
 // For scalling graphics accross screen
@@ -47,8 +48,8 @@ void HomeStateHandler::onInitialDraw() {
 
 void HomeStateHandler::onUpdateDraw() {
     
-    if (vrxBtn1.residedAct) {
-      vrxBtn1.residedAct = false;
+    if (getFSBtnFlags()) {
+        //clearFSBtnFlags();
       this->doTapAction();
     }
     
@@ -67,22 +68,22 @@ void HomeStateHandler::onUpdateDraw() {
     Ui::display.setTextColor(100);
     Ui::display.setCursor( 8, 0);
     Ui::display.print("Mode: ");    
-    if (EepromSettings.diversityMode == ANTENNA_A) {
+    if (EepromSettings.dockMode == ANTENNA_A) {
         Ui::display.print("Antenna A");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_B) {
+    if (EepromSettings.dockMode == ANTENNA_B) {
         Ui::display.print("Antenna B");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_C) {
+    if (EepromSettings.dockMode == ANTENNA_C) {
         Ui::display.print("Antenna C");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_D) {
+    if (EepromSettings.dockMode == ANTENNA_D) {
         Ui::display.print("Antenna D");
     }   
-    if (EepromSettings.diversityMode == DIVERSITY) {
+    if (EepromSettings.dockMode == DIVERSITY) {
         Ui::display.print("Diversity");
     }
-    if (EepromSettings.diversityMode == QUADVERSITY) {
+    if (EepromSettings.dockMode == QUADVERSITY) {
         Ui::display.print("Quadversity");
     }
 
@@ -267,8 +268,55 @@ void HomeStateHandler::onUpdateDraw() {
 }
 
 void HomeStateHandler::doTapAction() {
+    if(getFSBtnFlags() == 4){
     EepromSettings.save();
-          StateMachine::switchState(StateMachine::State::MENU);
+    StateMachine::switchState(StateMachine::State::MENU);
+    } else if(getFSBtnFlags() == 2){
+        
+        if (EepromSettings.quadversity) {
+              switch ( EepromSettings.dockMode )
+              {
+                  case DIVERSITY:
+                      EepromSettings.dockMode = ANTENNA_A;
+                      break;
+                  case ANTENNA_A:
+                      EepromSettings.dockMode = ANTENNA_B;
+                      break;
+                  case ANTENNA_B:
+                      EepromSettings.dockMode = ANTENNA_C;
+                      break;
+                  case ANTENNA_C:
+                      EepromSettings.dockMode = ANTENNA_D;
+                      break;
+                  case ANTENNA_D:
+                      EepromSettings.dockMode = QUADVERSITY;
+                      break;
+                  case QUADVERSITY:
+                      EepromSettings.dockMode = DIVERSITY;
+                      break;
+              }
+          } else {        
+              switch ( EepromSettings.dockMode )
+              {
+                  case ANTENNA_A:
+                      EepromSettings.dockMode = ANTENNA_B;
+//                      //ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
+                      break;
+                  case ANTENNA_B:
+                      EepromSettings.dockMode = DIVERSITY;
+//                      //ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
+                      break;
+                  case DIVERSITY:
+                      EepromSettings.dockMode = ANTENNA_A;
+                      break;
+              }
+
+          }
+          
+          EepromSettings.markDirty();
+          
+        }
+    
     /**
   if ( // Up band
       TouchPad::touchData.cursorX >= 0  && TouchPad::touchData.cursorX < 61 &&
@@ -313,40 +361,40 @@ void HomeStateHandler::doTapAction() {
       TouchPad::touchData.cursorY < 8
      ) {
           if (EepromSettings.quadversity) {
-              switch ( EepromSettings.diversityMode )
+              switch ( EepromSettings.dockMode )
               {
-                  case Receiver::diversityMode::ANTENNA_A:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_B;
+                  case Receiver::dockMode::ANTENNA_A:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_B;
                       break;
-                  case Receiver::diversityMode::ANTENNA_B:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_C;
+                  case Receiver::dockMode::ANTENNA_B:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_C;
                       break;
-                  case Receiver::diversityMode::ANTENNA_C:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_D;
+                  case Receiver::dockMode::ANTENNA_C:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_D;
                       break;
-                  case Receiver::diversityMode::ANTENNA_D:
-                      EepromSettings.diversityMode = Receiver::diversityMode::DIVERSITY;
+                  case Receiver::dockMode::ANTENNA_D:
+                      EepromSettings.dockMode = Receiver::dockMode::DIVERSITY;
                       break;
-                  case Receiver::diversityMode::DIVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::QUADVERSITY;
+                  case Receiver::dockMode::DIVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::QUADVERSITY;
                       break;
-                  case Receiver::diversityMode::QUADVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_A;
+                  case Receiver::dockMode::QUADVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_A;
                       break;
               }
           } else {        
-              switch ( EepromSettings.diversityMode )
+              switch ( EepromSettings.dockMode )
               {
-                  case Receiver::diversityMode::ANTENNA_A:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_B;
+                  case Receiver::dockMode::ANTENNA_A:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_B;
 //                      //ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
                       break;
-                  case Receiver::diversityMode::ANTENNA_B:
-                      EepromSettings.diversityMode = Receiver::diversityMode::DIVERSITY;
+                  case Receiver::dockMode::ANTENNA_B:
+                      EepromSettings.dockMode = Receiver::dockMode::DIVERSITY;
 //                      //ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
                       break;
-                  case Receiver::diversityMode::DIVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_A;
+                  case Receiver::dockMode::DIVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_A;
                       break;
               }
 

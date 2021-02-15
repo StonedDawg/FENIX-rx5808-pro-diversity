@@ -17,7 +17,7 @@ static void writeSerialData();
 namespace Receiver {
     ReceiverId activeReceiver = ReceiverId::A;
     uint8_t activeChannel = EepromSettings.startChannel;
-    uint8_t diversityMode = 0;
+    uint8_t dockMode = 0;
     uint16_t  rssiA = 0;
     uint32_t rssiARaw = 0;
     uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE] = { 0 };
@@ -100,7 +100,7 @@ namespace Receiver {
 
     void setActiveReceiver(ReceiverId receiver) {
         
-        switch (EepromSettings.diversityMode) {
+        switch (EepromSettings.dockMode) {
             case ANTENNA_A:
                 receiver = ReceiverId::A;
                 receiverSelect(0);

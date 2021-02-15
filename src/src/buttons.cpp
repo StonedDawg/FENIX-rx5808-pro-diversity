@@ -1,0 +1,99 @@
+#include "buttons.h"
+#include "settings_eeprom.h"
+
+
+
+void incrementVrxMode(void){
+    if(EepromSettings.dockMode < 2){
+        EepromSettings.dockMode++;
+        
+    } else {
+        EepromSettings.dockMode = 0;
+    }
+}
+
+void noActionBtn(void){
+    return;
+}
+int noActionBtnz(vrxDockBtn* vrxB){
+    return 0;
+}
+void decrementVrxMode(void){
+    if(EepromSettings.dockMode>0){
+        EepromSettings.dockMode--;
+    } else {
+        EepromSettings.dockMode = 2;
+    }
+}
+
+int setResidedAct(vrxDockBtn* vrxB){
+    vrxB->residedAct = 1;
+}
+
+void enterOTA(void){
+    EepromSettings.otaUpdateRequested = true;
+}
+void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
+{
+     bool reading = !digitalRead(vrxB->pin);
+        /**
+         if(reading){
+            VRX_LED0_ON;
+        } else {
+            VRX_LED0_OFF;
+        }
+        */
+     
+       if (reading != vrxB->lastReading) {
+            Serial.println(vrxB->lastDebounceTime);
+               
+            vrxB->lastDebounceTime = currentTimeUs;
+            Serial.println(vrxB->lastDebounceTime);
+            
+            Serial.println("bounce");
+        }
+
+        vrxB->lastReading = reading;
+
+        if (
+            reading != vrxB->pressed &&
+            (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
+        ) {
+            
+            Serial.println("pressed long");
+            vrxB->pressed = reading;
+            uint32_t prevChangeTime = vrxB->changedTime;
+            vrxB->changedTime = currentTimeUs;
+
+            if (!vrxB->pressed) {
+                uint32_t duration = vrxB->changedTime - prevChangeTime;
+                
+            Serial.println("released");
+                if (duration < 1500){
+                    vrxB->action0();
+                    vrxB->residedAct = 1;
+                }
+                else if (duration < 3000){
+                    
+                    vrxB->action1();
+                    //decrementVrxMode();
+                    //VRX_LED0_TOGGLE;
+                }
+            }
+        }
+        
+        if (vrxB->pressed) {
+            
+            Serial.println("pressed");
+            uint32_t duration = currentTimeUs - vrxB->changedTime;
+            
+            if (duration >= 3000){
+                
+            Serial.println("pressed super super long");
+                    vrxB->action2();
+            //VRX_LED1_ON;
+            }
+        }
+        
+            
+}

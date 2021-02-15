@@ -51,6 +51,7 @@
 #include "ExpressLRS_Protocol.h"
 #include "WebUpdater.h"
 #include "fsbutton.h"
+#include "statusled.h"
 
 #ifdef SPEED_TEST
     uint32_t n = 0; 
@@ -74,17 +75,19 @@ uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 
                               
 bool updatingOTA = false;
 uint32_t previousLEDTime = 0;
-
+/**
 vrxDockBtn vrxBtn0;
 vrxDockBtn vrxBtn1;
 vrxDockBtn vrxBtn2;
+*/
 
 void setup()
 {
     rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
-  esp_pm_lock_handle_t powerManagementLock;
-  esp_pm_lock_create(ESP_PM_CPU_FREQ_MAX, 0, "compositeCorePerformanceLock", &powerManagementLock);
-  esp_pm_lock_acquire(powerManagementLock);  
+    esp_pm_lock_handle_t powerManagementLock;
+    esp_pm_lock_create(ESP_PM_CPU_FREQ_MAX, 0, "compositeCorePerformanceLock", &powerManagementLock);
+    esp_pm_lock_acquire(powerManagementLock);  
+/**
 vrxBtn0.residedAct = 0;
 vrxBtn0.pressed = 0;
 vrxBtn0.pin = PIN_BUTTON0;
@@ -114,6 +117,7 @@ vrxBtn2.changedTime = 0;
 vrxBtn2.action0 = incrementVrxMode;
 vrxBtn2.action1 = noActionBtn;
 vrxBtn2.action2 = noActionBtn;
+*/
 
 
     //#ifdef SPEED_TEST
@@ -129,6 +133,7 @@ vrxBtn2.action2 = noActionBtn;
     EepromSettings.setup();
     ////Serial.println("EEPROM set");
     setupPins();
+    fsBtnInit();
     
     ////Serial.println("pin set");
     StateMachine::setup();
@@ -203,9 +208,9 @@ vrxBtn2.action2 = noActionBtn;
 void setupPins() {
 
     // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(PIN_BUTTON0, INPUT_PULLUP);
-    pinMode(PIN_BUTTON1, INPUT_PULLUP);
-    pinMode(PIN_BUTTON2, INPUT_PULLUP);
+    //pinMode(PIN_BUTTON0, INPUT_PULLUP);
+    //pinMode(PIN_BUTTON1, INPUT_PULLUP);
+    //pinMode(PIN_BUTTON2, INPUT_PULLUP);
     
     //pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
     //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
@@ -257,10 +262,7 @@ void loop() {
         updateVrxLed(millis());
         
         ////Serial.println("updatingBtn");
-        updateVrxBtn(millis(),&vrxBtn0);
-        updateVrxBtn(millis(),&vrxBtn1);
-        updateVrxBtn(millis(),&vrxBtn2);
-    
+        updateFSBtn();
         //TouchPad::update();
 
         if (Ui::isTvOn) {
@@ -297,11 +299,9 @@ void loop() {
         }
         
         if (!Ui::isTvOn &&
-            (vrxBtn2.residedAct || vrxBtn0.residedAct || vrxBtn1.residedAct))
+            (getFSBtnFlags()))
         {
-            vrxBtn1.residedAct = 0;
-            vrxBtn0.residedAct = 0;
-            vrxBtn2.residedAct = 0;
+            clearFSBtnFlags();
             Ui::tvOn();
             //Serial.println("wake osd");
         }
@@ -370,18 +370,3 @@ void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload
 
 
 
-void updateVrxLed(uint32_t currentTimeUs)
-{
-    static uint32_t vrxLedTime = 0;
-    if(EepromSettings.diversityMode == 0){
-        if((int32_t)(currentTimeUs - vrxLedTime) < 0){
-            return;
-        }
-        vrxLedTime = currentTimeUs + DELAY_5_HZ;
-        VRX_LED0_TOGGLE;
-    } else if(EepromSettings.diversityMode == 1){
-        VRX_LED0_OFF;
-    } else {
-        VRX_LED0_ON;
-    }
-}

@@ -8,6 +8,7 @@
 namespace StateMachine {
     class MenuStateHandler : public StateMachine::StateHandler {
         private:
+            uint16_t selectedMenu;
             void doTapAction();
 
         public:
