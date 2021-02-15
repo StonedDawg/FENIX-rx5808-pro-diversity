@@ -299,7 +299,8 @@ void loop() {
         if (!Ui::isTvOn &&
             (vrxBtn2.residedAct || vrxBtn0.residedAct || vrxBtn1.residedAct))
         {
-            
+            vrxBtn1.residedAct = 0;
+            vrxBtn0.residedAct = 0;
             vrxBtn2.residedAct = 0;
             Ui::tvOn();
             //Serial.println("wake osd");
