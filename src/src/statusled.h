@@ -1,5 +1,6 @@
 #ifndef STATUS_LED_H
 #define STATUS_LED_H
+#include <stdint.h>
 
 #define VRX_LED0_TOGGLE digitalWrite(VRX_LED0,!digitalRead(VRX_LED0))
 #define  VRX_LED0_OFF   digitalWrite(VRX_LED0,LOW);
