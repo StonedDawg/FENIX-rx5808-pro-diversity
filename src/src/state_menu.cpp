@@ -59,25 +59,28 @@ void StateMachine::MenuStateHandler::doTapAction() {
          StateMachine::switchState(StateMachine::State::HOME); 
          
       }
-      else if ( // item 4
+      else if ( // RSSIA
       selectedMenu == 3
       )
       {
          StateMachine::switchState(StateMachine::State::HOME); 
          
       }
-      else if ( // item 5
+      else if ( // RSSIB
       selectedMenu == 4
       )
       {
          StateMachine::switchState(StateMachine::State::HOME); 
          
       }
-      else if ( // item 6
+      else if ( // RSSI INVERSION
       selectedMenu == 5
       )
       {
-         StateMachine::switchState(StateMachine::State::HOME); 
+         
+      if(EepromSettings.rssiInversion){
+         EepromSettings.rssiInversion = !EepromSettings.rssiInversion;
+      } 
          
       }
       else if ( // Calibration
@@ -149,21 +152,35 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
       Ui::display.setCursor( 140, 200);
       Ui::display.print("Menu 4");
    }
-   else if ( // item 5
+   else if ( RSSI
    selectedMenu == 4
    )
    {
       Ui::display.rect(47-5, 117-5, 60, 60, 100);
-      Ui::display.setCursor( 140, 200);
-      Ui::display.print("Menu 5");
+      Ui::display.setCursor( 100, 193);
+      Ui::display.print("RSSIAmin");
+      Ui::display.print("/RSSIAmax");
+      Ui::display.print(EepromSettings.rssiAMin);
+      Ui::display.print("/");          
+      Ui::display.print(EepromSettings.rssiAMin);
+      Ui::display.setCursor( 100, 207);
+      Ui::display.print("RSSIBmin");
+      Ui::display.print("/RSSIBmax");
+      Ui::display.print(EepromSettings.rssiBMin);
+      Ui::display.print("/");          
+      Ui::display.print(EepromSettings.rssiBMin);
    }
-   else if ( // item 6
+   else if ( // RSSI INVERSION
    selectedMenu == 5
    )
    {
       Ui::display.rect(47+60-5, 117-5, 60, 60, 100);
-      Ui::display.setCursor( 140, 200);
-      Ui::display.print("Menu 6");
+      Ui::display.setCursor( 120, 200);
+      if(EepromSettings.rssiInversion){
+      Ui::display.print("RSSI INVERT");
+      } else{
+      Ui::display.print("RSSI NORMAL");
+      }
    }
    else if ( // Receiver Calibration
    selectedMenu == 6
@@ -180,7 +197,7 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
       Ui::display.rect(47+180-5, 117-5, 60, 60, 100);
       Ui::display.setCursor( 120, 193);
       Ui::display.print("WiFi Update");
-      Ui::display.setCursor( 70, 207);
+      Ui::display.setCursor( 40, 207);
       Ui::display.print("SSID:Dawgversity  IP:192.168.4.1");
    }
 
