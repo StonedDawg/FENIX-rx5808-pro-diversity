@@ -2,6 +2,7 @@
 #include "settings_eeprom.h"
 #include "settings.h"
 
+fsBtn fatBtn;
 
 uint8_t readFSBtn(void){
     return 0x7 - ((digitalRead(FS_BUTTON2) << 2) | (digitalRead(FS_BUTTON1) << 1) | digitalRead(FS_BUTTON0));

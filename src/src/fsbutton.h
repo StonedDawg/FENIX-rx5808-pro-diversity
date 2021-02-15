@@ -30,7 +30,7 @@ typedef struct fsBtn {
     uint8_t pin2;
 } fsBtn;
 
-fsBtn fatBtn;
+
 uint8_t readFSBtn(void);
 void updateFSBtn(void);
 void clearFSBtnFlags(void);
