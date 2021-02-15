@@ -56,6 +56,7 @@ struct EepromSettings {
     uint16_t rssiMinTuneTime;
     uint8_t rssiHysteresis;
     uint16_t rssiHysteresisPeriod;
+    uint8_t rssiInverted;
     
     void setup();
     void update();
@@ -108,6 +109,7 @@ const struct {
     uint16_t rssiMinTuneTime = 30;
     uint8_t rssiHysteresis = 0;
     uint16_t rssiHysteresisPeriod = 0;
+    uint8_t rssiInverted = 1;
 
 } EepromDefaults;
 

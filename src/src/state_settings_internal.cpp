@@ -11,7 +11,7 @@ bool showChangeInternalMenuOptions = false;
 
 uint8_t factoryReset = 0;
 
-uint8_t menuInternalItems = 7; // Number of items in settingsInternalMenu[]
+uint8_t menuInternalItems = 8; // Number of items in settingsInternalMenu[]
 char* settingsInternalMenu[]={ 
     "Factory Reset",
     "spectatorFreqScanStep",
@@ -20,6 +20,7 @@ char* settingsInternalMenu[]={
     "rssiMinTuneTime",
     "rssiHysteresis",
     "rssiHysteresisPeriod",
+    "rssiInversion",
     };
 
 void StateMachine::SettingsInternalStateHandler::onEnter() {

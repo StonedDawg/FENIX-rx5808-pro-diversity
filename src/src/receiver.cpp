@@ -270,7 +270,12 @@ namespace Receiver {
         ReceiverId nextReceiver = activeReceiver;
 
 //          if (!EepromSettings.quadversity) {
-            int8_t rssiDiff = (int8_t) rssiA - (int8_t) rssiB;
+            int8_t rssiDiff;
+            if(EepromSettings.rssiInverted){
+                rssiDiff = (int8_t) rssiB - (int8_t) rssiA;
+            } else {
+                rssiDiff = (int8_t) rssiA - (int8_t) rssiB;    
+            }
             uint8_t rssiDiffAbs = abs(rssiDiff);
             ReceiverId currentBestReceiver = activeReceiver;
 
