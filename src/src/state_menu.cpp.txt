@@ -7,6 +7,10 @@
 
 #include "icons.h"
 
+extern vrxDockBtn vrxBtn0;
+extern vrxDockBtn vrxBtn1;
+extern vrxDockBtn vrxBtn2;
+
 Image<CompositeGraphics> iconHome(home::xres, home::yres, home::pixels);
 Image<CompositeGraphics> iconExLRS(exlrs::xres, exlrs::yres, exlrs::pixels);
 Image<CompositeGraphics> iconCalibrate(calibrate::xres, calibrate::yres, calibrate::pixels);

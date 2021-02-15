@@ -65,10 +65,11 @@ namespace Ui {
     void tvOff() { 
 
         //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
+        
+        composite.stopOutput();
         Receiver::receiverOn();
         Receiver::setChannel(Receiver::activeChannel);
         
-        composite.stopOutput();
          
         isTvOn = false;
     }

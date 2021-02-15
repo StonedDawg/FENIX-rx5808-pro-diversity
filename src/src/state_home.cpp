@@ -13,7 +13,11 @@
 #include "temperature.h"
 #include "voltage.h"
 //#include "touchpad.h"
+#include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
+extern vrxDockBtn vrxBtn0;
+extern vrxDockBtn vrxBtn1;
+extern vrxDockBtn vrxBtn2;
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
@@ -42,12 +46,12 @@ void HomeStateHandler::onInitialDraw() {
 }
 
 void HomeStateHandler::onUpdateDraw() {
-    /**
-    if (TouchPad::touchData.buttonPrimary) {
-      TouchPad::touchData.buttonPrimary = false;
+    
+    if (vrxBtn1.residedAct) {
+      vrxBtn1.residedAct = false;
       this->doTapAction();
     }
-    */
+    
     if (isInBandScanRegion()) {
         bandScanUpdate();
         wasInBandScanRegion = true;
@@ -263,6 +267,8 @@ void HomeStateHandler::onUpdateDraw() {
 }
 
 void HomeStateHandler::doTapAction() {
+    EepromSettings.save();
+          StateMachine::switchState(StateMachine::State::MENU);
     /**
   if ( // Up band
       TouchPad::touchData.cursorX >= 0  && TouchPad::touchData.cursorX < 61 &&
