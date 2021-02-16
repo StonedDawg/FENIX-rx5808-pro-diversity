@@ -27,7 +27,7 @@ SOFTWARE.
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#define VERSION_NUMBER 0002
+#define VERSION_NUMBER 0004
 
 #define MSP_VTX_CONFIG      88 //out message         Get vtx settings - betaflight
 #define MSP_SET_VTX_CONFIG  89 //in message          Set vtx settings - betaflight
