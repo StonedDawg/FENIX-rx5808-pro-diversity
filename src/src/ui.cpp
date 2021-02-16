@@ -56,19 +56,25 @@ namespace Ui {
     void tvOn() {
 
         //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
+        
         Receiver::receiverOff();
+        
         composite.startOutput();
         
         isTvOn = true;
+        
     }
 
     void tvOff() { 
 
         //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
         
+        //pinMode(OSD_PIN,INPUT);
         composite.stopOutput();
+        //composite.deleteComposite();
         Receiver::receiverOn();
         Receiver::setChannel(Receiver::activeChannel);
+        pinMode(OSD_PIN,INPUT);
         
          
         isTvOn = false;
