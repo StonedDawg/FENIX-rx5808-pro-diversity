@@ -52,21 +52,21 @@ void StateMachine::MenuStateHandler::doTapAction() {
          StateMachine::switchState(StateMachine::State::HOME); 
          //StateMachine::switchState(StateMachine::State::EXPRESSLRS); 
       }
-      else if ( // item 3
+      else if ( // Internal Settings
       selectedMenu == 2
       )
       {
-         StateMachine::switchState(StateMachine::State::HOME); 
+         StateMachine::switchState(StateMachine::State::SETTINGS_INTERNAL); 
          
       }
-      else if ( // RSSIA
+      else if ( // menu 4
       selectedMenu == 3
       )
       {
          StateMachine::switchState(StateMachine::State::HOME); 
          
       }
-      else if ( // RSSIB
+      else if ( // RSSI
       selectedMenu == 4
       )
       {
@@ -78,9 +78,9 @@ void StateMachine::MenuStateHandler::doTapAction() {
       )
       {
          
-      if(EepromSettings.rssiInversion){
-         EepromSettings.rssiInversion = !EepromSettings.rssiInversion;
-      } 
+         if(EepromSettings.rssiInverted){
+            EepromSettings.rssiInverted = !EepromSettings.rssiInverted;
+         } 
          
       }
       else if ( // Calibration
@@ -136,13 +136,13 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
       Ui::display.setCursor( 90, 200);
       Ui::display.print("ExpressLRS Settings");
    }
-   else if ( // item 3
+   else if ( // Internal Settings
    selectedMenu == 2
    )
    {
       Ui::display.rect(47+120-5, 57-6, 60, 60, 100);
       Ui::display.setCursor( 140, 200);
-      Ui::display.print("Menu 3");
+      Ui::display.print("Internal Settings");
    }
    else if ( // item 4
    selectedMenu == 3
@@ -176,7 +176,7 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    {
       Ui::display.rect(47+60-5, 117-5, 60, 60, 100);
       Ui::display.setCursor( 120, 200);
-      if(EepromSettings.rssiInversion){
+      if(EepromSettings.rssiInverted){
       Ui::display.print("RSSI INVERT");
       } else{
       Ui::display.print("RSSI NORMAL");
