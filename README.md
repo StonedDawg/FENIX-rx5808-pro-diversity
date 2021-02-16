@@ -16,28 +16,19 @@ Indoor flight (29 seconds) https://www.youtube.com/watch?v=gvrL2I_6KYo
 **Calibration**
 
 When first built and turned on you will be greeted with a calibration screen.  Set a VTx to 25 mW and on your favourite band/frequency (F4 for 5800 MHz) and place the VTx next to the goggles.  Tap the touchpad and the module will sweep all frequencies tracking maximum and minimum RSSI values.  When completed you will see the final min/max values for each receiver and can tapping again saves these values.
-
-The calibration process can be repeated by tapping the ‘on time’ in the upper right corner.  This will change when a proper settings menu has be completed.
-
-**Band selection**
-
-Cycle through bands A, B, E, F, R, L, U, O, H by tapping on the upper or lower half of the band letter.
-
-**Channel selection**
-
-Cycle through channels 1-8 by tapping on the upper or lower half of the channel number.
+press any button to step the process.
+The calibration process can be enhanced by selecting "enhance calibration" from menu or reset by selecting "factory reset" from internal settings menu.
 
 **Diversity or single antenna selection**
 
 Tapping on mode cycles through diversity, antenna A, and antenna B modes.
 
-**Spectrum analyser**
+**button navigation**
 
-Moving the cursor to the lower half of the screen starts the spectrum analyser.
+use fatshark up/down CH as the button. changing value (going up or going down) will cycle
+menu. to simulate enter button, change the direction, for example, after cycling with up button, to select the item, press the down button.
 
-_**Note** the screen will timeout after 2 seconds when the cursor is in the top half of the screen, but will not timeout when in the lower half and spectrum analyser is running._
-
-The spectrum displays the RSSI detected for each of the 72 channels/bands.  A peak can be tapped on to select this frequency.  When selecting a peak the module will sweep across the peak in 1 MHz steps and determine the center frequency of the peak.  The receivers are then set to the band/channel closest to this center frequency.
+**note : due to fatshark "garbage" button system as Jye said, when button up or down has been pressed too many time (fatshark will do longer beep when pressed), menu cycling will stop. to keep cycling the menu, go with the opposite direction, it will not simulate enter button from a max-ed value button.
 
 ## BOM
 
@@ -51,8 +42,7 @@ The spectrum displays the RSSI detected for each of the 72 channels/bands.  A pe
      *   https://www.aliexpress.com/item/Swiftflying-Boscam-FPV-5-8G-Wireless-Audio-Video-Receiving-Module-For-RX5808/32841092602.html
   *   2 x Antenna Connectors
      *   https://www.aliexpress.com/item/5-pcs-RF-Coaxial-Long-SMA-Female-Straight-Edge-15mm-tooth-PCB-Connector-Adapter/32913905715.html
-  *   1 x SPDT Analog Switch TS5A3159ADBVR SOT-23
-     *   http://www.ti.com/lit/ds/symlink/ts5a3159a.pdf
+  *   3 x  Switch CD4065
   *   3.3V Regulator AMS1117-3.3
   *   2 x 10uF 0603 SMD Capacitors
   *   1 x 0.1uF 0603 SMD Capacitor
@@ -81,8 +71,10 @@ The touchpad works better with a cover.  I use a piece of electric tape.
 <img src="docs/img/BackBuild.jpg" width="50%">
 
 ## Flashing
-
+initial flashing :
 Tx and Rx pins to the TTGO are broken out to the upper 2 pins that plug into the goggles.  Connect these, along with GND (pin 3rd from bottom) and 5V (bottom pin), then flash using your favourite FTDI.
+
+next update flashing can use OTA.
 
 ## Recognition
 

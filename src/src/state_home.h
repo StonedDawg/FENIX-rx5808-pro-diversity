@@ -12,8 +12,13 @@ namespace StateMachine {
             void doTapAction();
     
             uint8_t displayActiveChannel = 0;
+            uint8_t scanNext = 0;
+            uint8_t bandScanSelectedChannel = 0;
+            uint8_t menuLevel = 0;
+            uint8_t internalSelectedMenu = 0;
             bool wasInBandScanRegion = false;
             bool isInBandScanRegion();
+            bool isInAnalyzeRegion();
             void bandScanUpdate();
             
             void setChannel(int channelIncrement);
@@ -24,6 +29,7 @@ namespace StateMachine {
             uint8_t lastChannelIndex = 0;
 
         public:
+            
             void onEnter();
             void onUpdate();
 
