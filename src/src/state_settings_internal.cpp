@@ -311,10 +311,10 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
             } else{
                 switch(selectedInternalInternalMenuItem){
                     case 3:
-                       /** will activate later                 
+                                     
                         EepromSettings.initDefaults();
                         ESP.restart();
-                    */
+                    
                     break;
                     default:
                         menuLevel--;
@@ -353,8 +353,9 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
             }
         break;
         case 8:
-           menuLevel--;
-           selectedInternalMenuItem = 0;
+            menuLevel = 0;
+            selectedInternalMenuItem = 0;
+            StateMachine::switchState(StateMachine::State::MENU);
         break;        
 
     }

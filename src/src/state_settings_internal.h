@@ -13,7 +13,7 @@ namespace StateMachine {
             int8_t selectedInternalInternalMenuItem = 0;
             int8_t menuLevel = 0;
             uint8_t menuInternalItems = 9; // Number of items in settingsInternalMenu[]
-            char* settingsInternalMenu[]={ 
+            char* settingsInternalMenu[9]={ 
                 "Factory Reset",
                 "spectatorFreqScanStep",
                 "spectatorFWHM",
@@ -22,7 +22,7 @@ namespace StateMachine {
                 "rssiHysteresis",
                 "rssiHysteresisPeriod",
                 "rssiInversion",
-                "back",
+                "back"
                 };
                 void doTapAction();
         public:

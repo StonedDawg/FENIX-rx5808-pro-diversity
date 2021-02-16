@@ -78,16 +78,16 @@ void StateMachine::MenuStateHandler::doTapAction() {
       )
       {
          
-         if(EepromSettings.rssiInverted){
+         
             EepromSettings.rssiInverted = !EepromSettings.rssiInverted;
-         } 
+         
          
       }
       else if ( // Calibration
       selectedMenu == 6
       )
       {
-         EepromSettings.initDefaults();
+         EepromSettings.isCalibrated = false;
          ESP.restart();
       }
       else if ( // WiFi OTA Update
@@ -188,7 +188,7 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    {
       Ui::display.rect(47+120-5, 117-5, 60, 60, 100);
       Ui::display.setCursor( 90, 200);
-      Ui::display.print("Receiver Calibration");
+      Ui::display.print("Enhance Calibration");
    }
    else if ( // WiFi OTA Update
    selectedMenu == 7
