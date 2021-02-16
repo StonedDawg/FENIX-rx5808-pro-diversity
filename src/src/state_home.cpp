@@ -305,7 +305,7 @@ void HomeStateHandler::doTapAction() {
             
             default: //menu
                 
-                menuLevel = 0;
+                menuLevel = 1;
                 internalSelectedMenu = 0;
                 EepromSettings.save();
                 StateMachine::switchState(StateMachine::State::MENU);
@@ -325,7 +325,7 @@ void HomeStateHandler::doTapAction() {
                 break;
             
             default: //menu
-                menuLevel = 0;
+                menuLevel = 1;
                 internalSelectedMenu = 0;
                 EepromSettings.save();
                 StateMachine::switchState(StateMachine::State::MENU);

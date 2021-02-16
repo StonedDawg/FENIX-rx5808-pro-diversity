@@ -14,7 +14,7 @@ namespace StateMachine {
             uint8_t displayActiveChannel = 0;
             uint8_t scanNext = 0;
             uint16_t bandScanSelectedChannel = 0;
-            uint8_t menuLevel = 0;
+            uint8_t menuLevel = 1;
             uint8_t internalSelectedMenu = 0;
             bool wasInBandScanRegion = false;
             bool isInBandScanRegion();
