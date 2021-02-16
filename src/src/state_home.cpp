@@ -347,7 +347,7 @@ void HomeStateHandler::doTapAction() {
                     break;
                     case 1: //analyze
                         if(bandScanSelectedChannel < 306 && bandScanSelectedChannel >18){
-                        bandScanSelectedChannel+=10;
+                        bandScanSelectedChannel+=5;
                         } else {
                             bandScanSelectedChannel = 19;
                         }
