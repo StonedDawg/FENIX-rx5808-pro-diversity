@@ -73,26 +73,26 @@ namespace Receiver {
 
     void receiverSelect(int8_t sel){
             if(receiverState){
-                digitalWrite(PIN_VRX_SWITCH1, !sel);
+                digitalWrite(PIN_VRX_SWITCH0, !sel);
                 digitalWrite(VRX_LED1,!sel);
-                digitalWrite(PIN_VRX_SWITCH2, sel);
+                digitalWrite(PIN_VRX_SWITCH1, sel);
                 digitalWrite(VRX_LED2,sel);
             }
                 
     }
     void receiverOff(void){
                 receiverState = 0;
-                digitalWrite(PIN_VRX_SWITCH1, LOW);
+                digitalWrite(PIN_VRX_SWITCH0, LOW);
                 digitalWrite(VRX_LED1,LOW);
-                digitalWrite(PIN_VRX_SWITCH2,LOW);
+                digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
                 
     }
     void receiverOn(void){
                 receiverState = 1;
-                digitalWrite(PIN_VRX_SWITCH1, HIGH);
+                digitalWrite(PIN_VRX_SWITCH0, HIGH);
                 digitalWrite(VRX_LED1,HIGH);
-                digitalWrite(PIN_VRX_SWITCH2,LOW);
+                digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
                 activeReceiver = ReceiverId::A;
                 
