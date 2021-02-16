@@ -172,10 +172,12 @@ vrxBtn2.action2 = noActionBtn;
         EepromSettings.otaUpdateRequested = false;
         EepromSettings.save();
         updatingOTA = true;
-    } else
-    /* 
+    } 
+    
+    /**else
+     
         esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
-    */
+    
     {
         
     ////Serial.println("no OTA req, continue..");
@@ -201,7 +203,7 @@ vrxBtn2.action2 = noActionBtn;
             }
         }
     }
-    
+    */
     ////Serial.println("Done setup");  
 }
 
