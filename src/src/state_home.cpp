@@ -265,7 +265,7 @@ void HomeStateHandler::onUpdateDraw() {
         Ui::display.line(18+CHANNELS_SIZE_DIVIDER*markerX, 214, 18+CHANNELS_SIZE_DIVIDER*markerX+(-3+i), 219, 100);
     }
     
-    if (HomeStateHandler::isInAnalyzeRegion() && bandScanSelectedChannel> 18 && bandScanSelectedChannel < (324-18)) {
+    if (HomeStateHandler::isInAnalyzeRegion() && bandScanSelectedChannel> 18 && bandScanSelectedChannel < (324-13)) {
         Ui::UiTimeOut.reset();
         Ui::display.fillRect( bandScanSelectedChannel - 33, 183, 33, 17, 10);
         Ui::display.setCursor( bandScanSelectedChannel - 32,184 );
