@@ -30,9 +30,7 @@ void fsButtonIncrease(void){
         if(fatBtn.previousValue != 0x0){
             fatBtn.directionChanged = 1;
         }
-        if(fatBtn.previousValue == 0x0){
-        fatBtn.valueChanged = 1;
-        }
+        
     } else {
         fatBtn.valueChanged = 1;
     }
@@ -44,9 +42,7 @@ void fsButtonDecrease(void){
         if(fatBtn.previousValue != 0x7){
             fatBtn.directionChanged = 1;
         }
-        if(fatBtn.previousValue == 0x7){
-        fatBtn.valueChanged = 1;
-        }
+        
     } else {
         fatBtn.valueChanged = 1;
     }
