@@ -31,6 +31,7 @@ SOFTWARE.
 
 #define OSD_PIN 25
 
+
 #define MSP_VTX_CONFIG      88 //out message         Get vtx settings - betaflight
 #define MSP_SET_VTX_CONFIG  89 //in message          Set vtx settings - betaflight
 
@@ -53,8 +54,10 @@ SOFTWARE.
 //#define PIN_SPI_SLAVE_SELECT_RX_A       32
 //#define PIN_SPI_SLAVE_SELECT_RX_B       33
 
-#define PIN_VRX_SWITCH0                  23
-#define PIN_VRX_SWITCH1                  22
+#define PIN_VRX_SWITCH0                  22
+#define PIN_VRX_SWITCH1                  19
+
+#define OSD_SWITCH                      23
 
 #define FS_BUTTON0                     3   //LSB
 #define FS_BUTTON1                     1

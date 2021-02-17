@@ -24,6 +24,7 @@ namespace Ui {
     //highest clockspeed needed
     //rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
     
+    pinMode(OSD_SWITCH,OUTPUT);
     //initializing DMA buffers and I2S
     composite.init();
     //initializing graphics double buffer
@@ -57,6 +58,7 @@ namespace Ui {
 
         //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
         
+        digitalWrite(OSD_SWITCH,HIGH);
         Receiver::receiverOff();
         
         composite.startOutput();
@@ -69,6 +71,7 @@ namespace Ui {
 
         //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
         
+        digitalWrite(OSD_SWITCH,LOW);
         //pinMode(OSD_PIN,INPUT);
         composite.stopOutput();
         //composite.deleteComposite();
