@@ -192,6 +192,9 @@ class CompositeOutput
     i2s_stop(I2S_PORT);
     i2s_set_dac_mode(I2S_DAC_CHANNEL_DISABLE);
     pinMode(OSD_PIN,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_25);
+    gpio_pullup_dis(GPIO_NUM_25);
+    gpio_set_pull_mode(GPIO_NUM_25,GPIO_FLOATING);
   }
 
   void deleteComposite(){

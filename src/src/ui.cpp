@@ -74,7 +74,7 @@ namespace Ui {
         //composite.deleteComposite();
         Receiver::receiverOn();
         Receiver::setChannel(Receiver::activeChannel);
-        pinMode(OSD_PIN,INPUT);
+        //pinMode(OSD_PIN,INPUT);
         
          
         isTvOn = false;
