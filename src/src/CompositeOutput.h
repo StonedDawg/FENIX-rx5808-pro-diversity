@@ -188,9 +188,13 @@ class CompositeOutput
   
   void stopOutput()
   {
+    
     i2s_stop(I2S_PORT);
     i2s_set_dac_mode(I2S_DAC_CHANNEL_DISABLE);
     pinMode(25,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_25);
+    gpio_pullup_dis(GPIO_NUM_25);
+    gpio_set_pull_mode(GPIO_NUM_25,GPIO_FLOATING);
   }
   void sendLine()
   {
