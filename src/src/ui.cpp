@@ -11,7 +11,7 @@ namespace Ui {
   
     bool isTvOn = false;
 
-    Timer UiTimeOut = Timer(2000);
+    Timer UiTimeOut = Timer(5000);
 
     int XRES = 324;
     int YRES = 224;
@@ -22,7 +22,7 @@ namespace Ui {
     void setup() {
 
     //highest clockspeed needed
-    rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
+    //rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
     
     //initializing DMA buffers and I2S
     composite.init();
@@ -57,18 +57,25 @@ namespace Ui {
 
         //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
         
+        Receiver::receiverOff();
+        
         composite.startOutput();
         
         isTvOn = true;
+        
     }
 
     void tvOff() { 
 
         //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
-
-        Receiver::setChannel(Receiver::activeChannel);
         
+        //pinMode(OSD_PIN,INPUT);
         composite.stopOutput();
+        //composite.deleteComposite();
+        Receiver::receiverOn();
+        Receiver::setChannel(Receiver::activeChannel);
+        //pinMode(OSD_PIN,INPUT);
+        
          
         isTvOn = false;
     }

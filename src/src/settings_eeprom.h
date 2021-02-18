@@ -22,7 +22,7 @@ struct EepromSettings {
     uint8_t isCalibrated;
     uint8_t otaUpdateRequested;
 
-    uint8_t diversityMode = 0;
+    uint8_t dockMode = 0;
     
     uint8_t startChannel;
     int lastKnownMenuItem;
@@ -56,6 +56,7 @@ struct EepromSettings {
     uint16_t rssiMinTuneTime;
     uint8_t rssiHysteresis;
     uint16_t rssiHysteresisPeriod;
+    uint8_t rssiInverted;
     
     void setup();
     void update();
@@ -74,7 +75,7 @@ const struct {
     uint8_t isCalibrated = false;
     uint8_t otaUpdateRequested = false;    
 
-    uint8_t diversityMode = 0;
+    uint8_t dockMode = 0;
 
     uint8_t startChannel = 27;
     int lastKnownMenuItem = 0;
@@ -108,6 +109,7 @@ const struct {
     uint16_t rssiMinTuneTime = 30;
     uint8_t rssiHysteresis = 0;
     uint16_t rssiHysteresisPeriod = 0;
+    uint8_t rssiInverted = 1;
 
 } EepromDefaults;
 

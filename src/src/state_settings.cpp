@@ -95,7 +95,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
         switch(selectedMenuItem) {
           
             case 0:    // Diversity
-                  #ifdef FENIX_QUADVERSITY
+                  #ifdef QUADVERSITY
                       if (EepromSettings.quadversity) {
 //                          Ui::display.print(PSTR2("    On     "));
                       } else {
@@ -120,7 +120,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
             break;
             
             case 2:    // Voltage Scale
-                  #ifdef FENIX_QUADVERSITY
+                  #ifdef QUADVERSITY
 //                      Ui::display.print(PSTR2("  "));
 //                      Ui::display.print(Voltage::voltage);   
 //                      Ui::display.print(PSTR2("."));        
@@ -132,7 +132,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
             break;
             
             case 3:    // Volt Warning
-                  #ifdef FENIX_QUADVERSITY
+                  #ifdef QUADVERSITY
 //                      Ui::display.print(PSTR2("  "));
 //                      Ui::display.print(EepromSettings.vbatWarning / 10);
 //                      Ui::display.print(PSTR2("."));
@@ -197,7 +197,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
             break;
             
             case 10:    // CUSTOMLOGO
-              #ifdef FENIX_QUADVERSITY
+              #ifdef QUADVERSITY
 //                  StateMachine::switchState(StateMachine::State::CUSTOMLOGO);
               #endif
             break;
@@ -260,7 +260,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
 //            switch(selectedMenuItem) {
 //                
 //                case (0):    // Diversity
-//                  #ifdef FENIX_QUADVERSITY
+//                  #ifdef QUADVERSITY
 //                    EepromSettings.quadversity = !EepromSettings.quadversity;
 //                    EepromSettings.isCalibrated = !EepromSettings.isCalibrated;
 //                  #endif                    
@@ -284,7 +284,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
 //                case (4):    // Save Screen
 //                  EepromSettings.saveScreenOn--; 
 //                  if (EepromSettings.saveScreenOn == 255) {
-//                    #ifdef FENIX_QUADVERSITY
+//                    #ifdef QUADVERSITY
 //                        EepromSettings.saveScreenOn = 5;
 //                    #else
 //                        EepromSettings.saveScreenOn = 4;
@@ -339,7 +339,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
 //            switch(selectedMenuItem) {
 //                
 //                case (0):    // Diversity
-//                    #ifdef FENIX_QUADVERSITY
+//                    #ifdef QUADVERSITY
 //                      EepromSettings.quadversity = !EepromSettings.quadversity;
 //                      EepromSettings.isCalibrated = !EepromSettings.isCalibrated;
 //                    #endif
@@ -362,7 +362,7 @@ void StateMachine::SettingsStateHandler::onUpdateDraw() {
 //                
 //                case (4):    // Save Screen
 //                    EepromSettings.saveScreenOn++;
-//                    #ifdef FENIX_QUADVERSITY
+//                    #ifdef QUADVERSITY
 //                        if (EepromSettings.saveScreenOn == 6) {
 //                    #else
 //                        if (EepromSettings.saveScreenOn == 5) {

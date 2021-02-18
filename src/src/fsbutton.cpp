@@ -1,85 +1,78 @@
 #include "fsbutton.h"
 #include "settings_eeprom.h"
+#include "settings.h"
 
 
+extern fsBtn fatBtn;
+uint8_t readFSBtn(void){
+    return 0x7 - ((digitalRead(FS_BUTTON2) << 2) | (digitalRead(FS_BUTTON1) << 1) | digitalRead(FS_BUTTON0));
+}
 
-void incrementVrxMode(void){
-    if(EepromSettings.diversityMode < 2){
-        EepromSettings.diversityMode++;
+void updateFSBtn(void){
+    int8_t currentValue = readFSBtn();
+        if(currentValue - fatBtn.previousValue > 0){
+            fsButtonIncrease();
+            fatBtn.previousValue = currentValue;
+            fatBtn.previousDirection = 1;
+        } else if(currentValue - fatBtn.previousValue < 0){
+            fsButtonDecrease();
+            fatBtn.previousValue = currentValue;
+            fatBtn.previousDirection = -1;
+        }
+        if(isFSBtnErr()){
+            clearFSBtnFlags();
+        }
+    
+}
+
+void fsButtonIncrease(void){
+    if(fatBtn.previousDirection < 0){
+        if(fatBtn.previousValue != 0x0){
+            fatBtn.directionChanged = 1;
+        }
         
     } else {
-        EepromSettings.diversityMode = 0;
+        fatBtn.valueChanged = 1;
     }
 }
 
-void noActionBtn(void){
-    return;
-}
-int noActionBtnz(vrxDockBtn* vrxB){
-    return 0;
-}
-void decrementVrxMode(void){
-    if(EepromSettings.diversityMode>0){
-        EepromSettings.diversityMode--;
+
+void fsButtonDecrease(void){
+    if(fatBtn.previousDirection > 0){
+        if(fatBtn.previousValue != 0x7){
+            fatBtn.directionChanged = 1;
+        }
+        
     } else {
-        EepromSettings.diversityMode = 2;
+        fatBtn.valueChanged = 1;
     }
 }
 
-int setResidedAct(vrxDockBtn* vrxB){
-    vrxB->residedAct = 1;
+void clearFSBtnFlags(void){
+    fatBtn.directionChanged = 0;
+    fatBtn.valueChanged = 0;
 }
-void updateVrxBtn(uint32_t currentTimeUs, vrxDockBtn* vrxB)
-{
-     bool reading = !digitalRead(vrxB->pin);
-        /**
-         if(reading){
-            VRX_LED0_ON;
-        } else {
-            VRX_LED0_OFF;
-        }
-        */
-     
-       if (reading != vrxB->lastReading) {
-            vrxB->lastDebounceTime = currentTimeUs;
-        }
+uint8_t getFSBtnFlags(void){
+    return ((fatBtn.directionChanged << 2) | (fatBtn.valueChanged << 1));
+}
+void fsBtnInit(void){
+    fatBtn.previousDirection = 0;
+    fatBtn.directionChanged = 0;
+    fatBtn.valueChanged = 0;
+    fatBtn.pin0 = FS_BUTTON0;
+    fatBtn.pin1 = FS_BUTTON1;
+    fatBtn.pin2 = FS_BUTTON2;
+    pinMode(FS_BUTTON0, INPUT);
+    pinMode(FS_BUTTON1, INPUT);
+    pinMode(FS_BUTTON2, INPUT);
+    
+    fatBtn.previousValue = readFSBtn();
+}
 
-        vrxB->lastReading = reading;
-
-        if (
-            reading != vrxB->pressed &&
-            (currentTimeUs - vrxB->lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
-        ) {
-            vrxB->pressed = reading;
-
-            uint32_t prevChangeTime = vrxB->changedTime;
-            vrxB->changedTime = currentTimeUs;
-
-            if (!vrxB->pressed) {
-                uint32_t duration = vrxB->changedTime - prevChangeTime;
-
-                if (duration < 1500){
-                    vrxB->action0();
-                    vrxB->residedAct = 1;
-                }
-                else if (duration < 3000){
-                    
-                    vrxB->action1();
-                    //decrementVrxMode();
-                    //VRX_LED0_TOGGLE;
-                }
-            }
-        }
-        
-        if (vrxB->pressed) {
-            uint32_t duration = currentTimeUs - vrxB->changedTime;
-            
-            if (duration >= 3000){
-                
-                    vrxB->action2();
-            VRX_LED1_ON;
-            }
-        }
-        
-            
+bool isFSBtnErr(void){
+    if(getFSBtnFlags() == 6){
+        return 1;
+    } else {
+        return 0;
+    }
 }

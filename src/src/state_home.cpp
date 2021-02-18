@@ -13,8 +13,14 @@
 #include "temperature.h"
 #include "voltage.h"
 //#include "touchpad.h"
+#include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
-
+/**
+extern vrxDockBtn vrxBtn0;
+extern vrxDockBtn vrxBtn1;
+extern vrxDockBtn vrxBtn2;
+*/
+extern fsBtn fatBtn;
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
 // For scalling graphics accross screen
@@ -30,7 +36,7 @@ using StateMachine::HomeStateHandler;
 void HomeStateHandler::onEnter() {
   
     displayActiveChannel = Receiver::activeChannel;
-
+    
 }
 
 void HomeStateHandler::onUpdate() {
@@ -42,12 +48,14 @@ void HomeStateHandler::onInitialDraw() {
 }
 
 void HomeStateHandler::onUpdateDraw() {
-    /**
-    if (TouchPad::touchData.buttonPrimary) {
-      TouchPad::touchData.buttonPrimary = false;
+    
+    if (getFSBtnFlags()) {
+        //clearFSBtnFlags();
       this->doTapAction();
+      Ui::UiTimeOut.reset();
+      
     }
-    */
+    
     if (isInBandScanRegion()) {
         bandScanUpdate();
         wasInBandScanRegion = true;
@@ -61,27 +69,42 @@ void HomeStateHandler::onUpdateDraw() {
     
     // Mode
     Ui::display.setTextColor(100);
-    Ui::display.setCursor( 8, 0);
-    Ui::display.print("Mode: ");    
-    if (EepromSettings.diversityMode == ANTENNA_A) {
+    Ui::display.setCursor( 8, 0);  
+    if (EepromSettings.dockMode == ANTENNA_A) {
         Ui::display.print("Antenna A");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_B) {
+    if (EepromSettings.dockMode == ANTENNA_B) {
         Ui::display.print("Antenna B");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_C) {
+    if (EepromSettings.dockMode == ANTENNA_C) {
         Ui::display.print("Antenna C");
     }   
-    if (EepromSettings.diversityMode == ANTENNA_D) {
+    if (EepromSettings.dockMode == ANTENNA_D) {
         Ui::display.print("Antenna D");
     }   
-    if (EepromSettings.diversityMode == DIVERSITY) {
+    if (EepromSettings.dockMode == DIVERSITY) {
         Ui::display.print("Diversity");
     }
-    if (EepromSettings.diversityMode == QUADVERSITY) {
+    if (EepromSettings.dockMode == QUADVERSITY) {
         Ui::display.print("Quadversity");
     }
-
+    
+        Ui::display.print("      ");
+        if(menuLevel == 0){    
+        Ui::display.setTextColor(0, 100);
+        }
+        if(internalSelectedMenu == 0){
+           Ui::display.print("Mode");
+        }else if(internalSelectedMenu == 1){
+           Ui::display.print("Analyze");
+           Ui::display.print(bandScanSelectedChannel);
+           
+        } else if(internalSelectedMenu == 2){
+           Ui::display.print("scanning");
+        } else if(internalSelectedMenu == 3){
+           Ui::display.print("menu");
+        }
+        Ui::display.setTextColor(100);
     #ifdef USE_VOLTAGE_MONITORING
         // Voltage
         if (Voltage::voltage > 9) {
@@ -241,28 +264,153 @@ void HomeStateHandler::onUpdateDraw() {
     for (int i = 0; i < 7; i++) {
         Ui::display.line(18+CHANNELS_SIZE_DIVIDER*markerX, 214, 18+CHANNELS_SIZE_DIVIDER*markerX+(-3+i), 219, 100);
     }
-    /**
-    if (HomeStateHandler::isInBandScanRegion() && TouchPad::touchData.cursorX > 18 && TouchPad::touchData.cursorX < (324-18)) {
-        Ui::display.fillRect( TouchPad::touchData.cursorX - 33, TouchPad::touchData.cursorY - 17, 33, 17, 10);
-        Ui::display.setCursor( TouchPad::touchData.cursorX - 32, TouchPad::touchData.cursorY - 16 );
+    
+    if (HomeStateHandler::isInAnalyzeRegion() && bandScanSelectedChannel> 18 && bandScanSelectedChannel < (324-13)) {
+        Ui::UiTimeOut.reset();
+        Ui::display.fillRect( bandScanSelectedChannel - 33, 183, 33, 17, 10);
+        Ui::display.setCursor( bandScanSelectedChannel - 32,184 );
         Ui::display.print(Channels::getName( 
                                             Channels::getOrderedIndex( 
-                                                                     (TouchPad::touchData.cursorX-18) / CHANNELS_SIZE_DIVIDER
+                                                                     (bandScanSelectedChannel-18) / CHANNELS_SIZE_DIVIDER
                                                                      )
                                             )
                           );
-        Ui::display.setCursor( TouchPad::touchData.cursorX - 32, TouchPad::touchData.cursorY - 8 );
+        Ui::display.setCursor( bandScanSelectedChannel - 32, 192 );
         Ui::display.print(Channels::getFrequency( 
                                             Channels::getOrderedIndex( 
-                                                                     (TouchPad::touchData.cursorX-18) / CHANNELS_SIZE_DIVIDER
+                                                                     (bandScanSelectedChannel-18) / CHANNELS_SIZE_DIVIDER
                                                                      )
                                             )
                           );
     }
-    */
+    
 }
 
 void HomeStateHandler::doTapAction() {
+    if(getFSBtnFlags() == 4){
+        
+        clearFSBtnFlags();
+        if(menuLevel == 0){
+            switch (internalSelectedMenu)
+            {
+                case 2: //scanning
+                    menuLevel++;
+                break;
+                case 1: //analyze
+                    menuLevel++;
+                break;
+                case 0: //Mode selection
+                    menuLevel++;
+                break;
+            
+            default: //menu
+                
+                menuLevel = 1;
+                internalSelectedMenu = 0;
+                EepromSettings.save();
+                StateMachine::switchState(StateMachine::State::MENU);
+            break;
+            }
+        } else {
+            switch (internalSelectedMenu)
+            {
+                case 2: //scanning
+                    menuLevel = 0;
+                break;
+                case 1: //analyze
+                    menuLevel = 0;
+                break;
+                case 0: //Mode selection
+                    menuLevel = 0;
+                break;
+            
+            default: //menu
+                menuLevel = 1;
+                internalSelectedMenu = 0;
+                EepromSettings.save();
+                StateMachine::switchState(StateMachine::State::MENU);
+            break;
+            }
+        }
+    } else if(getFSBtnFlags() == 2){
+        clearFSBtnFlags();
+        if (menuLevel == 0){
+                if(internalSelectedMenu < 3){
+                internalSelectedMenu++;
+                } else {
+                    internalSelectedMenu = 0;
+                }
+        }else if(menuLevel == 1){
+                    switch (internalSelectedMenu){
+                    case 2: //scanning
+                        scanNext = 1;
+                    break;
+                    case 1: //analyze
+                        if(bandScanSelectedChannel < 306 && bandScanSelectedChannel >18){
+                        bandScanSelectedChannel+=5;
+                        } else {
+                            bandScanSelectedChannel = 19;
+                        }
+                    break;
+                    case 0: //Mode selection
+                            if (EepromSettings.quadversity) {
+                        switch ( EepromSettings.dockMode )
+                        {
+                            case DIVERSITY:
+                                EepromSettings.dockMode = ANTENNA_A;
+                                break;
+                            case ANTENNA_A:
+                                EepromSettings.dockMode = ANTENNA_B;
+                                break;
+                            case ANTENNA_B:
+                                EepromSettings.dockMode = ANTENNA_C;
+                                break;
+                            case ANTENNA_C:
+                                EepromSettings.dockMode = ANTENNA_D;
+                                break;
+                            case ANTENNA_D:
+                                EepromSettings.dockMode = QUADVERSITY;
+                                break;
+                            case QUADVERSITY:
+                                EepromSettings.dockMode = DIVERSITY;
+                                break;
+                        }
+                    } else {        
+                        switch ( EepromSettings.dockMode )
+                        {
+                            case ANTENNA_A:
+                                EepromSettings.dockMode = ANTENNA_B;
+            //                      //ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
+                                break;
+                            case ANTENNA_B:
+                                EepromSettings.dockMode = DIVERSITY;
+            //                      //ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
+                                break;
+                            case DIVERSITY:
+                                EepromSettings.dockMode = ANTENNA_A;
+                                break;
+                        }
+
+                    }
+                
+            
+                EepromSettings.markDirty();
+            
+
+                break;
+                
+                default: //menu
+                
+                    EepromSettings.save();
+                    StateMachine::switchState(StateMachine::State::MENU);
+                break;
+                
+            }
+        }
+    }
+
+}    
+    
     /**
   if ( // Up band
       TouchPad::touchData.cursorX >= 0  && TouchPad::touchData.cursorX < 61 &&
@@ -307,40 +455,40 @@ void HomeStateHandler::doTapAction() {
       TouchPad::touchData.cursorY < 8
      ) {
           if (EepromSettings.quadversity) {
-              switch ( EepromSettings.diversityMode )
+              switch ( EepromSettings.dockMode )
               {
-                  case Receiver::diversityMode::ANTENNA_A:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_B;
+                  case Receiver::dockMode::ANTENNA_A:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_B;
                       break;
-                  case Receiver::diversityMode::ANTENNA_B:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_C;
+                  case Receiver::dockMode::ANTENNA_B:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_C;
                       break;
-                  case Receiver::diversityMode::ANTENNA_C:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_D;
+                  case Receiver::dockMode::ANTENNA_C:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_D;
                       break;
-                  case Receiver::diversityMode::ANTENNA_D:
-                      EepromSettings.diversityMode = Receiver::diversityMode::DIVERSITY;
+                  case Receiver::dockMode::ANTENNA_D:
+                      EepromSettings.dockMode = Receiver::dockMode::DIVERSITY;
                       break;
-                  case Receiver::diversityMode::DIVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::QUADVERSITY;
+                  case Receiver::dockMode::DIVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::QUADVERSITY;
                       break;
-                  case Receiver::diversityMode::QUADVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_A;
+                  case Receiver::dockMode::QUADVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_A;
                       break;
               }
           } else {        
-              switch ( EepromSettings.diversityMode )
+              switch ( EepromSettings.dockMode )
               {
-                  case Receiver::diversityMode::ANTENNA_A:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_B;
+                  case Receiver::dockMode::ANTENNA_A:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_B;
 //                      //ReceiverSpi::rxStandby(Receiver::ReceiverId::A);
                       break;
-                  case Receiver::diversityMode::ANTENNA_B:
-                      EepromSettings.diversityMode = Receiver::diversityMode::DIVERSITY;
+                  case Receiver::dockMode::ANTENNA_B:
+                      EepromSettings.dockMode = Receiver::dockMode::DIVERSITY;
 //                      //ReceiverSpi::rxPowerOn(Receiver::ReceiverId::A);
                       break;
-                  case Receiver::diversityMode::DIVERSITY:
-                      EepromSettings.diversityMode = Receiver::diversityMode::ANTENNA_A;
+                  case Receiver::dockMode::DIVERSITY:
+                      EepromSettings.dockMode = Receiver::dockMode::ANTENNA_A;
                       break;
               }
 
@@ -361,9 +509,9 @@ void HomeStateHandler::doTapAction() {
           EepromSettings.startChannel = displayActiveChannel;
           EepromSettings.markDirty();
         }
-    */    
+        
 }
-
+*/
 void HomeStateHandler::setChannel(int channelIncrement) {
 
     int band = Receiver::activeChannel / 8;
@@ -419,7 +567,20 @@ void HomeStateHandler::centreFrequency() {
   
   wasInBandScanRegion = false;
 }
-
+bool HomeStateHandler::isInAnalyzeRegion() {
+    /**
+    if (TouchPad::touchData.cursorY > 130 ) {
+        return true;
+    } else {
+        return false;
+    }
+    */
+   if(internalSelectedMenu == 1 && menuLevel == 1){
+       return true;
+   } else {
+       return false;
+   }
+}
 bool HomeStateHandler::isInBandScanRegion() {
     /**
     if (TouchPad::touchData.cursorY > 130 ) {
@@ -428,7 +589,14 @@ bool HomeStateHandler::isInBandScanRegion() {
         return false;
     }
     */
+   if(internalSelectedMenu == 2 && menuLevel == 1){
+       return true;
+   } else {
+       return false;
+   }
 }
+
+
 
 void HomeStateHandler::bandScanUpdate() {
 
@@ -446,13 +614,15 @@ void HomeStateHandler::bandScanUpdate() {
         if (EepromSettings.quadversity) {
             Receiver::rssiBandScanData[orderedChanelIndex] = max(Receiver::rssiA, max(Receiver::rssiB, max(Receiver::rssiC, Receiver::rssiD)));
         }
-    
+        
+        if(scanNext){
+            scanNext = 0;
         orderedChanelIndex = orderedChanelIndex + 1;
         if (orderedChanelIndex == CHANNELS_SIZE) {
             orderedChanelIndex = 0;
         }
-        Receiver::setChannel(Channels::getOrderedIndex(orderedChanelIndex));
-    
+            Receiver::setChannel(Channels::getOrderedIndex(orderedChanelIndex));
+        }
     }
     
 }

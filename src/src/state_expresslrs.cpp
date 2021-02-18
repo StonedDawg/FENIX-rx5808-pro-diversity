@@ -4,6 +4,7 @@
 #include "ui.h"
 #include "temperature.h"
 //#include "touchpad.h"
+#include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
@@ -23,13 +24,13 @@ void StateMachine::ExLRSStateHandler::onInitialDraw()
 
 void StateMachine::ExLRSStateHandler::onUpdateDraw()
 {
-/**
-    if (TouchPad::touchData.buttonPrimary)
+
+    if (getFSBtnFlags())
     {
-        TouchPad::touchData.buttonPrimary = false;
+        clearFSBtnFlags();
         this->doTapAction();
     }
-*/
+
     Ui::display.setCursor(205, 0);
 
     // Temperature // Doesnt currently work within ESP32 Arduino.
@@ -139,6 +140,8 @@ void StateMachine::ExLRSStateHandler::onUpdateDraw()
 
 void StateMachine::ExLRSStateHandler::doTapAction()
 {
+    StateMachine::switchState(StateMachine::State::MENU);
+    
     /**
     if ( // Menu
         TouchPad::touchData.cursorX > 314 && TouchPad::touchData.cursorY < 8)

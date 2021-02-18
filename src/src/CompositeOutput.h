@@ -1,5 +1,6 @@
 #pragma once
 #include "driver/i2s.h"
+#include "settings.h"
 
 typedef struct
 {
@@ -180,13 +181,25 @@ class CompositeOutput
   }
   
   void startOutput()
-  {
+  { 
+    
+    i2s_set_dac_mode(I2S_DAC_CHANNEL_RIGHT_EN);
     i2s_start(I2S_PORT);
   }
   
   void stopOutput()
   {
     i2s_stop(I2S_PORT);
+    i2s_set_dac_mode(I2S_DAC_CHANNEL_DISABLE);
+    pinMode(OSD_PIN,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_25);
+    gpio_pullup_dis(GPIO_NUM_25);
+    gpio_set_pull_mode(GPIO_NUM_25,GPIO_FLOATING);
+  }
+
+  void deleteComposite(){
+    i2s_driver_uninstall(I2S_PORT);
+    pinMode(OSD_PIN,INPUT);
   }
 
   void sendLine()

@@ -1,31 +1,15 @@
 
 #include "state_settings_internal.h"
 #include "settings_eeprom.h"
-
+#include "fsbutton.h"
 #include "state.h"
 #include "ui.h"
 #include "voltage.h"
 
-int8_t selectedInternalMenuItem = 0;
-bool showChangeInternalMenuOptions = false;
-
-uint8_t factoryReset = 0;
-
-uint8_t menuInternalItems = 7; // Number of items in settingsInternalMenu[]
-char* settingsInternalMenu[]={ 
-    "Factory Reset",
-    "spectatorFreqScanStep",
-    "spectatorFWHM",
-    "rssiSeekTreshold",
-    "rssiMinTuneTime",
-    "rssiHysteresis",
-    "rssiHysteresisPeriod",
-    };
 
 void StateMachine::SettingsInternalStateHandler::onEnter() {
     selectedInternalMenuItem = 0;
-    factoryReset = 0;
-    showChangeInternalMenuOptions = false;
+    menuLevel = 0;
 //    Ui::clear();
 }
 
@@ -34,108 +18,129 @@ void StateMachine::SettingsInternalStateHandler::onExit() {
 
 void StateMachine::SettingsInternalStateHandler::onUpdate() {
 //    Ui::needUpdate();
+    onUpdateDraw();
+        if (getFSBtnFlags()) {
+        //clearFSBtnFlags();
+        this->doTapAction();
+        
+        }
 }
 
 void StateMachine::SettingsInternalStateHandler::onInitialDraw() {
     this->onUpdateDraw();
 }
-
 void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
 
 
-    if (!showChangeInternalMenuOptions) {
+    if (!menuLevel) {
       
         int8_t index;
     
 //        Ui::clear();
 //        Ui::setTextSize(1);
         
-//        Ui::setCursor(0, 8);
+        Ui::display.setCursor(0, 8);
         index = selectedInternalMenuItem-2;
         if (index < 0) {
           index += menuInternalItems;
         }
-//        Ui::display.print( settingsInternalMenu[index] );
+        Ui::display.print( settingsInternalMenu[index] );
         
-//            Ui::setCursor(6, 18);
+            Ui::display.setCursor(6, 18);
             index = selectedInternalMenuItem-1;
             if (index < 0) {
               index += menuInternalItems;
             }
-//            Ui::display.print( settingsInternalMenu[index] );
+            Ui::display.print( settingsInternalMenu[index] );
             
-//                Ui::setCursor(12, 28);
-//                Ui::display.setTextColor(BLACK, WHITE); // 'inverted' text
-//                Ui::display.print( settingsInternalMenu[selectedInternalMenuItem] );
-//                Ui::display.setTextColor(WHITE, BLACK);
+                Ui::display.setCursor(12, 28);
+                Ui::display.setTextColor(0, 100); // 'inverted' text
+                Ui::display.print( settingsInternalMenu[selectedInternalMenuItem] );
+                Ui::display.setTextColor(100);
             
-//            Ui::setCursor(6, 38);    
+            Ui::display.setCursor(6, 38);    
             index = selectedInternalMenuItem+1;
             if (index > menuInternalItems-1) {
               index -= menuInternalItems;
             }
-//            Ui::display.print( settingsInternalMenu[index] );
+            Ui::display.print( settingsInternalMenu[index] );
         
-//        Ui::setCursor(0, 48);
+        Ui::display.setCursor(0, 48);
         index = selectedInternalMenuItem+2;
         if (index > menuInternalItems-1) {
           index -= menuInternalItems;
         }
-//        Ui::display.print( settingsInternalMenu[index] );
+        Ui::display.print( settingsInternalMenu[index] );
     }
     
-    if (showChangeInternalMenuOptions) {
-//        Ui::fillRect(15, 20, 96, 24, BLACK);
-//        Ui::drawRoundRect(15, 20, 96, 24, 2, WHITE);
-//        Ui::setCursor(29, 28);
+    if (menuLevel) {
+        Ui::display.fillRect(15, 20, 96, 24, 0);
+        Ui::display.rect(15, 20, 96, 24, 2);
+        Ui::display.setCursor(29, 28);
 
         switch(selectedInternalMenuItem) {
           
             case 0:    // Factory Reset
-              if (factoryReset == 0) {
-//                  Ui::display.print(PSTR2("    No     "));
-              } else if (factoryReset == 1) {
-//                  Ui::display.print(PSTR2("       No  "));
-              } else if (factoryReset == 2) {
-//                  Ui::display.print(PSTR2("  No       "));
-              } else if (factoryReset == 3) {
-//                  Ui::display.print(PSTR2("    Yes     "));
-              } else if (factoryReset == 4) {
-//                  Ui::display.print(PSTR2("  No       "));
-              } else if (factoryReset == 5) {
-//                  Ui::display.print(PSTR2("       No  "));
+              if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print(("    No     "));
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print(("       No  "));
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print(("  No       "));
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print(("    Yes     "));
+              } else if (selectedInternalInternalMenuItem == 4) {
+                  Ui::display.print(("  No       "));
+              } else if (selectedInternalInternalMenuItem == 5) {
+                  Ui::display.print(("       No  "));
               }
+            
             break;
        
             case 1:    // spectatorFreqScanStep
-//                Ui::display.print(EepromSettings.spectatorFreqScanStep);
+                Ui::display.print(EepromSettings.spectatorFreqScanStep);
             break;
             
             case 2:    // spectatorFWHM
-//                Ui::display.print(EepromSettings.spectatorFWHM);
+                Ui::display.print(EepromSettings.spectatorFWHM);
             break;
             
             case 3:    // rssiSeekTreshold
-//                Ui::display.print(EepromSettings.rssiSeekTreshold);
+                Ui::display.print(EepromSettings.rssiSeekTreshold);
             break;
             
             case 4:    // rssiMinTuneTime
-//                Ui::display.print(EepromSettings.rssiMinTuneTime);
+                Ui::display.print(EepromSettings.rssiMinTuneTime);
             break;
             
             case 5:    // rssiHysteresis
-//                Ui::display.print(EepromSettings.rssiHysteresis);
+                Ui::display.print(EepromSettings.rssiHysteresis);
             break;
             
             case 6:    // rssiHysteresisPeriod
-//                Ui::display.print(EepromSettings.rssiHysteresisPeriod);
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }
+                Ui::display.print(EepromSettings.rssiHysteresisPeriod);
             break;
             
-            case 7:    // 
-            break;
+            case 7:    // Rssi inversion 
+                Ui::display.print(EepromSettings.rssiInverted);                
+                break;
+            case 8:    // back 
+                Ui::display.print("back");                
+                break;
             
-        }    
+        }
+
     }
+    
         
 //    Ui::needDisplay();
 
@@ -269,3 +274,93 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
 //        }
 //
 //}
+
+void StateMachine::SettingsInternalStateHandler::doTapAction() {
+   if(getFSBtnFlags() == 2){
+      clearFSBtnFlags();
+      if(menuLevel == 0){
+        if(selectedInternalMenuItem < 9){
+            selectedInternalMenuItem++;
+        } else {
+            selectedInternalMenuItem = 0;
+        }
+      } else if (menuLevel == 1){
+          switch(selectedInternalMenuItem){
+              case 0:
+                if(selectedInternalInternalMenuItem < 5){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;
+              case 6:
+                if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;
+          }
+      }
+   } else if (getFSBtnFlags() == 4){
+      clearFSBtnFlags();
+    switch(selectedInternalMenuItem){
+        case 0:
+            if(!menuLevel){
+                menuLevel++;
+            } else{
+                switch(selectedInternalInternalMenuItem){
+                    case 3:
+                                     
+                        EepromSettings.initDefaults();
+                        ESP.restart();
+                    
+                    break;
+                    default:
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                }
+            }
+        break;
+        case 6:
+            if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiHysteresisPeriod++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiHysteresisPeriod--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                    break;
+                }
+            }
+        break;
+
+        case 7:
+           if(EepromSettings.rssiInverted){
+               EepromSettings.rssiInverted = !EepromSettings.rssiInverted;
+            }
+        break;
+        case 8:
+            menuLevel = 0;
+            selectedInternalMenuItem = 0;
+            StateMachine::switchState(StateMachine::State::MENU);
+        break;        
+
+    }
+   }
+
+
+
+}

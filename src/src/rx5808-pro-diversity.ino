@@ -33,6 +33,7 @@
 */
 
 #include <EEPROM.h>
+#include "esp_pm.h"
 #include "settings.h"
 #include "settings_eeprom.h"
 #include "state_home.h"
@@ -51,13 +52,14 @@
 #include "WebUpdater.h"
 #include "fsbutton.h"
 #include "servoControl.h"
+#include "statusled.h"
 
 #ifdef SPEED_TEST
     uint32_t n = 0; 
     uint32_t previousTime = millis();
 #endif
 
-
+fsBtn fatBtn;
 
 //vrxDock vrxMdl;
 
@@ -68,16 +70,17 @@
 */
 
 
-
+void setupPins(void);
 uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 50:02:91:DA:56:CA
                               0x50, 0x02, 0x91, 0xDA, 0x37, 0x84};  // r9 tx    50:02:91:DA:37:84
                               
 bool updatingOTA = false;
 uint32_t previousLEDTime = 0;
-
+/**
 vrxDockBtn vrxBtn0;
 vrxDockBtn vrxBtn1;
 vrxDockBtn vrxBtn2;
+*/
 
 dockTower tracker1;
 
@@ -86,14 +89,18 @@ dockTower tracker2;
 
 void setup()
 {
-    
+    rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
+    esp_pm_lock_handle_t powerManagementLock;
+    esp_pm_lock_create(ESP_PM_CPU_FREQ_MAX, 0, "compositeCorePerformanceLock", &powerManagementLock);
+    esp_pm_lock_acquire(powerManagementLock);  
+/**
 vrxBtn0.residedAct = 0;
 vrxBtn0.pressed = 0;
 vrxBtn0.pin = PIN_BUTTON0;
 vrxBtn0.lastReading = 0;
 vrxBtn0.lastDebounceTime = 0;
 vrxBtn0.changedTime = 0;
-vrxBtn0.action0 = incrementVrxMode;
+vrxBtn0.action0 = decrementVrxMode;
 vrxBtn0.action1 = noActionBtn;
 vrxBtn0.action2 = noActionBtn;
 
@@ -105,7 +112,7 @@ vrxBtn1.lastDebounceTime = 0;
 vrxBtn1.changedTime = 0;
 vrxBtn1.action0 = noActionBtn;
 vrxBtn1.action1 = noActionBtn;
-vrxBtn1.action2 = noActionBtn;
+vrxBtn1.action2 = enterOTA;
 
 vrxBtn2.residedAct = 0;
 vrxBtn2.pressed = 0;
@@ -116,6 +123,7 @@ vrxBtn2.changedTime = 0;
 vrxBtn2.action0 = incrementVrxMode;
 vrxBtn2.action1 = noActionBtn;
 vrxBtn2.action2 = noActionBtn;
+*/
 
 
 tracker1.servoId = 1;
@@ -139,48 +147,73 @@ tracker2.servoStatus = 0;
     //vrxBtn1.pin=PIN_BUTTON1;
     //vrxBtn1.action=decrementVrxMode;
 
+    ////Serial.println("Setting Up..");
     EEPROM.begin(2048);
+    
+    ////Serial.println("EEPROM begin DONE");
     //SPI.begin();
     
     EepromSettings.setup();
+    ////Serial.println("EEPROM set");
     setupPins();
+    fsBtnInit();
+    
+    ////Serial.println("pin set");
     StateMachine::setup();
+    
+    ////Serial.println("Statemachine set");
     Ui::setup(); 
     
+    ////Serial.println("ui set");
     //TouchPad::setup(); 
     initDockTowerServo();
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
     Receiver::setup(); 
-
+    
+    ////Serial.println("Receiver set");
     if (!EepromSettings.isCalibrated) {
+        
+    ////Serial.println("not calibrated");
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
+        
         Ui::tvOn();
+        
+    ////Serial.println("tv on");
     } else {
         StateMachine::switchState(StateMachine::State::HOME); 
+        Ui::tvOn();
+    ////Serial.println("go to home");
     }
 
 
     if (EepromSettings.otaUpdateRequested)
     {
+        
+    ////Serial.println("ota update requested");
         BeginWebUpdate();
         EepromSettings.otaUpdateRequested = false;
         EepromSettings.save();
         updatingOTA = true;
-    } else
-    /* 
+    } 
+    
+    /**else
+     
         esp-now setup for communicating to https://github.com/AlessandroAU/ExpressLRS
-    */
+    
     {
+        
+    ////Serial.println("no OTA req, continue..");
         WiFi.mode(WIFI_STA);
 
         if (esp_now_init() != ESP_OK) {
-            // Serial.println("Error initializing ESP-NOW");
+            ////Serial.println("Error initializing ESP-NOW");
             return;
         }
 
         // Adds broadcastAddress
+        ////Serial.println("broadcasting address");
         esp_now_peer_info_t injectorInfo;
         for (int i = 0; i < sizeof(broadcastAddress) / 6; i++)
         {
@@ -189,19 +222,21 @@ tracker2.servoStatus = 0;
             injectorInfo.encrypt = false;
 
             if (esp_now_add_peer(&injectorInfo) != ESP_OK){
-                // Serial.println("Failed to add peer");
+                ////Serial.println("Failed to add peer");
                 return;
             }
         }
-    }  
+    }
+    */
+    ////Serial.println("Done setup");  
 }
 
 void setupPins() {
 
     // Rx and Tx set as input so that they are high impedance when conencted to goggles.
-    pinMode(PIN_BUTTON0, INPUT);
-    pinMode(PIN_BUTTON1, INPUT);
-    pinMode(PIN_BUTTON2, INPUT);
+    //pinMode(PIN_BUTTON0, INPUT_PULLUP);
+    //pinMode(PIN_BUTTON1, INPUT_PULLUP);
+    //pinMode(PIN_BUTTON2, INPUT_PULLUP);
     
     //pinMode(PIN_SPI_SLAVE_SELECT_RX_A, OUTPUT);
     //digitalWrite(PIN_SPI_SLAVE_SELECT_RX_A, HIGH);
@@ -213,13 +248,15 @@ void setupPins() {
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
     pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
     */
-    pinMode(PIN_VRX_SWITCH1, OUTPUT);
+    pinMode(PIN_VRX_SWITCH0, OUTPUT);
     pinMode(PIN_VRX_SWITCH1, OUTPUT);
     pinMode(VRX_LED0, OUTPUT);
     pinMode(VRX_LED1, OUTPUT);
     pinMode(VRX_LED2, OUTPUT);
-    digitalWrite(PIN_VRX_SWITCH1, HIGH);
+    digitalWrite(PIN_VRX_SWITCH0, HIGH);
     digitalWrite(PIN_VRX_SWITCH1, LOW);
+    digitalWrite(VRX_LED1, HIGH);
+    digitalWrite(VRX_LED2, LOW);
 
     
     pinMode(PIN_RSSI_A, INPUT);
@@ -238,17 +275,20 @@ void loop() {
         HandleWebUpdate();
         if (millis() > previousLEDTime+100)
         {
-            //digitalWrite(PIN_VRX_SWITCH1, !digitalRead(PIN_VRX_SWITCH1));
+            //digitalWrite(PIN_VRX_SWITCH0, !digitalRead(PIN_VRX_SWITCH0));
             previousLEDTime = millis();
         }
     } else
     {
+        
+        ////Serial.println("updating receiver");
         Receiver::update();
+        
+        ////Serial.println("updating led");
         updateVrxLed(millis());
-        updateVrxBtn(millis(),&vrxBtn0);
-        updateVrxBtn(millis(),&vrxBtn1);
-        updateVrxBtn(millis(),&vrxBtn2);
-    
+        
+        ////Serial.println("updatingBtn");
+        updateFSBtn();
         //TouchPad::update();
 
         if (Ui::isTvOn) {
@@ -256,13 +296,18 @@ void loop() {
         #ifdef USE_VOLTAGE_MONITORING  
             Voltage::update();
         #endif
-        
+            ////Serial.println("tv is on");
             Ui::display.begin(0);
+            ////Serial.println("display began");
             StateMachine::update();
+            ////Serial.println("statemachine updated");
             Ui::update();
+            ////Serial.println("ui updated");
             Ui::display.end();
+            ////Serial.println("display ended");
     
             EepromSettings.update();
+            ////Serial.println("eeprom updated");
         }
         /**
         if (TouchPad::touchData.isActive) {
@@ -271,28 +316,34 @@ void loop() {
         */
         if (Ui::isTvOn &&
             Ui::UiTimeOut.hasTicked() &&
-            StateMachine::currentState != StateMachine::State::SETTINGS_RSSI ) 
+            StateMachine::currentState == StateMachine::State::HOME ) 
         {
+            //Serial.println("osd timeout");
             Ui::tvOff();  
             EepromSettings.update();
-        }
-        /**
-        if (!Ui::isTvOn &&
-            TouchPad::touchData.buttonPrimary)
-        {
-            TouchPad::touchData.buttonPrimary = false;
-            Ui::tvOn();
+            
         }
         
-        TouchPad::clearTouchData();  
-        */
+        if (!Ui::isTvOn &&
+            (getFSBtnFlags()))
+        {
+            clearFSBtnFlags();
+            //StateMachine::switchState(StateMachine::State::HOME); 
+            Ui::tvOn();
+            Ui::UiTimeOut.reset();
+
+            //Serial.println("wake osd");
+        }
+        
+        //TouchPad::clearTouchData();  
+        
 
         #ifdef SPEED_TEST
             n++;
             uint32_t nowTime = millis();
             if (nowTime > previousTime + 1000) {
-                Serial.print(n);
-                Serial.println(" Hz");
+                ////Serial.print(n);
+                ////Serial.println(" Hz");
                 previousTime = nowTime;
                 n = 0;
             }
@@ -348,18 +399,3 @@ void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload
 
 
 
-void updateVrxLed(uint32_t currentTimeUs)
-{
-    static uint32_t vrxLedTime = 0;
-    if(EepromSettings.diversityMode == 0){
-        if((int32_t)(currentTimeUs - vrxLedTime) < 0){
-            return;
-        }
-        vrxLedTime = currentTimeUs + DELAY_5_HZ;
-        VRX_LED0_TOGGLE;
-    } else if(EepromSettings.diversityMode == 1){
-        VRX_LED0_OFF;
-    } else {
-        VRX_LED0_ON;
-    }
-}

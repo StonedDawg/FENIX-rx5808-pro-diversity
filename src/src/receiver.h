@@ -33,7 +33,7 @@ namespace Receiver {
     
     extern ReceiverId activeReceiver;
     extern uint8_t activeChannel;
-    extern uint8_t diversityMode;
+    extern uint8_t dockMode;
     extern uint16_t  rssiA;
     extern uint32_t rssiARaw;
     extern uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE];
@@ -55,11 +55,13 @@ namespace Receiver {
     extern uint16_t antennaCOnTime;
     extern uint16_t antennaDOnTime;
 
+    extern uint8_t receiverState;
     void setChannel(uint8_t channel);
     void setChannelByFreq(uint16_t freq);
     void updateRssi();
     void setActiveReceiver(ReceiverId receiver = ReceiverId::A);
-
+    void receiverOn();
+    void receiverOff();
     void antenaOnTime();
     
     void switchDiversity();

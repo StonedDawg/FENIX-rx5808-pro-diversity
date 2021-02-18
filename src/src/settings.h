@@ -27,7 +27,9 @@ SOFTWARE.
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#define VERSION_NUMBER 0002
+#define VERSION_NUMBER 0004
+
+#define OSD_PIN 25
 
 #define MSP_VTX_CONFIG      88 //out message         Get vtx settings - betaflight
 #define MSP_SET_VTX_CONFIG  89 //in message          Set vtx settings - betaflight
@@ -54,12 +56,12 @@ SOFTWARE.
 #define SERVO2_PIN                      7
 #define PWM_PIN                         8
 
-#define PIN_VRX_SWITCH1                  27
-#define PIN_VRX_SWITCH2                  28
+#define PIN_VRX_SWITCH0                  23
+#define PIN_VRX_SWITCH1                  22
 
-#define PIN_BUTTON0                     3
-#define PIN_BUTTON1                     1
-#define PIN_BUTTON2                     13
+#define FS_BUTTON0                     3   //LSB
+#define FS_BUTTON1                     1
+#define FS_BUTTON2                     13  //MSB
 
 #define VRX_LED0                        17
 #define VRX_LED1                        16
