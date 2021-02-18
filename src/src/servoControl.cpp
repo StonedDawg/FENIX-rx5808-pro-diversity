@@ -1,12 +1,16 @@
 
 
 #include "servoControl.h"
+#include "timer.h"
+#include "settings.h"
 #define SERVO_MAX_ANGLE 360/2
 extern dockTower tracker1;
 extern dockTower tracker2;
 ESP32PWM pwm1;
 Servo servo1;
 Servo servo2;
+static Timer angleDelay = Timer(ANGLE_DELAY);
+
 void initDockTowerServo(void){
     ESP32PWM::allocateTimer(0);
     servo1.setPeriodHertz(50);
@@ -36,9 +40,9 @@ void updateTower(dockTower *tower){
     } else {
         tower->servoAvailableTravel = 0;
     }
-    if(tower->servoStatus == 1){
+    if(tower->servoStatus == 1 && angleDelay.hasTicked()){
         if(tower->servoAvailableTravel){
-            if(tower->servoDirection){
+            if(tower->servoDirection ){
                 tower->servoNextAngle = tower->servoCurrentAngle +5 ;
             } else {
                 tower->servoNextAngle = tower->servoCurrentAngle-5;
@@ -47,7 +51,7 @@ void updateTower(dockTower *tower){
             tower->servoDirection = !tower->servoDirection;
         }
     }
-    if(tower->servoId == 1){
+    if(tower->servoId == 1 && angleDelay.hasTicked()){
     runServo(&servo1,tower->servoNextAngle);
     tower->servoCurrentAngle = tower->servoNextAngle;
     }else{

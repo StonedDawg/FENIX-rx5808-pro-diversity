@@ -49,9 +49,7 @@ SOFTWARE.
 
 // === Pins ====================================================================
 
-
-//#define PIN_SPI_SLAVE_SELECT_RX_A       32
-//#define PIN_SPI_SLAVE_SELECT_RX_B       33
+#define ANGLE_DELAY                     100
 #define SERVO1_PIN                      6
 #define SERVO2_PIN                      7
 #define PWM_PIN                         8
