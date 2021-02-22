@@ -95,7 +95,7 @@ namespace Receiver {
                 digitalWrite(VRX_LED1,HIGH);
                 digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
-                activeReceiver = ReceiverId::A;
+                activeReceiver = ReceiverId::NONE;
                 
     }
 
