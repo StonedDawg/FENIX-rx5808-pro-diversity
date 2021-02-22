@@ -14,7 +14,8 @@ enum{
         ANTENNA_B = 2,
         ANTENNA_C = 3,
         ANTENNA_D = 4,
-        QUADVERSITY = 5
+        QUADVERSITY = 5,
+        NONE = 6
     };
 struct EepromSettings {
     uint8_t versionNumber;

@@ -20,6 +20,8 @@ namespace Receiver {
         C
         ,
         D
+        ,
+        NONE
     };
 
     enum{

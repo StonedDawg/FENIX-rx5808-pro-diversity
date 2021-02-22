@@ -230,9 +230,9 @@ void setupPins() {
     pinMode(VRX_LED0, OUTPUT);
     pinMode(VRX_LED1, OUTPUT);
     pinMode(VRX_LED2, OUTPUT);
-    digitalWrite(PIN_VRX_SWITCH0, HIGH);
+    digitalWrite(PIN_VRX_SWITCH0, LOW);
     digitalWrite(PIN_VRX_SWITCH1, LOW);
-    digitalWrite(VRX_LED1, HIGH);
+    digitalWrite(VRX_LED1, LOW);
     digitalWrite(VRX_LED2, LOW);
 
     

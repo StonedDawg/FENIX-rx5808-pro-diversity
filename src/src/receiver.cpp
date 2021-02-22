@@ -15,7 +15,7 @@ static void writeSerialData();
 
 
 namespace Receiver {
-    ReceiverId activeReceiver = ReceiverId::A;
+    ReceiverId activeReceiver = ReceiverId::NONE;
     uint8_t activeChannel = EepromSettings.startChannel;
     uint8_t dockMode = 0;
     uint16_t  rssiA = 0;
@@ -50,7 +50,7 @@ namespace Receiver {
 
     bool hasRssiUpdated = false;
     
-    uint8_t receiverState;
+    uint8_t receiverState = 0;
     void setChannel(uint8_t channel)
     {
         ////ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
@@ -86,6 +86,7 @@ namespace Receiver {
                 digitalWrite(VRX_LED1,LOW);
                 digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
+                activeReceiver = ReceiverId::NONE;
                 
     }
     void receiverOn(void){
@@ -101,6 +102,11 @@ namespace Receiver {
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.dockMode) {
+            case NONE:
+                receiver = ReceiverId::NONE;
+                receiverOff;
+
+            break;
             case ANTENNA_A:
                 receiver = ReceiverId::A;
                 receiverSelect(0);
