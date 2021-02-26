@@ -91,8 +91,8 @@ namespace Receiver {
     }
     void receiverOn(void){
                 receiverState = 1;
-                digitalWrite(PIN_VRX_SWITCH0, HIGH);
-                digitalWrite(VRX_LED1,HIGH);
+                digitalWrite(PIN_VRX_SWITCH0, LOW);
+                digitalWrite(VRX_LED1,LOW);
                 digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
                 activeReceiver = ReceiverId::NONE;
@@ -289,7 +289,7 @@ namespace Receiver {
                 currentBestReceiver = ReceiverId::A;
             } else if (rssiDiff < 0) {
                 currentBestReceiver = ReceiverId::B;
-            } else {
+            } else if (activeReceiver != ReceiverId::NONE){
                 currentBestReceiver = activeReceiver;
             }
 
@@ -351,7 +351,7 @@ namespace Receiver {
 //                diversityHysteresisTimer.reset();
 //            }            
 //          }
-        
+        if()
           setActiveReceiver(nextReceiver);
 
     }
