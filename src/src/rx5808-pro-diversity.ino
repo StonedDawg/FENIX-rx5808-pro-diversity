@@ -227,6 +227,8 @@ void setupPins() {
     */
     pinMode(PIN_VRX_SWITCH0, OUTPUT);
     pinMode(PIN_VRX_SWITCH1, OUTPUT);
+    pinMode(OSD_SWITCH, OUTPUT);
+    digitalWrite(OSD_SWITCH, LOW);
     pinMode(VRX_LED0, OUTPUT);
     pinMode(VRX_LED1, OUTPUT);
     pinMode(VRX_LED2, OUTPUT);
