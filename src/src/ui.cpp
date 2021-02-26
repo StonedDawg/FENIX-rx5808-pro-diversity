@@ -57,10 +57,8 @@ namespace Ui {
     void tvOn() {
 
         //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
-        
-        digitalWrite(OSD_SWITCH,HIGH);
         Receiver::receiverOff();
-        
+        digitalWrite(OSD_SWITCH,HIGH);        
         composite.startOutput();
         
         isTvOn = true;

@@ -287,6 +287,8 @@ void loop() {
     
             EepromSettings.update();
             ////Serial.println("eeprom updated");
+        } else {
+            Ui::tvOff();
         }
         /**
         if (TouchPad::touchData.isActive) {
