@@ -206,10 +206,12 @@ void HomeStateHandler::onUpdateDraw() {
 //    if (!EepromSettings.quadversity) {
         Ui::display.setCursor(128, 30 + 28*0 + 3);
         Ui::display.print( (100.0 * Receiver::antennaAOnTime) / (millis() / 1000) );
-        Ui::display.print("%");
+        Ui::display.print("%, ");
+        Ui::display.print( (100.0 * Receiver::rssiA));
         Ui::display.setCursor(128, 32 + 28*2 + 3);
         Ui::display.print( (100.0 * Receiver::antennaBOnTime) / (millis() / 1000) );
-        Ui::display.print("%");
+        Ui::display.print("%, ");
+        Ui::display.print( (100.0 * Receiver::rssiA));
 //    }
 //    if (EepromSettings.quadversity) {
 //        Ui::setCursor(225, 25);
