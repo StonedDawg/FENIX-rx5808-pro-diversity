@@ -55,6 +55,9 @@ void HomeStateHandler::onUpdateDraw() {
       Ui::UiTimeOut.reset();
       
     }
+    if(!(menuLevel && !internalSelectedMenu)){
+      Ui::UiTimeOut.reset();
+    }
     
     if (isInBandScanRegion()) {
         bandScanUpdate();
@@ -268,7 +271,7 @@ void HomeStateHandler::onUpdateDraw() {
     }
     
     if (HomeStateHandler::isInAnalyzeRegion() && bandScanSelectedChannel> 18 && bandScanSelectedChannel < (324-13)) {
-        Ui::UiTimeOut.reset();
+        //Ui::UiTimeOut.reset();
         Ui::display.fillRect( bandScanSelectedChannel - 33, 183, 33, 17, 10);
         Ui::display.setCursor( bandScanSelectedChannel - 32,184 );
         Ui::display.print(Channels::getName( 
@@ -602,7 +605,7 @@ bool HomeStateHandler::isInBandScanRegion() {
 
 void HomeStateHandler::bandScanUpdate() {
 
-    Ui::UiTimeOut.reset();
+    //Ui::UiTimeOut.reset();
     
     if (!wasInBandScanRegion) {
         orderedChanelIndex = Channels::getOrderedIndexFromIndex(displayActiveChannel); // Start from currently selected channel to prevent initial spike artifact.
