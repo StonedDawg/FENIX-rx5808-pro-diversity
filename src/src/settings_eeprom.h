@@ -84,14 +84,14 @@ const struct {
 
     uint8_t beepEnabled = true;
     
-    uint16_t rssiAMin = RSSI_MIN_VAL;
-    uint16_t rssiAMax = RSSI_MAX_VAL;
-    uint16_t rssiBMin = RSSI_MIN_VAL;
-    uint16_t rssiBMax = RSSI_MAX_VAL;
-    uint16_t rssiCMin = RSSI_MIN_VAL;
-    uint16_t rssiCMax = RSSI_MAX_VAL;
-    uint16_t rssiDMin = RSSI_MIN_VAL;
-    uint16_t rssiDMax = RSSI_MAX_VAL;
+    uint16_t rssiAMin = UINT16_MAX;
+    uint16_t rssiAMax = 0;
+    uint16_t rssiBMin = UINT16_MAX;
+    uint16_t rssiBMax = 0;
+    uint16_t rssiCMin = UINT16_MAX;
+    uint16_t rssiCMax = 0;
+    uint16_t rssiDMin = UINT16_MAX;
+    uint16_t rssiDMax = 0;
 
     uint8_t vbatScale = VBAT_SCALE;
     uint8_t vbatWarning = WARNING_VOLTAGE;
