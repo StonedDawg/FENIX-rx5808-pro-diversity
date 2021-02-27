@@ -11,7 +11,7 @@ namespace Ui {
   
     bool isTvOn = false;
 
-    Timer UiTimeOut = Timer(5000);
+    Timer UiTimeOut = Timer(2000);
 
     int XRES = 324;
     int YRES = 224;
