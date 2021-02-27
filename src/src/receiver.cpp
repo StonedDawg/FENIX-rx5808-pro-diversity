@@ -15,7 +15,7 @@ static void writeSerialData();
 
 
 namespace Receiver {
-    ReceiverId activeReceiver = ReceiverId::NONE;
+    ReceiverId activeReceiver = ReceiverId::A;
     uint8_t activeChannel = EepromSettings.startChannel;
     uint8_t dockMode = EepromDefaults.dockMode;
     uint16_t  rssiA = 0;
@@ -90,21 +90,12 @@ namespace Receiver {
     }
     void receiverOn(void){
                 receiverState = 1;
-                digitalWrite(PIN_VRX_SWITCH0, LOW);
-                digitalWrite(VRX_LED1,LOW);
-                digitalWrite(PIN_VRX_SWITCH1,LOW);
-                digitalWrite(VRX_LED2,LOW);
                 
     }
 
     void setActiveReceiver(ReceiverId receiver) {
         
         switch (EepromSettings.dockMode) {
-            case NONE:
-                receiver = ReceiverId::NONE;
-                //receiverOff();
-
-            break;
             case ANTENNA_A:
                 receiver = ReceiverId::A;
                 receiverSelect(0);
@@ -282,16 +273,11 @@ namespace Receiver {
             uint8_t rssiDiffAbs = abs(rssiDiff);
             ReceiverId currentBestReceiver = activeReceiver;
             
-            if (activeReceiver == ReceiverId::NONE){
-                currentBestReceiver = ReceiverId::A;
-            }
             if (rssiDiff > 0) {
                 currentBestReceiver = ReceiverId::A;
             } else if (rssiDiff < 0) {
                 currentBestReceiver = ReceiverId::B;
-            } else if (activeReceiver != ReceiverId::NONE){
-                currentBestReceiver = activeReceiver;
-            }
+            } 
             if (rssiDiffAbs >= EepromSettings.rssiHysteresis) {
                 if (currentBestReceiver == diversityTargetReceiver) {
                     if (diversityHysteresisTimer.hasTicked()) {

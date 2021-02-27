@@ -248,11 +248,6 @@ void setupPins() {
     gpio_pullup_dis(GPIO_NUM_4);
     gpio_set_pull_mode(GPIO_NUM_4,GPIO_FLOATING);
     
-    pinMode(19,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_19);
-    gpio_pullup_dis(GPIO_NUM_19);
-    gpio_set_pull_mode(GPIO_NUM_19,GPIO_FLOATING);
-    
     pinMode(18,INPUT);
     gpio_pulldown_dis(GPIO_NUM_18);
     gpio_pullup_dis(GPIO_NUM_18);
