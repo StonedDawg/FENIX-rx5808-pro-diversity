@@ -116,7 +116,7 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             sweepWaitBtn = 0;
             Receiver::setChannel(0);
             bestChannel = 0;
-
+    /**
             EepromSettings.rssiAMin = UINT16_MAX;
             EepromSettings.rssiAMax = 0;
             EepromSettings.rssiBMin = UINT16_MAX;
@@ -125,7 +125,7 @@ void StateMachine::SettingsRssiStateHandler::doTapAction() {
             EepromSettings.rssiCMax = 0;
             EepromSettings.rssiDMin = UINT16_MAX;
             EepromSettings.rssiDMax = 0;
-            
+    */        
             ////Serial.println("ok to scan");
         break;
 
