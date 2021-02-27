@@ -17,7 +17,7 @@ static void writeSerialData();
 namespace Receiver {
     ReceiverId activeReceiver = ReceiverId::NONE;
     uint8_t activeChannel = EepromSettings.startChannel;
-    uint8_t dockMode = 0;
+    uint8_t dockMode = EepromDefaults.dockMode;
     uint16_t  rssiA = 0;
     uint32_t rssiARaw = 0;
     uint16_t  rssiALast[RECEIVER_LAST_DATA_SIZE] = { 0 };
@@ -43,7 +43,7 @@ namespace Receiver {
     uint16_t antennaDOnTime = 0;
     
     ReceiverId diversityTargetReceiver = activeReceiver;
-    static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
+    static Timer diversityHysteresisTimer = Timer(15); // default value and is replce by value stored in eeprom during setup
 
     static Timer rssiStableTimer = Timer(30); // default value and is replce by value stored in eeprom during setup
     static Timer rssiLogTimer = Timer(RECEIVER_LAST_DELAY);
@@ -86,7 +86,6 @@ namespace Receiver {
                 digitalWrite(VRX_LED1,LOW);
                 digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
-                activeReceiver = ReceiverId::NONE;
                 
     }
     void receiverOn(void){
@@ -95,7 +94,6 @@ namespace Receiver {
                 digitalWrite(VRX_LED1,LOW);
                 digitalWrite(PIN_VRX_SWITCH1,LOW);
                 digitalWrite(VRX_LED2,LOW);
-                activeReceiver = ReceiverId::NONE;
                 
     }
 
@@ -104,7 +102,7 @@ namespace Receiver {
         switch (EepromSettings.dockMode) {
             case NONE:
                 receiver = ReceiverId::NONE;
-                receiverOff;
+                //receiverOff();
 
             break;
             case ANTENNA_A:
@@ -132,8 +130,7 @@ namespace Receiver {
                     receiverSelect(0);
                 }
                 if (receiver == ReceiverId::B){
-                    receiverSelect(1);
-                  
+                    receiverSelect(1);                  
                 }   
                 break;
             #ifdef QUADVERSITY
@@ -284,7 +281,10 @@ namespace Receiver {
             }
             uint8_t rssiDiffAbs = abs(rssiDiff);
             ReceiverId currentBestReceiver = activeReceiver;
-
+            
+            if (activeReceiver == ReceiverId::NONE){
+                currentBestReceiver = ReceiverId::A;
+            }
             if (rssiDiff > 0) {
                 currentBestReceiver = ReceiverId::A;
             } else if (rssiDiff < 0) {
@@ -292,7 +292,6 @@ namespace Receiver {
             } else if (activeReceiver != ReceiverId::NONE){
                 currentBestReceiver = activeReceiver;
             }
-
             if (rssiDiffAbs >= EepromSettings.rssiHysteresis) {
                 if (currentBestReceiver == diversityTargetReceiver) {
                     if (diversityHysteresisTimer.hasTicked()) {
@@ -351,7 +350,6 @@ namespace Receiver {
 //                diversityHysteresisTimer.reset();
 //            }            
 //          }
-        if()
           setActiveReceiver(nextReceiver);
 
     }

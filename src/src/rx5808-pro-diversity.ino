@@ -238,11 +238,51 @@ void setupPins() {
     digitalWrite(VRX_LED2, LOW);
 
     
+    pinMode(17,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_17);
+    gpio_pullup_dis(GPIO_NUM_17);
+    gpio_set_pull_mode(GPIO_NUM_17,GPIO_FLOATING);
+    
+    pinMode(4,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_4);
+    gpio_pullup_dis(GPIO_NUM_4);
+    gpio_set_pull_mode(GPIO_NUM_4,GPIO_FLOATING);
+    
+    pinMode(19,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_19);
+    gpio_pullup_dis(GPIO_NUM_19);
+    gpio_set_pull_mode(GPIO_NUM_19,GPIO_FLOATING);
+    
+    pinMode(18,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_18);
+    gpio_pullup_dis(GPIO_NUM_18);
+    gpio_set_pull_mode(GPIO_NUM_18,GPIO_FLOATING);
+    
+    pinMode(5,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_5);
+    gpio_pullup_dis(GPIO_NUM_5);
+    gpio_set_pull_mode(GPIO_NUM_5,GPIO_FLOATING);
+
+// delete on original V2 PCB
+    pinMode(23,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_23);
+    gpio_pullup_dis(GPIO_NUM_23);
+    gpio_set_pull_mode(GPIO_NUM_23,GPIO_FLOATING);
+
+    
     pinMode(PIN_RSSI_A, INPUT);
     pinMode(PIN_RSSI_B, INPUT);
+    gpio_pulldown_dis(GPIO_NUM_36);
+    gpio_pulldown_dis(GPIO_NUM_39);
+    gpio_pullup_dis(GPIO_NUM_36);
+    gpio_pullup_dis(GPIO_NUM_39);
+    gpio_set_pull_mode(GPIO_NUM_36,GPIO_FLOATING);
+    gpio_set_pull_mode(GPIO_NUM_39,GPIO_FLOATING);
 //    pinMode(PIN_RSSI_C, INPUT);
 //    pinMode(PIN_RSSI_D, INPUT);
-
+    
+    analogSetPinAttenuation(PIN_RSSI_A, ADC_11db);
+    analogSetPinAttenuation(PIN_RSSI_B, ADC_11db);
     analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
 
 }
@@ -288,8 +328,8 @@ void loop() {
             EepromSettings.update();
             ////Serial.println("eeprom updated");
         } else {
-            Ui::tvOff();
-        }
+            digitalWrite(OSD_SWITCH, LOW);
+            }
         /**
         if (TouchPad::touchData.isActive) {
             Ui::UiTimeOut.reset();

@@ -24,7 +24,7 @@ namespace Ui {
     //highest clockspeed needed
     //rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
     
-    pinMode(OSD_SWITCH,OUTPUT);
+    //pinMode(OSD_SWITCH,OUTPUT);
     //initializing DMA buffers and I2S
     composite.init();
     //initializing graphics double buffer
@@ -58,7 +58,7 @@ namespace Ui {
 
         //ReceiverSpi::setPowerDownRegister(0b01010000110000010011);
         Receiver::receiverOff();
-        digitalWrite(OSD_SWITCH,HIGH);        
+        digitalWrite(OSD_SWITCH,HIGH);       
         composite.startOutput();
         
         isTvOn = true;
@@ -68,11 +68,14 @@ namespace Ui {
     void tvOff() { 
 
         //ReceiverSpi::setPowerDownRegister(0b00010000110000010011);
-        
+        uint32_t tvoffdelay = millis();
         digitalWrite(OSD_SWITCH,LOW);
         //pinMode(OSD_PIN,INPUT);
         composite.stopOutput();
         //composite.deleteComposite();
+        while(millis() - tvoffdelay < 2000){
+            //wait 2s
+        }
         Receiver::receiverOn();
         Receiver::setChannel(Receiver::activeChannel);
         //pinMode(OSD_PIN,INPUT);

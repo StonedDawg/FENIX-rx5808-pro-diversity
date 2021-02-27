@@ -200,6 +200,9 @@ class CompositeOutput
   void deleteComposite(){
     i2s_driver_uninstall(I2S_PORT);
     pinMode(OSD_PIN,INPUT);
+    gpio_pulldown_dis(GPIO_NUM_25);
+    gpio_pullup_dis(GPIO_NUM_25);
+    gpio_set_pull_mode(GPIO_NUM_25,GPIO_FLOATING);
   }
 
   void sendLine()
