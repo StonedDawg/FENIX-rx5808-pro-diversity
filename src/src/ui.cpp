@@ -73,7 +73,7 @@ namespace Ui {
         //pinMode(OSD_PIN,INPUT);
         composite.stopOutput();
         //composite.deleteComposite();
-        while(millis() - tvoffdelay < 2000){
+        while(millis() - tvoffdelay < 1000){
             //wait 2s
         }
         Receiver::receiverOn();

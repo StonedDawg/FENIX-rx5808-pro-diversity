@@ -276,8 +276,8 @@ void setupPins() {
 //    pinMode(PIN_RSSI_C, INPUT);
 //    pinMode(PIN_RSSI_D, INPUT);
     
-    analogSetPinAttenuation(PIN_RSSI_A, ADC_11db);
-    analogSetPinAttenuation(PIN_RSSI_B, ADC_11db);
+    analogSetPinAttenuation(PIN_RSSI_A, ADC_2_5db);
+    analogSetPinAttenuation(PIN_RSSI_B, ADC_2_5db);
     analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
 
 }
