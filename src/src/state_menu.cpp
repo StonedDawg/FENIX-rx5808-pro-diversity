@@ -87,8 +87,7 @@ void StateMachine::MenuStateHandler::doTapAction() {
       selectedMenu == 6
       )
       {
-         EepromSettings.isCalibrated = false;
-         EepromSettings.save();
+        StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
          ESP.restart();
       }
       else if ( // WiFi OTA Update
