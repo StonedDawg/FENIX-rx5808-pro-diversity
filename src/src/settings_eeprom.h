@@ -108,8 +108,8 @@ const struct {
     uint8_t spectatorFWHM = 20;
     uint16_t rssiSeekTreshold = 500;
     uint16_t rssiMinTuneTime = 30;
-    uint8_t rssiHysteresis = 0;
-    uint16_t rssiHysteresisPeriod = 0;
+    uint8_t rssiHysteresis = 100;
+    uint16_t rssiHysteresisPeriod = 5;
     uint8_t rssiInverted = 1;
 
 } EepromDefaults;
