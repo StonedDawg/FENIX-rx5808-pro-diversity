@@ -88,7 +88,7 @@ void StateMachine::MenuStateHandler::doTapAction() {
       )
       {
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
-         ESP.restart();
+        
       }
       else if ( // WiFi OTA Update
       selectedMenu == 7
