@@ -43,7 +43,7 @@ namespace Receiver {
     uint16_t antennaDOnTime = 0;
     
     ReceiverId diversityTargetReceiver = activeReceiver;
-    static Timer diversityHysteresisTimer = Timer(15); // default value and is replce by value stored in eeprom during setup
+    static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
 
     static Timer rssiStableTimer = Timer(30); // default value and is replce by value stored in eeprom during setup
     static Timer rssiLogTimer = Timer(RECEIVER_LAST_DELAY);

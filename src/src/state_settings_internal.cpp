@@ -114,7 +114,16 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             break;
             
             case 5:    // rssiHysteresis
-                Ui::display.print(EepromSettings.rssiHysteresis);
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }
+              Ui::display.print(EepromSettings.rssiHysteresis);
             break;
             
             case 6:    // rssiHysteresisPeriod
@@ -319,6 +328,29 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     default:
                         menuLevel--;
                         selectedInternalInternalMenuItem = 0;
+                    break;
+                }
+            }
+        break;
+        case 5:
+            if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiHysteresis++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiHysteresis--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
                     break;
                 }
             }
