@@ -154,7 +154,7 @@ vrxBtn2.action2 = noActionBtn;
         
     ////Serial.println("not calibrated");
         StateMachine::switchState(StateMachine::State::SETTINGS_RSSI); 
-        
+        EepromSettings.initDefaults();
         Ui::tvOn();
         
     ////Serial.println("tv on");
