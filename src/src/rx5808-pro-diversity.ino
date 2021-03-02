@@ -238,33 +238,31 @@ void setupPins() {
     digitalWrite(VRX_LED2, LOW);
 
     
-    pinMode(17,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_17);
-    gpio_pullup_dis(GPIO_NUM_17);
-    gpio_set_pull_mode(GPIO_NUM_17,GPIO_FLOATING);
+    pinMode(UNUSED_PIN0,INPUT);
+    gpio_pulldown_dis(UNUSED_GPIO_PIN0);
+    gpio_pullup_dis(UNUSED_GPIO_PIN0);
+    gpio_set_pull_mode(UNUSED_GPIO_PIN0,GPIO_FLOATING);
     
-    pinMode(4,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_4);
-    gpio_pullup_dis(GPIO_NUM_4);
-    gpio_set_pull_mode(GPIO_NUM_4,GPIO_FLOATING);
+    pinMode(UNUSED_PIN1,INPUT);
+    gpio_pulldown_dis(UNUSED_GPIO_PIN1);
+    gpio_pullup_dis(UNUSED_GPIO_PIN1);
+    gpio_set_pull_mode(UNUSED_GPIO_PIN1,GPIO_FLOATING);
     
-    pinMode(18,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_18);
-    gpio_pullup_dis(GPIO_NUM_18);
-    gpio_set_pull_mode(GPIO_NUM_18,GPIO_FLOATING);
+    pinMode(UNUSED_PIN2,INPUT);
+    gpio_pulldown_dis(UNUSED_GPIO_PIN2);
+    gpio_pullup_dis(UNUSED_GPIO_PIN2);
+    gpio_set_pull_mode(UNUSED_GPIO_PIN2,GPIO_FLOATING);
     
-    pinMode(5,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_5);
-    gpio_pullup_dis(GPIO_NUM_5);
-    gpio_set_pull_mode(GPIO_NUM_5,GPIO_FLOATING);
+    pinMode(UNUSED_PIN3,INPUT);
+    gpio_pulldown_dis(UNUSED_GPIO_PIN3);
+    gpio_pullup_dis(UNUSED_GPIO_PIN3);
+    gpio_set_pull_mode(UNUSED_GPIO_PIN3,GPIO_FLOATING);
+    
+    pinMode(UNUSED_PIN4,INPUT);
+    gpio_pulldown_dis(UNUSED_GPIO_PIN4);
+    gpio_pullup_dis(UNUSED_GPIO_PIN4);
+    gpio_set_pull_mode(UNUSED_GPIO_PIN4,GPIO_FLOATING);
 
-// delete on original V2 PCB
-    pinMode(23,INPUT);
-    gpio_pulldown_dis(GPIO_NUM_23);
-    gpio_pullup_dis(GPIO_NUM_23);
-    gpio_set_pull_mode(GPIO_NUM_23,GPIO_FLOATING);
-
-    
     pinMode(PIN_RSSI_A, INPUT);
     pinMode(PIN_RSSI_B, INPUT);
     gpio_pulldown_dis(GPIO_NUM_36);

@@ -59,15 +59,43 @@ SOFTWARE.
 //change on on original V2 PCB
 //osd PCB V2 TRACE IS               PIN 23
 //DO A SEARCH "V2 PCB" throuh the whole file and pay attention to comments
-#define OSD_SWITCH                      16
+//#define OSD_SWITCH                      16
+#define OSD_SWITCH                      23
 
 #define FS_BUTTON0                     3   //LSB
 #define FS_BUTTON1                     1
 #define FS_BUTTON2                     13  //MSB
 
+/////////////////no LED
 #define VRX_LED0                        27
 #define VRX_LED1                        14
 #define VRX_LED2                        12
+#define UNUSED_PIN0                     16
+#define UNUSED_PIN1                     17
+#define UNUSED_PIN2                     4
+#define UNUSED_PIN3                     18
+#define UNUSED_PIN4                     5
+#define UNUSED_GPIO_PIN0                GPIO_NUM_16
+#define UNUSED_GPIO_PIN1                GPIO_NUM_17
+#define UNUSED_GPIO_PIN2                GPIO_NUM_4
+#define UNUSED_GPIO_PIN3                GPIO_NUM_18
+#define UNUSED_GPIO_PIN4                GPIO_NUM_5
+///////////////////////////////////////////////////////////////
+////////////////with LED use this
+//#define VRX_LED0                        17
+//#define VRX_LED1                        16
+//#define VRX_LED2                        4
+//#define UNUSED_PIN0                     27
+//#define UNUSED_PIN1                     14
+//#define UNUSED_PIN2                     12
+//#define UNUSED_PIN3                     18
+//#define UNUSED_PIN4                     5
+//#define UNUSED_GPIO_PIN0                GPIO_NUM_27
+//#define UNUSED_GPIO_PIN1                GPIO_NUM_14
+//#define UNUSED_GPIO_PIN2                GPIO_NUM_12
+//#define UNUSED_GPIO_PIN3                GPIO_NUM_18
+//#define UNUSED_GPIO_PIN4                GPIO_NUM_5
+/////////////////////////////////////////////////////////////////////
 
 #define PIN_RSSI_A                      36
 #define PIN_RSSI_B                      39
