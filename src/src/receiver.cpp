@@ -367,7 +367,28 @@ namespace Receiver {
         setChannel(EepromSettings.startChannel);
         setActiveReceiver(ReceiverId::A);
         diversityHysteresisTimer = Timer(EepromSettings.rssiHysteresisPeriod);    
-        rssiStableTimer = Timer(EepromSettings.rssiMinTuneTime);    
+        rssiStableTimer = Timer(EepromSettings.rssiMinTuneTime);
+        pinMode(PIN_VRX_SWITCH0, OUTPUT);
+        pinMode(PIN_VRX_SWITCH1, OUTPUT);
+        pinMode(OSD_SWITCH, OUTPUT);
+        digitalWrite(OSD_SWITCH, LOW);
+        digitalWrite(PIN_VRX_SWITCH0, LOW);
+        digitalWrite(PIN_VRX_SWITCH1, LOW); 
+        pinMode(PIN_RSSI_A, INPUT);
+        pinMode(PIN_RSSI_B, INPUT);
+        gpio_pulldown_dis(GPIO_NUM_36);
+        gpio_pulldown_dis(GPIO_NUM_39);
+        gpio_pullup_dis(GPIO_NUM_36);
+        gpio_pullup_dis(GPIO_NUM_39);
+        gpio_set_pull_mode(GPIO_NUM_36,GPIO_FLOATING);
+        gpio_set_pull_mode(GPIO_NUM_39,GPIO_FLOATING);
+    //    pinMode(PIN_RSSI_C, INPUT);
+    //    pinMode(PIN_RSSI_D, INPUT);
+        
+        analogSetPinAttenuation(PIN_RSSI_A, ADC_2_5db);
+        analogSetPinAttenuation(PIN_RSSI_B, ADC_2_5db);
+        analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
+           
     }
 
     void update() {

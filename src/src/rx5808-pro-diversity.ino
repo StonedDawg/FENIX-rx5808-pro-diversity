@@ -69,7 +69,7 @@ fsBtn fatBtn;
 */
 
 
-void setupPins(void);
+void floatUnusedPins(void);
 uint8_t broadcastAddress[] = {0x50, 0x02, 0x91, 0xDA, 0x56, 0xCA,   // esp32 tx 50:02:91:DA:56:CA
                               0x50, 0x02, 0x91, 0xDA, 0x37, 0x84};  // r9 tx    50:02:91:DA:37:84
                               
@@ -129,11 +129,15 @@ vrxBtn2.action2 = noActionBtn;
     
     ////Serial.println("EEPROM begin DONE");
     //SPI.begin();
-    
     EepromSettings.setup();
-    ////Serial.println("EEPROM set");
-    setupPins();
+    floatUnusedPins();
+    statusLedInit();
     fsBtnInit();
+    Receiver::setup(); 
+    
+    ////Serial.println("EEPROM set");
+    
+    
     
     ////Serial.println("pin set");
     StateMachine::setup();
@@ -147,7 +151,6 @@ vrxBtn2.action2 = noActionBtn;
     // Has to be last setup() otherwise channel may not be set.
     // RX possibly not booting quick enough if setup() is called earler.
     // delay() may be needed.
-    Receiver::setup(); 
     
     ////Serial.println("Receiver set");
     if (!EepromSettings.isCalibrated) {
@@ -208,7 +211,7 @@ vrxBtn2.action2 = noActionBtn;
     ////Serial.println("Done setup");  
 }
 
-void setupPins() {
+void floatUnusedPins() {
 
     // Rx and Tx set as input so that they are high impedance when conencted to goggles.
     //pinMode(PIN_BUTTON0, INPUT_PULLUP);
@@ -225,17 +228,6 @@ void setupPins() {
     digitalWrite(PIN_TOUCHPAD_SLAVE_SELECT, HIGH);
     pinMode(PIN_TOUCHPAD_DATA_READY, INPUT);
     */
-    pinMode(PIN_VRX_SWITCH0, OUTPUT);
-    pinMode(PIN_VRX_SWITCH1, OUTPUT);
-    pinMode(OSD_SWITCH, OUTPUT);
-    digitalWrite(OSD_SWITCH, LOW);
-    pinMode(VRX_LED0, OUTPUT);
-    pinMode(VRX_LED1, OUTPUT);
-    pinMode(VRX_LED2, OUTPUT);
-    digitalWrite(PIN_VRX_SWITCH0, LOW);
-    digitalWrite(PIN_VRX_SWITCH1, LOW);
-    digitalWrite(VRX_LED1, LOW);
-    digitalWrite(VRX_LED2, LOW);
 
     
     pinMode(UNUSED_PIN0,INPUT);
@@ -263,20 +255,6 @@ void setupPins() {
     gpio_pullup_dis(UNUSED_GPIO_PIN4);
     gpio_set_pull_mode(UNUSED_GPIO_PIN4,GPIO_FLOATING);
 
-    pinMode(PIN_RSSI_A, INPUT);
-    pinMode(PIN_RSSI_B, INPUT);
-    gpio_pulldown_dis(GPIO_NUM_36);
-    gpio_pulldown_dis(GPIO_NUM_39);
-    gpio_pullup_dis(GPIO_NUM_36);
-    gpio_pullup_dis(GPIO_NUM_39);
-    gpio_set_pull_mode(GPIO_NUM_36,GPIO_FLOATING);
-    gpio_set_pull_mode(GPIO_NUM_39,GPIO_FLOATING);
-//    pinMode(PIN_RSSI_C, INPUT);
-//    pinMode(PIN_RSSI_D, INPUT);
-    
-    analogSetPinAttenuation(PIN_RSSI_A, ADC_2_5db);
-    analogSetPinAttenuation(PIN_RSSI_B, ADC_2_5db);
-    analogSetPinAttenuation(PIN_VBAT, ADC_2_5db);
 
 }
 

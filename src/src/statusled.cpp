@@ -18,3 +18,13 @@ void updateVrxLed(uint32_t currentTimeUs)
         VRX_LED0_ON;
     }
 }
+
+void statusLedInit(void){
+    
+    pinMode(VRX_LED0, OUTPUT);
+    pinMode(VRX_LED1, OUTPUT);
+    pinMode(VRX_LED2, OUTPUT);
+    digitalWrite(VRX_LED0, LOW);
+    digitalWrite(VRX_LED1, LOW);
+    digitalWrite(VRX_LED2, LOW);
+}

@@ -14,4 +14,6 @@
 
 void updateVrxLed(uint32_t currentTimeUs);
 
+void statusLedInit(void);
+
 #endif
