@@ -296,7 +296,7 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
    if(getFSBtnFlags() == 2){
       clearFSBtnFlags();
       if(menuLevel == 0){
-        if(selectedInternalMenuItem < 9){
+        if(selectedInternalMenuItem < (menuInternalItems-1)){
             selectedInternalMenuItem++;
         } else {
             selectedInternalMenuItem = 0;
