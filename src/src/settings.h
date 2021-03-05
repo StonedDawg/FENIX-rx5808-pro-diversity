@@ -56,10 +56,6 @@ SOFTWARE.
 
 #define PIN_VRX_SWITCH0                  22
 #define PIN_VRX_SWITCH1                  19
-//change on on original V2 PCB
-//osd PCB V2 TRACE IS               PIN 23
-//DO A SEARCH "V2 PCB" throuh the whole file and pay attention to comments
-//#define OSD_SWITCH                      16
 #define OSD_SWITCH                      23
 
 #define FS_BUTTON0                     3   //LSB
