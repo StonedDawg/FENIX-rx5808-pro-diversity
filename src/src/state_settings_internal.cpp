@@ -110,7 +110,15 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             break;
             
             case 4:    // rssiMinTuneTime
-                Ui::display.print(EepromSettings.rssiMinTuneTime);
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }Ui::display.print(EepromSettings.rssiMinTuneTime);
             break;
             
             case 5:    // rssiHysteresis
@@ -295,7 +303,7 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
         }
       } else if (menuLevel == 1){
           switch(selectedInternalMenuItem){
-              case 0:
+              case 0:   //factory reset
                 if(selectedInternalInternalMenuItem < 5){
                     selectedInternalInternalMenuItem++;
                 } else {
@@ -303,14 +311,21 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 }
               break;
               
-              case 5:
+              case 4:   //rssi min tune time
                 if(selectedInternalInternalMenuItem < 3){
                     selectedInternalInternalMenuItem++;
                 } else {
                     selectedInternalInternalMenuItem = 0;
                 }
               break;
-              case 6:
+              case 5:   // rssiHysteresis
+                if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;
+              case 6:   // rssiHysteresisPeriod
                 if(selectedInternalInternalMenuItem < 3){
                     selectedInternalInternalMenuItem++;
                 } else {
@@ -340,13 +355,36 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 }
             }
         break;
-        case 5:
+        case 4: //rssimintunetime
             if(!menuLevel){
                 menuLevel++;
             } else{
                 
                 switch(selectedInternalInternalMenuItem){
-                    default:
+                    default: //cancel
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiMinTuneTime++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiMinTuneTime--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                    break;
+                }
+            }
+        break;
+        case 5: //rssihysteresis
+            if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:   //cancel
                         menuLevel--;
                         selectedInternalInternalMenuItem = 0;
                     break;
@@ -363,13 +401,13 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 }
             }
         break;
-        case 6:
+        case 6: //rssihysteresisperiod
             if(!menuLevel){
                 menuLevel++;
             } else{
                 
                 switch(selectedInternalInternalMenuItem){
-                    default:
+                    default://cancel
                         menuLevel--;
                         selectedInternalInternalMenuItem = 0;
                     break;
