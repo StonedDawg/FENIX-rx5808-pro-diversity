@@ -374,6 +374,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     case 3: //ok
                         EepromSettings.save();
                         EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }
@@ -397,6 +399,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     case 3: //ok
                         EepromSettings.save();
                         EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }
@@ -420,6 +424,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     case 3: //ok
                         EepromSettings.save();
                         EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }
