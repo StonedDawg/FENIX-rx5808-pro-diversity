@@ -110,7 +110,15 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             break;
             
             case 4:    // rssiMinTuneTime
-                Ui::display.print(EepromSettings.rssiMinTuneTime);
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }Ui::display.print(EepromSettings.rssiMinTuneTime);
             break;
             
             case 5:    // rssiHysteresis
@@ -303,6 +311,13 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 }
               break;
               
+              case 4:
+                if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;
               case 5:
                 if(selectedInternalInternalMenuItem < 3){
                     selectedInternalInternalMenuItem++;
@@ -340,6 +355,31 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 }
             }
         break;
+        case 4:
+            if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiMinTuneTime++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiMinTuneTime--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
+                    break;
+                }
+            }
+        break;
         case 5:
             if(!menuLevel){
                 menuLevel++;
@@ -359,6 +399,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     case 3: //ok
                         EepromSettings.save();
                         EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }
@@ -382,6 +424,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     case 3: //ok
                         EepromSettings.save();
                         EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }
