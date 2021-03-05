@@ -56,9 +56,8 @@ SOFTWARE.
 
 #define PIN_VRX_SWITCH0                  22
 #define PIN_VRX_SWITCH1                  19
-//change on on original V2 PCB
-//osd PCB V2 TRACE IS               PIN 23
-//DO A SEARCH "V2 PCB" throuh the whole file and pay attention to comments
+
+//change on MODDED PCB OF V2
 //#define OSD_SWITCH                      16
 #define OSD_SWITCH                      23
 
@@ -70,6 +69,8 @@ SOFTWARE.
 #define VRX_LED0                        27
 #define VRX_LED1                        14
 #define VRX_LED2                        12
+//change on MODDED PCB OF V2
+//#define UNUSED_PIN0                   17
 #define UNUSED_PIN0                     16
 #define UNUSED_PIN1                     17
 #define UNUSED_PIN2                     4
