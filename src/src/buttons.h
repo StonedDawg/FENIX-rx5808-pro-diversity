@@ -19,14 +19,14 @@ typedef struct dockBtn {
 } dockBtn;
 
 //extern fsBtn fatBtn;
-uint8_t readDockBtn(void);
-void updateDockBtn(void);
-void clearDockBtnFlags(void);
-uint8_t getDockBtnFlags(void);
-void dockButtonIncrease(void);
-void dockButtonDecrease(void);
-void dockBtnInit(void);
-bool dockFSBtnErr(void);
+uint8_t readFSBtn(void);
+void updateFSBtn(void);
+void clearFSBtnFlags(void);
+uint8_t getFSBtnFlags(void);
+void fsButtonIncrease(void);
+void fsButtonDecrease(void);
+void fsBtnInit(void);
+bool isFSBtnErr(void);
 
 #endif
 
