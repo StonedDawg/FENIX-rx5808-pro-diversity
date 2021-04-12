@@ -1,10 +1,20 @@
 
 #include "state_settings_internal.h"
 #include "settings_eeprom.h"
-#include "fsbutton.h"
 #include "state.h"
 #include "ui.h"
 #include "voltage.h"
+#ifdef FATSHARK_BUTTON
+#include "fsbutton.h"
+#else
+#include "buttons.h"
+#endif
+
+#ifdef FATSHARK_BUTTON
+extern fsBtn fatBtn;
+#else
+extern dockBtn fatBtn;
+#endif
 
 
 void StateMachine::SettingsInternalStateHandler::onEnter() {
@@ -19,8 +29,8 @@ void StateMachine::SettingsInternalStateHandler::onExit() {
 void StateMachine::SettingsInternalStateHandler::onUpdate() {
 //    Ui::needUpdate();
     onUpdateDraw();
-        if (getFSBtnFlags()) {
-        //clearFSBtnFlags();
+        if (getBtnFlags()) {
+        //clearBtnFlags();
         this->doTapAction();
         
         }
@@ -293,8 +303,8 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
 //}
 
 void StateMachine::SettingsInternalStateHandler::doTapAction() {
-   if(getFSBtnFlags() == 2){
-      clearFSBtnFlags();
+   if(getBtnFlags() == 2){
+      clearBtnFlags();
       if(menuLevel == 0){
         if(selectedInternalMenuItem < (menuInternalItems-1)){
             selectedInternalMenuItem++;
@@ -334,8 +344,8 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
               break;
           }
       }
-   } else if (getFSBtnFlags() == 4){
-      clearFSBtnFlags();
+   } else if (getBtnFlags() == 4){
+      clearBtnFlags();
     switch(selectedInternalMenuItem){
         case 0:
             if(!menuLevel){

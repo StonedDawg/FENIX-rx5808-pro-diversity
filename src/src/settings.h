@@ -58,20 +58,24 @@ SOFTWARE.
 #define PIN_VRX_SWITCH1                  19
 
 //change on MODDED PCB OF V2
-//#define OSD_SWITCH                      16
-#define OSD_SWITCH                      23
+#define OSD_SWITCH                      16
+//#define OSD_SWITCH                      23
 
+//#define FATSHARK_BUTTON
 #define FS_BUTTON0                     3   //LSB
 #define FS_BUTTON1                     1
 #define FS_BUTTON2                     13  //MSB
 
+#define DOCK_BUTTON0                     3   //LSB
+#define DOCK_BUTTON1                     1
+#define DOCK_BUTTON2                     13  //MSB
 /////////////////no LED
 #define VRX_LED0                        27
 #define VRX_LED1                        14
 #define VRX_LED2                        12
 //change on MODDED PCB OF V2
-//#define UNUSED_PIN0                   17
-#define UNUSED_PIN0                     16
+#define UNUSED_PIN0                   17
+//#define UNUSED_PIN0                     16
 #define UNUSED_PIN1                     17
 #define UNUSED_PIN2                     4
 #define UNUSED_PIN3                     18
