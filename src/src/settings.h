@@ -65,6 +65,9 @@ SOFTWARE.
 #define FS_BUTTON1                     1
 #define FS_BUTTON2                     13  //MSB
 
+#define DOCK_BUTTON0                     3   //LSB
+#define DOCK_BUTTON1                     1
+#define DOCK_BUTTON2                     13  //MSB
 /////////////////no LED
 #define VRX_LED0                        27
 #define VRX_LED1                        14
