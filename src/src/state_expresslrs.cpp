@@ -4,8 +4,20 @@
 #include "ui.h"
 #include "temperature.h"
 //#include "touchpad.h"
-#include "fsbutton.h"
+
+
 #include "ExpressLRS_Protocol.h"
+#ifdef FATSHARK_BUTTON
+#include "fsbutton.h"
+#else
+#include "buttons.h"
+#endif
+
+#ifdef FATSHARK_BUTTON
+extern fsBtn fatBtn;
+#else
+extern dockBtn fatBtn;
+#endif
 
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
@@ -25,9 +37,9 @@ void StateMachine::ExLRSStateHandler::onInitialDraw()
 void StateMachine::ExLRSStateHandler::onUpdateDraw()
 {
 
-    if (getFSBtnFlags())
+    if (getBtnFlags())
     {
-        clearFSBtnFlags();
+        clearBtnFlags();
         this->doTapAction();
     }
 

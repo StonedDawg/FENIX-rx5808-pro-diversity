@@ -1,10 +1,12 @@
+
+#ifndef FATSHARK_BUTTON
+
 #include "buttons.h"
 #include "settings_eeprom.h"
 #include "settings.h"
 
-
 extern dockBtn fatBtn;
-uint8_t readFSBtn(dockBtn btns){
+uint8_t readFSBtn(void){
     return 0x7 - ((digitalRead(DOCK_BUTTON2) << 2) | (digitalRead(DOCK_BUTTON1) << 1) | digitalRead(DOCK_BUTTON0));
 }
 
@@ -14,7 +16,7 @@ uint8_t readFSBtn(dockBtn btns){
     bool pressed;
     uint32_t changedTime;
 
-void updateFSBtn(uint32_t currentTimeUs){
+void updateDockBtn(uint32_t currentTimeUs){
 
      uint8_t reading = 0x7 - ((digitalRead(DOCK_BUTTON2) << 2) | (digitalRead(DOCK_BUTTON1) << 1) | digitalRead(DOCK_BUTTON0));
         /**
@@ -55,11 +57,11 @@ void updateFSBtn(uint32_t currentTimeUs){
         lastReading = reading;     
 }
 
-void clearFSBtnFlags(void){
+void clearBtnFlags(void){
     fatBtn.directionChanged = 0;
     fatBtn.valueChanged = 0;
 }
-uint8_t getFSBtnFlags(void){
+uint8_t getBtnFlags(void){
     return ((fatBtn.directionChanged << 2) | (fatBtn.valueChanged << 1));
 }
 void dockBtnInit(void){
@@ -77,9 +79,10 @@ void dockBtnInit(void){
 }
 
 bool isFSBtnErr(void){
-    if(getFSBtnFlags() == 6){
+    if(getBtnFlags() == 6){
         return 1;
     } else {
         return 0;
     }
 }
+#endif

@@ -50,7 +50,13 @@
 #include <WiFi.h>
 #include "ExpressLRS_Protocol.h"
 #include "WebUpdater.h"
+
+#ifdef FATSHARK_BUTTON
 #include "fsbutton.h"
+#else
+#include "buttons.h"
+#endif
+
 #include "statusled.h"
 
 #ifdef SPEED_TEST
@@ -58,8 +64,12 @@
     uint32_t previousTime = millis();
 #endif
 
-fsBtn fatBtn;
 
+#ifdef FATSHARK_BUTTON
+fsBtn fatBtn;
+#else
+dockBtn fatBtn;
+#endif
 //vrxDock vrxMdl;
 
 
@@ -132,7 +142,12 @@ vrxBtn2.action2 = noActionBtn;
     EepromSettings.setup();
     floatUnusedPins();
     statusLedInit();
+    
+#ifdef FATSHARK_BUTTON
     fsBtnInit();
+#else
+    dockBtnInit();
+#endif
     Receiver::setup(); 
     
     ////Serial.println("EEPROM set");
@@ -278,7 +293,11 @@ void loop() {
         updateVrxLed(millis());
         
         ////Serial.println("updatingBtn");
+        #ifdef FATSHARK_BUTTON
         updateFSBtn();
+        #else
+        updateDockBtn(millis());
+        #endif
         //TouchPad::update();
 
         if (Ui::isTvOn) {
@@ -317,9 +336,9 @@ void loop() {
         }
         
         if (!Ui::isTvOn &&
-            (getFSBtnFlags()))
+            (getBtnFlags()))
         {
-            clearFSBtnFlags();
+            clearBtnFlags();
             //StateMachine::switchState(StateMachine::State::HOME); 
             Ui::tvOn();
             Ui::UiTimeOut.reset();

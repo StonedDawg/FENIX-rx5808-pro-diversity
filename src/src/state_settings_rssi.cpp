@@ -9,15 +9,18 @@
 #include "settings_eeprom.h"
 
 #include "ui.h"
+#ifdef FATSHARK_BUTTON
 #include "fsbutton.h"
-//#include "touchpad.h"
+#else
+#include "buttons.h"
+#endif
 
-/**
-extern vrxDockBtn vrxBtn0;
-extern vrxDockBtn vrxBtn1;
-extern vrxDockBtn vrxBtn2;
-*/
+#ifdef FATSHARK_BUTTON
 extern fsBtn fatBtn;
+#else
+extern dockBtn fatBtn;
+#endif
+
 void StateMachine::SettingsRssiStateHandler::onEnter() {
     internalState = InternalState::WAIT_FOR_LOW;
     
@@ -27,8 +30,8 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
 
     onUpdateDraw();
     
-    if (getFSBtnFlags() && internalState!=InternalState::SCANNING_LOW) {
-      clearFSBtnFlags();
+    if (getBtnFlags() && internalState!=InternalState::SCANNING_LOW) {
+      clearBtnFlags();
       doTapAction();
     }
   
@@ -75,9 +78,9 @@ void StateMachine::SettingsRssiStateHandler::onUpdate() {
         break;
     }
     
-    if(getFSBtnFlags() && sweepWaitBtn){
+    if(getBtnFlags() && sweepWaitBtn){
         sweepWaitBtn = 0;
-        clearFSBtnFlags();
+        clearBtnFlags();
     }
     
     if(sweepWaitBtn == 0){

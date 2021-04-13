@@ -20,12 +20,12 @@ typedef struct dockBtn {
 
 //extern fsBtn fatBtn;
 uint8_t readFSBtn(void);
-void updateFSBtn(void);
-void clearFSBtnFlags(void);
-uint8_t getFSBtnFlags(void);
+void updateDockBtn(uint32_t currentTimeUs);
+void clearBtnFlags(void);
+uint8_t getBtnFlags(void);
 void fsButtonIncrease(void);
 void fsButtonDecrease(void);
-void fsBtnInit(void);
+void dockBtnInit(void);
 bool isFSBtnErr(void);
 
 #endif
