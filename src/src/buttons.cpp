@@ -22,35 +22,38 @@ void updateDockBtn(uint32_t currentTimeUs){
             VRX_LED0_OFF;
         }
         */
-     
+      
+       if (reading != fatBtn.lastReading) {
+            fatBtn.lastDebounceTime = currentTimeUs;
+        }
+
+        fatBtn.lastReading = reading; 
 
         if (
             reading != fatBtn.pressed &&
             (currentTimeUs - fatBtn.lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
         ) {
             
-            //Serial.println("pressed long");
-            switch(fatBtn.pressed){
-                case 0x1:
-                
-                fatBtn.valueChanged = 1;
-                break;
-                case 0x2:
-                fatBtn.directionChanged = 1;
-                
-                break;
-                case 0x3:
-                break;
-            }
             fatBtn.pressed = reading;
-            
-        }  
-        
-       if (reading != fatBtn.lastReading) {
-            fatBtn.lastDebounceTime = currentTimeUs;
+            if(fatBtn.pressed){
+            fatBtn.pressedBtn = fatBtn.pressed;
+            }
+            //Serial.println("pressed long");
+            if(!fatBtn.pressed){
+                switch(fatBtn.pressedBtn){
+                    case 0x1:
+                    
+                    fatBtn.valueChanged = 1;
+                    break;
+                    case 0x2:
+                    fatBtn.directionChanged = 1;
+                    
+                    break;
+                    case 0x3:
+                    break;
+                }
+            }            
         }
-
-        fatBtn.lastReading = reading;     
 }
 
 void clearBtnFlags(void){

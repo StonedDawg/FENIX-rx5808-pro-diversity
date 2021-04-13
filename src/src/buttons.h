@@ -10,8 +10,9 @@
 
 typedef struct dockBtn {
     uint32_t lastDebounceTime;
-    bool lastReading;
-    bool pressed;
+    uint8_t lastReading;
+    uint8_t pressed;
+    uint8_t pressedBtn;
     uint32_t changedTime;
     uint8_t directionChanged;
     uint8_t valueChanged;
