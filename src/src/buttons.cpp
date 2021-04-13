@@ -40,6 +40,8 @@ void updateDockBtn(uint32_t currentTimeUs){
             }
             //Serial.println("pressed long");
             if(!fatBtn.pressed){
+                //Serial.println("pressedBtn:");
+                //Serial.println(fatBtn.pressedBtn);
                 switch(fatBtn.pressedBtn){
                     case 0x1:
                     
@@ -69,9 +71,9 @@ void dockBtnInit(void){
     fatBtn.pin0 = DOCK_BUTTON0;
     fatBtn.pin1 = DOCK_BUTTON1;
     fatBtn.pin2 = DOCK_BUTTON2;
-    pinMode(DOCK_BUTTON0, INPUT);
-    pinMode(DOCK_BUTTON1, INPUT);
-    pinMode(DOCK_BUTTON2, INPUT);
+    pinMode(DOCK_BUTTON0, INPUT_PULLUP);
+    pinMode(DOCK_BUTTON1, INPUT_PULLUP);
+    pinMode(DOCK_BUTTON2, INPUT_PULLUP);
     
     }
 

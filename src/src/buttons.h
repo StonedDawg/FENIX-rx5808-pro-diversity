@@ -6,7 +6,7 @@
 #include "settings.h"
 #include <stdint.h>
 
-#define BUTTON_DEBOUNCE_DELAY 300
+#define BUTTON_DEBOUNCE_DELAY 180
 
 typedef struct dockBtn {
     uint32_t lastDebounceTime;
