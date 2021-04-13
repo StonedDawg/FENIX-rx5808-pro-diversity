@@ -73,7 +73,10 @@ void StateMachine::MenuStateHandler::doTapAction() {
       selectedMenu == 3
       )
       {
-         StateMachine::switchState(StateMachine::State::HOME); 
+         
+         
+            EepromSettings.noSwitchOnLow = !EepromSettings.noSwitchOnLow;
+         
          
       }
       else if ( // RSSI
@@ -160,7 +163,11 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    {
       Ui::display.rect(47+180-5, 57-6, 60, 60, 100);
       Ui::display.setCursor( 140, 200);
-      Ui::display.print("Menu 4");
+      if(EepromSettings.noSwitchOnLow){
+      Ui::display.print("no Diversity on LOW");
+      } else{
+      Ui::display.print("Normal Diversity");
+      }
    }
    else if ( //RSSI
    selectedMenu == 4

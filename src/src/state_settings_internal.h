@@ -16,7 +16,7 @@ namespace StateMachine {
             char* settingsInternalMenu[9]={ 
                 "Factory Reset",
                 "spectatorFreqScanStep",
-                "spectatorFWHM",
+                "noSwitchOnLow",
                 "rssiSeekTreshold",
                 "rssiMinTuneTime",
                 "rssiHysteresis",

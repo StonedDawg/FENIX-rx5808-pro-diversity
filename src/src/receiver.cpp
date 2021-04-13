@@ -41,6 +41,9 @@ namespace Receiver {
     uint16_t antennaBOnTime = 0;
     uint16_t antennaCOnTime = 0;
     uint16_t antennaDOnTime = 0;
+
+        int8_t rssiDiff = 0;
+        uint8_t rssiDiffAbs = 0;
     
     ReceiverId diversityTargetReceiver = activeReceiver;
     static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
@@ -49,6 +52,7 @@ namespace Receiver {
     static Timer rssiLogTimer = Timer(RECEIVER_LAST_DELAY);
 
     bool hasRssiUpdated = false;
+    bool stopSwitch = false;
     
     uint8_t receiverState = 0;
     void setChannel(uint8_t channel)
@@ -262,15 +266,7 @@ namespace Receiver {
 
     void switchDiversity() {
         ReceiverId nextReceiver = activeReceiver;
-
-//          if (!EepromSettings.quadversity) {
-            int8_t rssiDiff;
-            if(EepromSettings.rssiInverted){
-                rssiDiff = (int8_t) rssiB - (int8_t) rssiA;
-            } else {
-                rssiDiff = (int8_t) rssiA - (int8_t) rssiB;    
-            }
-            uint8_t rssiDiffAbs = abs(rssiDiff);
+        
             ReceiverId currentBestReceiver = activeReceiver;
             
             if (rssiDiff > 0) {
@@ -398,10 +394,48 @@ namespace Receiver {
             updateAntenaOnTime();
             
             updateRssi();
-
-            switchDiversity();
+            if(!stopSwitch){
+                switchDiversity();
+            }
 
             
+        } else {
+            
+        uint16_t rssiBLowThreshold;
+        uint16_t rssiALowThreshold;
+        
+        if(EepromSettings.rssiInverted){
+            rssiALowThreshold = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*90)/100);
+            rssiBLowThreshold = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*90)/100);
+        } else {
+            rssiALowThreshold = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*10)/100);
+            rssiBLowThreshold = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*10)/100);
+        
+        }
+//          if (!EepromSettings.quadversity) {
+            
+            if(EepromSettings.rssiInverted){
+                rssiDiff = (int8_t) rssiB - (int8_t) rssiA;
+                if(rssiA > rssiALowThreshold && rssiB > rssiBLowThreshold){
+                    //noswitch
+                    if(EepromSettings.noSwitchOnLow){
+                        stopSwitch = 1;
+                    } else {
+                        stopSwitch = 0;
+                    }
+                }
+            } else {
+                rssiDiff = (int8_t) rssiA - (int8_t) rssiB;
+                if(rssiA<rssiALowThreshold && rssiB<rssiBLowThreshold){
+                    //noswitch
+                    if(EepromSettings.noSwitchOnLow){
+                        stopSwitch = 1;
+                    } else {
+                        stopSwitch = 0;
+                    }
+                }    
+            }
+            rssiDiffAbs = abs(rssiDiff);
         }
         
     }

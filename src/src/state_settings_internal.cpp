@@ -111,8 +111,8 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
                 Ui::display.print(EepromSettings.spectatorFreqScanStep);
             break;
             
-            case 2:    // spectatorFWHM
-                Ui::display.print(EepromSettings.spectatorFWHM);
+            case 2:    // noSwitchOnLow
+                Ui::display.print(EepromSettings.noSwitchOnLow);
             break;
             
             case 3:    // rssiSeekTreshold
@@ -363,6 +363,11 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                         selectedInternalInternalMenuItem = 0;
                     break;
                 }
+            }
+        break;
+        case 2:
+           if(EepromSettings.noSwitchOnLow){
+               EepromSettings.noSwitchOnLow = !EepromSettings.noSwitchOnLow;
             }
         break;
         case 4: //rssimintunetime
