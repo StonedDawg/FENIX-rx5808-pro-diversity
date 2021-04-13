@@ -2,6 +2,7 @@
 #include <WString.h>
 
 #include "settings_eeprom.h"
+#include "settings.h"
 
 #include "state_home.h"
 

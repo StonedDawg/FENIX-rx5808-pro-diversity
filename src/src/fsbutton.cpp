@@ -1,8 +1,9 @@
+
+#include "settings.h"
 #ifdef FATSHARK_BUTTON
 
 #include "fsbutton.h"
 #include "settings_eeprom.h"
-#include "settings.h"
 
 
 extern fsBtn fatBtn;

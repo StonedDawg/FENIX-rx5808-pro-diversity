@@ -1,6 +1,7 @@
 
 #include "state_settings_internal.h"
 #include "settings_eeprom.h"
+#include "settings.h"
 #include "state.h"
 #include "ui.h"
 #include "voltage.h"

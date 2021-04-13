@@ -1,9 +1,10 @@
 
+#include "settings.h"
+
 #ifndef FATSHARK_BUTTON
 
 #include "buttons.h"
 #include "settings_eeprom.h"
-#include "settings.h"
 
 extern dockBtn fatBtn;
 uint8_t readFSBtn(void){

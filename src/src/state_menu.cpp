@@ -5,6 +5,7 @@
 #include "CompositeGraphics.h"
 #include "settings_eeprom.h"
 #include "icons.h"
+#include "settings.h"
 /**
 extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;

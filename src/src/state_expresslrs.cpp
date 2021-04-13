@@ -3,6 +3,7 @@
 #include "state_expresslrs.h"
 #include "ui.h"
 #include "temperature.h"
+#include "settings.h"
 //#include "touchpad.h"
 
 
