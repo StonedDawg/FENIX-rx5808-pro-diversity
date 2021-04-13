@@ -4,14 +4,24 @@
 //#include "touchpad.h"
 #include "CompositeGraphics.h"
 #include "settings_eeprom.h"
-#include "fsbutton.h"
 #include "icons.h"
 /**
 extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
 */
+#ifdef FATSHARK_BUTTON
+#include "fsbutton.h"
+#else
+#include "buttons.h"
+#endif
+
+#ifdef FATSHARK_BUTTON
 extern fsBtn fatBtn;
+#else
+extern dockBtn fatBtn;
+#endif
+
 Image<CompositeGraphics> iconHome(home::xres, home::yres, home::pixels);
 Image<CompositeGraphics> iconExLRS(exlrs::xres, exlrs::yres, exlrs::pixels);
 Image<CompositeGraphics> iconCalibrate(calibrate::xres, calibrate::yres, calibrate::pixels);
@@ -25,23 +35,23 @@ void StateMachine::MenuStateHandler::onEnter() {
 
 void StateMachine::MenuStateHandler::onUpdate() {
     onUpdateDraw();
-    if (getFSBtnFlags()) {
-      //clearFSBtnFlags();
+    if (getBtnFlags()) {
+      //clearBtnFlags();
       this->doTapAction();
       
     }
 }
 
 void StateMachine::MenuStateHandler::doTapAction() {
-   if(getFSBtnFlags() == 2){
-      clearFSBtnFlags();
+   if(getBtnFlags() == 2){
+      clearBtnFlags();
       if(selectedMenu < 7){
       selectedMenu++;
    } else {
       selectedMenu = 0;
    }
-   } else if (getFSBtnFlags() == 4){
-      clearFSBtnFlags();
+   } else if (getBtnFlags() == 4){
+      clearBtnFlags();
       if (selectedMenu == 0)
       {
          StateMachine::switchState(StateMachine::State::HOME); 
@@ -63,7 +73,10 @@ void StateMachine::MenuStateHandler::doTapAction() {
       selectedMenu == 3
       )
       {
-         StateMachine::switchState(StateMachine::State::HOME); 
+         
+         
+            EepromSettings.noSwitchOnLow = !EepromSettings.noSwitchOnLow;
+         
          
       }
       else if ( // RSSI
@@ -150,7 +163,11 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    {
       Ui::display.rect(47+180-5, 57-6, 60, 60, 100);
       Ui::display.setCursor( 140, 200);
-      Ui::display.print("Menu 4");
+      if(EepromSettings.noSwitchOnLow){
+      Ui::display.print("no Diversity on LOW");
+      } else{
+      Ui::display.print("Normal Diversity");
+      }
    }
    else if ( //RSSI
    selectedMenu == 4

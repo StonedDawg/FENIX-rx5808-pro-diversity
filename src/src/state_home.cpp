@@ -13,14 +13,24 @@
 #include "temperature.h"
 #include "voltage.h"
 //#include "touchpad.h"
-#include "fsbutton.h"
 #include "ExpressLRS_Protocol.h"
 /**
 extern vrxDockBtn vrxBtn0;
 extern vrxDockBtn vrxBtn1;
 extern vrxDockBtn vrxBtn2;
 */
+#ifdef FATSHARK_BUTTON
+#include "fsbutton.h"
+#else
+#include "buttons.h"
+#endif
+
+#ifdef FATSHARK_BUTTON
 extern fsBtn fatBtn;
+#else
+extern dockBtn fatBtn;
+#endif
+
 extern void sendToExLRS(uint16_t function, uint16_t payloadSize, const uint8_t *payload);
 
 // For scalling graphics accross screen
@@ -49,8 +59,8 @@ void HomeStateHandler::onInitialDraw() {
 
 void HomeStateHandler::onUpdateDraw() {
     
-    if (getFSBtnFlags()) {
-        //clearFSBtnFlags();
+    if (getBtnFlags()) {
+        //clearBtnFlags();
       this->doTapAction();
       Ui::UiTimeOut.reset();
       
@@ -292,9 +302,9 @@ void HomeStateHandler::onUpdateDraw() {
 }
 
 void HomeStateHandler::doTapAction() {
-    if(getFSBtnFlags() == 4){
+    if(getBtnFlags() == 4){
         
-        clearFSBtnFlags();
+        clearBtnFlags();
         if(menuLevel == 0){
             switch (internalSelectedMenu)
             {
@@ -337,8 +347,8 @@ void HomeStateHandler::doTapAction() {
             break;
             }
         }
-    } else if(getFSBtnFlags() == 2){
-        clearFSBtnFlags();
+    } else if(getBtnFlags() == 2){
+        clearBtnFlags();
         if (menuLevel == 0){
                 if(internalSelectedMenu < 3){
                 internalSelectedMenu++;

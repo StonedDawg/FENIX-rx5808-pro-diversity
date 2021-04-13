@@ -1,3 +1,5 @@
+#ifdef FATSHARK_BUTTON
+
 #include "fsbutton.h"
 #include "settings_eeprom.h"
 #include "settings.h"
@@ -20,7 +22,7 @@ void updateFSBtn(void){
             fatBtn.previousDirection = -1;
         }
         if(isFSBtnErr()){
-            clearFSBtnFlags();
+            clearBtnFlags();
         }
     
 }
@@ -48,11 +50,11 @@ void fsButtonDecrease(void){
     }
 }
 
-void clearFSBtnFlags(void){
+void clearBtnFlags(void){
     fatBtn.directionChanged = 0;
     fatBtn.valueChanged = 0;
 }
-uint8_t getFSBtnFlags(void){
+uint8_t getBtnFlags(void){
     return ((fatBtn.directionChanged << 2) | (fatBtn.valueChanged << 1));
 }
 void fsBtnInit(void){
@@ -70,9 +72,10 @@ void fsBtnInit(void){
 }
 
 bool isFSBtnErr(void){
-    if(getFSBtnFlags() == 6){
+    if(getBtnFlags() == 6){
         return 1;
     } else {
         return 0;
     }
 }
+#endif
