@@ -180,13 +180,13 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
       Ui::display.print("/RSSIAmax");
       Ui::display.print(EepromSettings.rssiAMin);
       Ui::display.print("/");          
-      Ui::display.print(EepromSettings.rssiAMin);
+      Ui::display.print(EepromSettings.rssiAMax);
       Ui::display.setCursor( 100, 207);
       Ui::display.print("RSSIBmin");
       Ui::display.print("/RSSIBmax");
       Ui::display.print(EepromSettings.rssiBMin);
       Ui::display.print("/");          
-      Ui::display.print(EepromSettings.rssiBMin);
+      Ui::display.print(EepromSettings.rssiBMax);
    }
    else if ( // RSSI INVERSION
    selectedMenu == 5
