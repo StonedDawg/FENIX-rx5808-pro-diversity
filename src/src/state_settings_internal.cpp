@@ -330,7 +330,13 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     selectedInternalInternalMenuItem = 0;
                 }
               break;
-              
+              case 1:
+              if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;              
               case 4:   //rssi min tune time
                 if(selectedInternalInternalMenuItem < 3){
                     selectedInternalInternalMenuItem++;
