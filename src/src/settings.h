@@ -61,6 +61,7 @@ SOFTWARE.
 #define OSD_SWITCH                      16
 //#define OSD_SWITCH                      23
 
+//#define FATSHARK_BUTTON
 #define FS_BUTTON0                     3   //LSB
 #define FS_BUTTON1                     1
 #define FS_BUTTON2                     13  //MSB
