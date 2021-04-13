@@ -56,12 +56,17 @@ SOFTWARE.
 
 #define PIN_VRX_SWITCH0                  22
 #define PIN_VRX_SWITCH1                  19
+//========================================================
+//use this on MODDED PCB OF V2
+//#define OSD_SWITCH                      16
+//INSTEAD OF THIS
+#define OSD_SWITCH                      23
+//========================================================
 
-//change on MODDED PCB OF V2
-#define OSD_SWITCH                      16
-//#define OSD_SWITCH                      23
+//USE THIS WHEN USING WITH FATSHARK GOGGLE BUTTONS
+#define FATSHARK_BUTTON
+//========================================================
 
-//#define FATSHARK_BUTTON
 #define FS_BUTTON0                     3   //LSB
 #define FS_BUTTON1                     1
 #define FS_BUTTON2                     13  //MSB
@@ -73,9 +78,12 @@ SOFTWARE.
 #define VRX_LED0                        27
 #define VRX_LED1                        14
 #define VRX_LED2                        12
-//change on MODDED PCB OF V2
-#define UNUSED_PIN0                   17
-//#define UNUSED_PIN0                     16
+//========================================================
+//use this on MODDED PCB OF V2
+//#define UNUSED_PIN0                   17
+//INSTEAD OF THIS
+#define UNUSED_PIN0                     16
+//========================================================
 #define UNUSED_PIN1                     17
 #define UNUSED_PIN2                     4
 #define UNUSED_PIN3                     18
