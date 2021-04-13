@@ -56,9 +56,11 @@ namespace Receiver {
     extern uint16_t antennaBOnTime;
     extern uint16_t antennaCOnTime;
     extern uint16_t antennaDOnTime;
+    extern uint16_t rssiBLowThreshold;
+    extern uint16_t rssiALowThreshold;
 
-    extern int8_t rssiDiff;
-    extern uint8_t rssiDiffAbs;
+    extern int16_t rssiDiff;
+    extern uint16_t rssiDiffAbs;
 
     extern uint8_t receiverState;
 

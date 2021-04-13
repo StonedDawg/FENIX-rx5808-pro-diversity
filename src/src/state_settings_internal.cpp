@@ -108,8 +108,17 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             
             break;
        
-            case 1:    // spectatorFreqScanStep
-                Ui::display.print(EepromSettings.spectatorFreqScanStep);
+            case 1:    //rssiLowthresholdstopdiversity
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }
+              Ui::display.print(EepromSettings.rssiLowThreshold);
             break;
             
             case 2:    // noSwitchOnLow
@@ -362,6 +371,31 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                     default:
                         menuLevel--;
                         selectedInternalInternalMenuItem = 0;
+                    break;
+                }
+            }
+        break;
+        case 1:
+        if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:   //cancel
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiLowThreshold++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiLowThreshold--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
                     break;
                 }
             }

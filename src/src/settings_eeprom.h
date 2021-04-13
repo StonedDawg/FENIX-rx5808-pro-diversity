@@ -59,6 +59,7 @@ struct EepromSettings {
     uint16_t rssiHysteresisPeriod;
     uint8_t rssiInverted;
     uint8_t noSwitchOnLow;
+    uint8_t rssiLowThreshold;
     void setup();
     void update();
 
@@ -112,6 +113,7 @@ const struct {
     uint16_t rssiHysteresisPeriod = 5;
     uint8_t rssiInverted = 1;
     uint8_t noSwitchOnLow = 0;
+    uint8_t rssiLowThreshold = 10;
 
 } EepromDefaults;
 

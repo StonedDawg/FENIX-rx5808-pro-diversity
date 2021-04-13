@@ -15,7 +15,7 @@ namespace StateMachine {
             uint8_t menuInternalItems = 9; // Number of items in settingsInternalMenu[]
             char* settingsInternalMenu[9]={ 
                 "Factory Reset",
-                "spectatorFreqScanStep",
+                "noSwitchLowThreshold",
                 "noSwitchOnLow",
                 "rssiSeekTreshold",
                 "rssiMinTuneTime",

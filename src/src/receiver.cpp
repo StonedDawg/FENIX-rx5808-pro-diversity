@@ -36,14 +36,17 @@ namespace Receiver {
 
     uint16_t rssiBandScanData[CHANNELS_SIZE] = { 0 };
 
+    uint16_t rssiBLowThreshold;
+    uint16_t rssiALowThreshold;
+
     uint16_t previousSwitchTime = 0;
     uint16_t antennaAOnTime = 0;
     uint16_t antennaBOnTime = 0;
     uint16_t antennaCOnTime = 0;
     uint16_t antennaDOnTime = 0;
 
-        int8_t rssiDiff = 0;
-        uint8_t rssiDiffAbs = 0;
+        int16_t rssiDiff = 0;
+        uint16_t rssiDiffAbs = 0;
     
     ReceiverId diversityTargetReceiver = activeReceiver;
     static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
@@ -401,21 +404,21 @@ namespace Receiver {
             
         } else {
             
-        uint16_t rssiBLowThreshold;
-        uint16_t rssiALowThreshold;
-        
+        uint16_t rssiALowThresholdValue = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*EepromSettings.rssiLowThreshold)/100);
+        uint16_t rssiBLowThresholdValue = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*EepromSettings.rssiLowThreshold)/100);
+
         if(EepromSettings.rssiInverted){
-            rssiALowThreshold = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*90)/100);
-            rssiBLowThreshold = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*90)/100);
+            rssiALowThreshold = (((EepromSettings.rssiAMax - rssiALowThresholdValue)));
+            rssiBLowThreshold = (((EepromSettings.rssiBMax - rssiBLowThresholdValue)));
         } else {
-            rssiALowThreshold = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*10)/100);
-            rssiBLowThreshold = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*10)/100);
+            rssiALowThreshold = (((EepromSettings.rssiAMin + rssiALowThresholdValue)));
+            rssiBLowThreshold = (((EepromSettings.rssiBMin + rssiBLowThresholdValue)));
         
         }
 //          if (!EepromSettings.quadversity) {
             
             if(EepromSettings.rssiInverted){
-                rssiDiff = (int8_t) rssiB - (int8_t) rssiA;
+                rssiDiff = rssiB - rssiA;
                 if(rssiA > rssiALowThreshold && rssiB > rssiBLowThreshold){
                     //noswitch
                     if(EepromSettings.noSwitchOnLow){
@@ -425,7 +428,7 @@ namespace Receiver {
                     }
                 }
             } else {
-                rssiDiff = (int8_t) rssiA - (int8_t) rssiB;
+                rssiDiff = rssiA - rssiB;
                 if(rssiA<rssiALowThreshold && rssiB<rssiBLowThreshold){
                     //noswitch
                     if(EepromSettings.noSwitchOnLow){
