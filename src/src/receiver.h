@@ -57,7 +57,13 @@ namespace Receiver {
     extern uint16_t antennaCOnTime;
     extern uint16_t antennaDOnTime;
 
+    extern int8_t rssiDiff;
+    extern uint8_t rssiDiffAbs;
+
     extern uint8_t receiverState;
+
+    extern bool stopSwitch;
+
     void setChannel(uint8_t channel);
     void setChannelByFreq(uint16_t freq);
     void updateRssi();
