@@ -25,11 +25,6 @@ void updateFSBtn(uint32_t currentTimeUs){
         }
         */
      
-       if (reading != lastReading) {
-            lastDebounceTime = currentTimeUs;
-        }
-
-        lastReading = reading;
 
         if (
             reading != pressed &&
@@ -46,12 +41,18 @@ void updateFSBtn(uint32_t currentTimeUs){
                 fatBtn.directionChanged = 1;
                 
                 break;
-                case 0x4:
+                case 0x3:
                 break;
             }
             pressed = reading;
             
-        }       
+        }  
+        
+       if (reading != lastReading) {
+            lastDebounceTime = currentTimeUs;
+        }
+
+        lastReading = reading;     
 }
 
 void clearFSBtnFlags(void){
