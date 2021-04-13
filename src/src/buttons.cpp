@@ -11,10 +11,6 @@ uint8_t readFSBtn(void){
 }
 
 
-    uint32_t lastDebounceTime;
-    bool lastReading;
-    bool pressed;
-    uint32_t changedTime;
 
 void updateDockBtn(uint32_t currentTimeUs){
 
@@ -29,12 +25,12 @@ void updateDockBtn(uint32_t currentTimeUs){
      
 
         if (
-            reading != pressed &&
-            (currentTimeUs - lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
+            reading != fatBtn.pressed &&
+            (currentTimeUs - fatBtn.lastDebounceTime) >= BUTTON_DEBOUNCE_DELAY
         ) {
             
             //Serial.println("pressed long");
-            switch(pressed){
+            switch(fatBtn.pressed){
                 case 0x1:
                 
                 fatBtn.valueChanged = 1;
@@ -46,15 +42,15 @@ void updateDockBtn(uint32_t currentTimeUs){
                 case 0x3:
                 break;
             }
-            pressed = reading;
+            fatBtn.pressed = reading;
             
         }  
         
-       if (reading != lastReading) {
-            lastDebounceTime = currentTimeUs;
+       if (reading != fatBtn.lastReading) {
+            fatBtn.lastDebounceTime = currentTimeUs;
         }
 
-        lastReading = reading;     
+        fatBtn.lastReading = reading;     
 }
 
 void clearBtnFlags(void){
@@ -65,7 +61,6 @@ uint8_t getBtnFlags(void){
     return ((fatBtn.directionChanged << 2) | (fatBtn.valueChanged << 1));
 }
 void dockBtnInit(void){
-    fatBtn.previousDirection = 0;
     fatBtn.directionChanged = 0;
     fatBtn.valueChanged = 0;
     fatBtn.pin0 = DOCK_BUTTON0;
@@ -75,8 +70,7 @@ void dockBtnInit(void){
     pinMode(DOCK_BUTTON1, INPUT);
     pinMode(DOCK_BUTTON2, INPUT);
     
-    fatBtn.previousValue = readFSBtn();
-}
+    }
 
 bool isFSBtnErr(void){
     if(getBtnFlags() == 6){

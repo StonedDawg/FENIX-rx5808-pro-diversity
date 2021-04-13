@@ -9,8 +9,10 @@
 #define BUTTON_DEBOUNCE_DELAY 300
 
 typedef struct dockBtn {
-    int8_t previousValue;
-    int8_t previousDirection;
+    uint32_t lastDebounceTime;
+    bool lastReading;
+    bool pressed;
+    uint32_t changedTime;
     uint8_t directionChanged;
     uint8_t valueChanged;
     uint8_t pin0;
