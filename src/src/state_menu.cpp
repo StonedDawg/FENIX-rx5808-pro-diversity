@@ -163,12 +163,19 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    )
    {
       Ui::display.rect(47+180-5, 57-6, 60, 60, 100);
-      Ui::display.setCursor( 140, 200);
+      Ui::display.setCursor( 120, 193);
       if(EepromSettings.noSwitchOnLow){
       Ui::display.print("no Diversity on LOW");
       } else{
       Ui::display.print("Normal Diversity");
-      }
+      } 
+      Ui::display.setCursor( 100, 207);
+      
+        uint16_t rssiALowThresholdValue = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*EepromSettings.rssiLowThreshold)/100);
+        uint16_t rssiBLowThresholdValue = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*EepromSettings.rssiLowThreshold)/100);
+      Ui::display.print(rssiALowThresholdValue);
+      Ui::display.print("/");
+      Ui::display.print(rssiBLowThresholdValue);
    }
    else if ( //RSSI
    selectedMenu == 4
