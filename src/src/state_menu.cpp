@@ -221,7 +221,8 @@ void StateMachine::MenuStateHandler::onUpdateDraw() {
    {
       Ui::display.rect(47+180-5, 117-5, 60, 60, 100);
       Ui::display.setCursor( 120, 193);
-      Ui::display.print("WiFi Update");
+      Ui::display.print("version ");
+      Ui::display.print(FIRMWARE_VERSION);
       Ui::display.setCursor( 40, 207);
       Ui::display.print("SSID:Dawgversity  IP:192.168.4.1");
    }
