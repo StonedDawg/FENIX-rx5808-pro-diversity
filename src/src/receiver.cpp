@@ -7,6 +7,7 @@
 #include "channels.h"
 #include "state.h"
 #include "ui.h"
+#include "LowPassFilter.h"
 
 #include "timer.h"
 
@@ -58,6 +59,10 @@ namespace Receiver {
     bool stopSwitch = false;
     
     uint8_t receiverState = 0;
+
+    LPF rssiALPF(3);
+    LPF rssiBLPF(3);
+
     void setChannel(uint8_t channel)
     {
         ////ReceiverSpi::setSynthRegisterB(Channels::getSynthRegisterB(channel));
@@ -161,18 +166,12 @@ namespace Receiver {
     void updateRssi() {
   
         uint8_t RSSI_READS = 3; //15;
+        rssiARaw = rssiALPF.SmoothDataINT;      
+            rssiALPF.update(analogRead(PIN_RSSI_A));
         
-        rssiARaw = 0;
-        for (uint8_t i = 0; i < RSSI_READS; i++) {                       
-            rssiARaw += analogRead(PIN_RSSI_A);
-        }
-        rssiARaw /= RSSI_READS;
+        rssiBRaw = rssiBLPF.SmoothDataINT;
+            rssiBLPF.update(analogRead(PIN_RSSI_B));
         
-        rssiBRaw = 0;
-        for (uint8_t i = 0; i < RSSI_READS; i++) { 
-            rssiBRaw += analogRead(PIN_RSSI_B);
-        }
-        rssiBRaw /= RSSI_READS;
 
 //        if (EepromSettings.quadversity) {
 //            rssiCRaw = 0;
