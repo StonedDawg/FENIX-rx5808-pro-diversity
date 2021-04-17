@@ -111,7 +111,7 @@ const struct {
     uint16_t rssiMinTuneTime = 30;
     uint8_t rssiHysteresis = 100;
     uint16_t rssiHysteresisPeriod = 5;
-    uint8_t rssiInverted = 1;
+    uint8_t rssiInverted = 0;
     uint8_t noSwitchOnLow = 0;
     uint8_t rssiLowThreshold = 10;
 
