@@ -129,11 +129,13 @@ namespace Receiver {
             #endif
 
             default:
-                if (receiver == ReceiverId::A) {
-                    receiverSelect(0);
-                }
-                if (receiver == ReceiverId::B){
-                    receiverSelect(1);                  
+                if(!stopSwitch){
+                    if (receiver == ReceiverId::A) {
+                        receiverSelect(0);
+                    }
+                    if (receiver == ReceiverId::B){
+                        receiverSelect(1);                  
+                    }
                 }   
                 break;
             #ifdef QUADVERSITY
@@ -395,14 +397,14 @@ namespace Receiver {
 
             updateAntenaOnTime();
             
-            updateRssi();
-            if(!stopSwitch){
-                switchDiversity();
-            }
+            
+            
+            switchDiversity();
+            
 
             
         } else {
-            
+        updateRssi();    
         uint16_t rssiALowThresholdValue = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*EepromSettings.rssiLowThreshold)/100);
         uint16_t rssiBLowThresholdValue = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*EepromSettings.rssiLowThreshold)/100);
 

@@ -122,10 +122,28 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             break;
             
             case 2:    // noSwitchOnLow
-                Ui::display.print(EepromSettings.noSwitchOnLow);
+                if (selectedInternalInternalMenuItem == 0) {
+                  Ui::display.print("cancel");
+              } else if (selectedInternalInternalMenuItem == 1) {
+                  Ui::display.print("+++");
+              } else if (selectedInternalInternalMenuItem == 2) {
+                  Ui::display.print("---");
+              } else if (selectedInternalInternalMenuItem == 3) {
+                  Ui::display.print("OK");
+              }
+              Ui::display.print(EepromSettings.noSwitchOnLow);
             break;
             
             case 3:    // rssiSeekTreshold
+                if (selectedInternalInternalMenuItem == 0) {
+                    Ui::display.print("cancel");
+                } else if (selectedInternalInternalMenuItem == 1) {
+                    Ui::display.print("+++");
+                } else if (selectedInternalInternalMenuItem == 2) {
+                    Ui::display.print("---");
+                } else if (selectedInternalInternalMenuItem == 3) {
+                    Ui::display.print("OK");
+                }
                 Ui::display.print(EepromSettings.rssiSeekTreshold);
             break;
             
@@ -168,6 +186,15 @@ void StateMachine::SettingsInternalStateHandler::onUpdateDraw() {
             break;
             
             case 7:    // Rssi inversion 
+                if (selectedInternalInternalMenuItem == 0) {
+                    Ui::display.print("cancel");
+                } else if (selectedInternalInternalMenuItem == 1) {
+                    Ui::display.print("+++");
+                } else if (selectedInternalInternalMenuItem == 2) {
+                    Ui::display.print("---");
+                } else if (selectedInternalInternalMenuItem == 3) {
+                    Ui::display.print("OK");
+                }
                 Ui::display.print(EepromSettings.rssiInverted);                
                 break;
             case 8:    // back 
@@ -336,6 +363,20 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
                 } else {
                     selectedInternalInternalMenuItem = 0;
                 }
+              break;
+              case 2:   //rssi min tune time
+                if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
+              break;
+              case 3:   //rssi min tune time
+                if(selectedInternalInternalMenuItem < 3){
+                    selectedInternalInternalMenuItem++;
+                } else {
+                    selectedInternalInternalMenuItem = 0;
+                }
               break;              
               case 4:   //rssi min tune time
                 if(selectedInternalInternalMenuItem < 3){
@@ -407,8 +448,53 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
             }
         break;
         case 2:
-           if(EepromSettings.noSwitchOnLow){
-               EepromSettings.noSwitchOnLow = !EepromSettings.noSwitchOnLow;
+        if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:   //cancel
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.noSwitchOnLow++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.noSwitchOnLow--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
+                    break;
+                }
+            }
+        break;
+        case 3:
+        if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default:   //cancel
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiSeekTreshold++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiSeekTreshold--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
+                    break;
+                }
             }
         break;
         case 4: //rssimintunetime
@@ -488,8 +574,28 @@ void StateMachine::SettingsInternalStateHandler::doTapAction() {
         break;
 
         case 7:
-           if(EepromSettings.rssiInverted){
-               EepromSettings.rssiInverted = !EepromSettings.rssiInverted;
+           if(!menuLevel){
+                menuLevel++;
+            } else{
+                
+                switch(selectedInternalInternalMenuItem){
+                    default://cancel
+                        menuLevel--;
+                        selectedInternalInternalMenuItem = 0;
+                    break;
+                    case 1: //add
+                        EepromSettings.rssiInverted++;
+                    break;
+                    case 2: //sub
+                        EepromSettings.rssiInverted--;
+                    break;
+                    case 3: //ok
+                        EepromSettings.save();
+                        EepromSettings.markDirty();
+                        selectedInternalInternalMenuItem = 0;
+                        menuLevel--;
+                    break;
+                }
             }
         break;
         case 8:
