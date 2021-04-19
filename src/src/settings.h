@@ -61,11 +61,11 @@ SOFTWARE.
 //use this on MODDED PCB OF V2
 //#define OSD_SWITCH                      16
 //INSTEAD OF THIS
-#define OSD_SWITCH                      23
+//#define OSD_SWITCH                      23
 //========================================================
 
 //USE THIS WHEN USING WITH FATSHARK GOGGLE BUTTONS
-#define FATSHARK_BUTTON
+//#define FATSHARK_BUTTON
 //========================================================
 
 #define FS_BUTTON0                     3   //LSB
@@ -83,7 +83,7 @@ SOFTWARE.
 //use this on MODDED PCB OF V2
 //#define UNUSED_PIN0                   17
 //INSTEAD OF THIS
-#define UNUSED_PIN0                     16
+//#define UNUSED_PIN0                     16
 //========================================================
 #define UNUSED_PIN1                     17
 #define UNUSED_PIN2                     4
