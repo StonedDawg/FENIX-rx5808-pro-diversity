@@ -420,23 +420,27 @@ namespace Receiver {
             
             if(EepromSettings.rssiInverted){
                 rssiDiff = rssiB - rssiA;
+                if(EepromSettings.noSwitchOnLow){
                 if(rssiA > rssiALowThreshold && rssiB > rssiBLowThreshold){
                     //noswitch
-                    if(EepromSettings.noSwitchOnLow){
                         stopSwitch = 1;
                     } else {
                         stopSwitch = 0;
                     }
+                } else {
+                    stopSwitch = 0;
                 }
             } else {
                 rssiDiff = rssiA - rssiB;
+                if(EepromSettings.noSwitchOnLow){
                 if(rssiA<rssiALowThreshold && rssiB<rssiBLowThreshold){
-                    //noswitch
-                    if(EepromSettings.noSwitchOnLow){
+                    //noswitch   
                         stopSwitch = 1;
                     } else {
                         stopSwitch = 0;
                     }
+                } else {
+                    stopSwitch = 0;
                 }    
             }
             rssiDiffAbs = abs(rssiDiff);
