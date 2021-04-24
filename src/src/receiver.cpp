@@ -49,6 +49,9 @@ namespace Receiver {
     int16_t rssiDiff = 0;
     uint16_t rssiDiffAbs = 0;
     
+    LPF rssiALPF(3);
+    LPF rssiBLPF(3);
+    
     ReceiverId diversityTargetReceiver = activeReceiver;
     static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
 
@@ -165,18 +168,12 @@ namespace Receiver {
     void updateRssi() {
   
         uint8_t RSSI_READS = 3; //15;
+        rssiARaw = rssiALPF.SmoothDataINT;      
+            rssiALPF.update(analogRead(PIN_RSSI_A));
         
-        rssiARaw = 0;
-        for (uint8_t i = 0; i < RSSI_READS; i++) {                       
-            rssiARaw += analogRead(PIN_RSSI_A);
-        }
-        rssiARaw /= RSSI_READS;
+        rssiBRaw = rssiBLPF.SmoothDataINT;
+            rssiBLPF.update(analogRead(PIN_RSSI_B));
         
-        rssiBRaw = 0;
-        for (uint8_t i = 0; i < RSSI_READS; i++) { 
-            rssiBRaw += analogRead(PIN_RSSI_B);
-        }
-        rssiBRaw /= RSSI_READS;
 
 //        if (EepromSettings.quadversity) {
 //            rssiCRaw = 0;
@@ -395,7 +392,8 @@ namespace Receiver {
     }
 
     void update() {
-
+        
+        updateRssi();
         if (rssiStableTimer.hasTicked()) {
 
             updateAntenaOnTime();
@@ -406,8 +404,7 @@ namespace Receiver {
             
 
             
-        } else {
-        updateRssi();    
+        } else {    
         uint16_t rssiALowThresholdValue = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*EepromSettings.rssiLowThreshold)/100);
         uint16_t rssiBLowThresholdValue = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*EepromSettings.rssiLowThreshold)/100);
 
