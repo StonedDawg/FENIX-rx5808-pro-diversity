@@ -46,8 +46,8 @@ namespace Receiver {
     uint16_t antennaCOnTime = 0;
     uint16_t antennaDOnTime = 0;
 
-        int16_t rssiDiff = 0;
-        uint16_t rssiDiffAbs = 0;
+    int16_t rssiDiff = 0;
+    uint16_t rssiDiffAbs = 0;
     
     ReceiverId diversityTargetReceiver = activeReceiver;
     static Timer diversityHysteresisTimer = Timer(5); // default value and is replce by value stored in eeprom during setup
@@ -59,9 +59,6 @@ namespace Receiver {
     bool stopSwitch = false;
     
     uint8_t receiverState = 0;
-
-    LPF rssiALPF(3);
-    LPF rssiBLPF(3);
 
     void setChannel(uint8_t channel)
     {
@@ -168,12 +165,18 @@ namespace Receiver {
     void updateRssi() {
   
         uint8_t RSSI_READS = 3; //15;
-        rssiARaw = rssiALPF.SmoothDataINT;      
-            rssiALPF.update(analogRead(PIN_RSSI_A));
         
-        rssiBRaw = rssiBLPF.SmoothDataINT;
-            rssiBLPF.update(analogRead(PIN_RSSI_B));
+        rssiARaw = 0;
+        for (uint8_t i = 0; i < RSSI_READS; i++) {                       
+            rssiARaw += analogRead(PIN_RSSI_A);
+        }
+        rssiARaw /= RSSI_READS;
         
+        rssiBRaw = 0;
+        for (uint8_t i = 0; i < RSSI_READS; i++) { 
+            rssiBRaw += analogRead(PIN_RSSI_B);
+        }
+        rssiBRaw /= RSSI_READS;
 
 //        if (EepromSettings.quadversity) {
 //            rssiCRaw = 0;
