@@ -394,17 +394,6 @@ namespace Receiver {
     void update() {
         
         updateRssi();
-        if (rssiStableTimer.hasTicked()) {
-
-            updateAntenaOnTime();
-            
-            
-            
-            switchDiversity();
-            
-
-            
-        } else {    
         uint16_t rssiALowThresholdValue = (((EepromSettings.rssiAMax - EepromSettings.rssiAMin)*EepromSettings.rssiLowThreshold)/100);
         uint16_t rssiBLowThresholdValue = (((EepromSettings.rssiBMax - EepromSettings.rssiBMin)*EepromSettings.rssiLowThreshold)/100);
 
@@ -444,6 +433,16 @@ namespace Receiver {
                 }    
             }
             rssiDiffAbs = abs(rssiDiff);
+        if (rssiStableTimer.hasTicked()) {
+
+            updateAntenaOnTime();
+            
+            
+            
+            switchDiversity();
+            
+
+            
         }
         
     }
