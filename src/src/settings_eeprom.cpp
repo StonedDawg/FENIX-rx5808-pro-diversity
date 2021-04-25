@@ -26,7 +26,7 @@ void EepromSettings::update() {
 void EepromSettings::load() {
     EEPROM.get(0, *this);
     
-    if (this->versionNumber != VERSION_NUMBER)
+    if (this->versionNumber != EEPROM_VERSION)
         this->initDefaults();
 }
 

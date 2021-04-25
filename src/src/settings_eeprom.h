@@ -72,7 +72,7 @@ struct EepromSettings {
 
 
 const struct {
-    uint8_t versionNumber = VERSION_NUMBER;
+    uint8_t versionNumber = EEPROM_VERSION;
     
     uint8_t isCalibrated = false;
     uint8_t otaUpdateRequested = false;    
